@@ -1,6 +1,6 @@
 # fake_news_detector
 
-A new Flutter application.
+Fake News Detector
 
 ## Getting Started
 
