@@ -1,5 +1,5 @@
+import 'package:fake_news_detector/Utilities/Analyzer.dart';
 import 'package:flutter/material.dart';
-import 'package:fake_news_detector/Utilities/Networking.dart';
 
 class AppBody extends StatefulWidget {
   @override
@@ -16,8 +16,8 @@ class _AppBodyState extends State<AppBody> {
   }
 
   void _handleSubmitted(String text) {
-    Networking networking = Networking();
-    networking.getData(text);
+    Analyzer analyzing = Analyzer();
+    analyzing.query(text);
   }
 
   @override
@@ -33,64 +33,59 @@ class _AppBodyState extends State<AppBody> {
         kToolbarHeight;
     final _width = MediaQuery.of(context).size.width;
 
-    return Flexible(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            border: Border.all(
+              color: Colors.black,
+              width: 0.4,
+            ),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          width: _width * 0.7,
+          height: _height * 0.4,
+          child: TextField(
+            maxLines: 11,
+            textAlignVertical: TextAlignVertical.bottom,
+            enableInteractiveSelection: true,
+            controller: _controller,
+            keyboardType: TextInputType.multiline,
+            decoration: InputDecoration.collapsed(
+                border: InputBorder.none,
+                hintText: 'Enter text...',
+                hintStyle: TextStyle(fontSize: _height * 0.03)),
+            style: TextStyle(
+              fontSize: _height * 0.03,
+            ),
+            scrollPhysics:
+                BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+          ),
+        ),
+        SizedBox(
+          height: _height * 0.05,
+        ),
+        GestureDetector(
+          onTap: () => _handleSubmitted(_controller.text),
+          child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.pink,
               borderRadius: BorderRadius.all(Radius.circular(15.0)),
-              border: Border.all(
-                color: Colors.black,
-                width: 0.4,
-              ),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
-            width: _width * 0.7,
-            height: _height * 0.4,
-            child: Flexible(
-              child: TextField(
-                maxLines: 8,
-                textAlignVertical: TextAlignVertical.bottom,
-                enableInteractiveSelection: true,
-                controller: _controller,
-                keyboardType: TextInputType.multiline,
-                decoration: InputDecoration.collapsed(
-                    border: InputBorder.none,
-                    hintText: 'Enter text...',
-                    hintStyle: TextStyle(fontSize: _height * 0.03)),
-                style: TextStyle(
-                  fontSize: _height * 0.03,
-                ),
-                scrollPhysics: BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics()),
+            width: _width * 0.55,
+            height: _height * 0.09,
+            child: Center(
+              child: Text(
+                'VERIFY',
+                style: TextStyle(fontSize: _height * 0.03, color: Colors.white),
               ),
             ),
           ),
-          SizedBox(
-            height: _height * 0.05,
-          ),
-          FlatButton(
-            onPressed: () => _handleSubmitted(_controller.text),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.pink,
-                borderRadius: BorderRadius.all(Radius.circular(15.0)),
-              ),
-              width: _width * 0.55,
-              height: _height * 0.09,
-              child: Center(
-                child: Text(
-                  'VERIFY',
-                  style:
-                      TextStyle(fontSize: _height * 0.03, color: Colors.white),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
