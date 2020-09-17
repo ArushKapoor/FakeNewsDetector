@@ -1,5 +1,5 @@
+import 'package:fake_news_detector/Utilities/Analyzer.dart';
 import 'package:flutter/material.dart';
-import 'package:fake_news_detector/Utilities/Networking.dart';
 
 class AppBody extends StatefulWidget {
   @override
@@ -17,8 +17,10 @@ class _AppBodyState extends State<AppBody> {
   }
 
   void _handleSubmitted(String text) {
-    Networking networking = Networking();
-    networking.getData(text);
+    if (text != null) {
+      Analyzer networking = Analyzer();
+      networking.query(text);
+    }
   }
 
   @override
