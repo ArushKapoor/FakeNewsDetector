@@ -17,8 +17,10 @@ class _AppBodyState extends State<AppBody> {
   }
 
   void _handleSubmitted(String text) {
-    Analyzer analyzing = Analyzer();
-    analyzing.query(text);
+    if (text != null) {
+      Analyzer networking = Analyzer();
+      networking.query(text);
+    }
   }
 
   @override
