@@ -16,7 +16,13 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.pink,
         ),
         body: SafeArea(
-          child: Center(child: AppBody()),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Center(
+                child: AppBody(),
+              ),
+            ),
+          ),
         ),
       ),
     );

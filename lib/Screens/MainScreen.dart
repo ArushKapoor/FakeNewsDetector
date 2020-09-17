@@ -8,6 +8,7 @@ class AppBody extends StatefulWidget {
 
 class _AppBodyState extends State<AppBody> {
   TextEditingController _controller;
+  bool onVerifyClick = false;
 
   @override
   void initState() {
@@ -33,6 +34,34 @@ class _AppBodyState extends State<AppBody> {
         kToolbarHeight;
     final _width = MediaQuery.of(context).size.width;
 
+    Column verifyText({bool isFake, String percentage}) {
+      String text;
+      Color textColor;
+      if (isFake) {
+        text = 'Incorrect';
+        textColor = Colors.red;
+      } else {
+        text = 'Correct';
+        textColor = Colors.green;
+      }
+
+      return Column(
+        children: [
+          Text(
+            text,
+            style: TextStyle(fontSize: _height * 0.03, color: textColor),
+          ),
+          SizedBox(
+            height: _height * 0.015,
+          ),
+          Text(
+            percentage,
+            style: TextStyle(fontSize: _height * 0.03, color: textColor),
+          ),
+        ],
+      );
+    }
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -45,11 +74,11 @@ class _AppBodyState extends State<AppBody> {
               width: 0.4,
             ),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 10.0),
+          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
           width: _width * 0.7,
-          height: _height * 0.4,
+          height: _height * 0.5,
           child: TextField(
-            maxLines: 11,
+            maxLines: 200,
             textAlignVertical: TextAlignVertical.bottom,
             enableInteractiveSelection: true,
             controller: _controller,
@@ -68,20 +97,38 @@ class _AppBodyState extends State<AppBody> {
         SizedBox(
           height: _height * 0.05,
         ),
-        GestureDetector(
-          onTap: () => _handleSubmitted(_controller.text),
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.pink,
-              borderRadius: BorderRadius.all(Radius.circular(15.0)),
+        if (onVerifyClick)
+          Container(
+            padding: EdgeInsets.only(bottom: _height * 0.05),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                verifyText(isFake: true, percentage: '50%'),
+                SizedBox(
+                  width: _width * 0.15,
+                ),
+                verifyText(isFake: false, percentage: '50%'),
+              ],
             ),
-            width: _width * 0.55,
-            height: _height * 0.09,
-            child: Center(
-              child: Text(
-                'VERIFY',
-                style: TextStyle(fontSize: _height * 0.03, color: Colors.white),
-              ),
+          ),
+        Container(
+          width: _width * 0.55,
+          height: _height * 0.09,
+          child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+              side: BorderSide(color: Colors.red),
+            ),
+            onPressed: () {
+              setState(() {
+                onVerifyClick = true;
+              });
+              _handleSubmitted(_controller.text);
+            },
+            color: Colors.pink,
+            child: Text(
+              'VERIFY',
+              style: TextStyle(fontSize: _height * 0.03, color: Colors.white),
             ),
           ),
         ),
