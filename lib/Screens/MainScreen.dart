@@ -1,5 +1,6 @@
 import 'package:fake_news_detector/Utilities/Analyzer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class AppBody extends StatefulWidget {
   @override
@@ -9,6 +10,7 @@ class AppBody extends StatefulWidget {
 class _AppBodyState extends State<AppBody> {
   TextEditingController _controller;
   bool onVerifyClick = false;
+  bool isVisible = false;
   @override
   void initState() {
     super.initState();
@@ -19,6 +21,9 @@ class _AppBodyState extends State<AppBody> {
   int percentage = 0;
   void _handleSubmitted(String text) async {
     if (text != null) {
+      setState(() {
+        isVisible = true;
+      });
       Analyzer networking = Analyzer();
       percent = await networking.query(text);
       print(percent);
@@ -26,6 +31,7 @@ class _AppBodyState extends State<AppBody> {
       setState(() {
         percentage = percent;
         onVerifyClick = true;
+        isVisible = false;
       });
     }
   }
@@ -71,77 +77,108 @@ class _AppBodyState extends State<AppBody> {
       );
     }
 
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(15.0)),
-              border: Border.all(
-                color: Colors.black,
-                width: 0.4,
-              ),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-            width: _width * 0.7,
-            height: _height * 0.5,
-            child: TextField(
-              maxLines: 200,
-              textAlignVertical: TextAlignVertical.bottom,
-              enableInteractiveSelection: true,
-              controller: _controller,
-              keyboardType: TextInputType.multiline,
-              decoration: InputDecoration.collapsed(
-                  border: InputBorder.none,
-                  hintText: 'Enter text...',
-                  hintStyle: TextStyle(fontSize: _height * 0.03)),
-              style: TextStyle(
-                fontSize: _height * 0.03,
-              ),
-              scrollPhysics: BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics()),
-            ),
-          ),
-          SizedBox(
-            height: _height * 0.05,
-          ),
-          if (onVerifyClick)
-            Container(
-              padding: EdgeInsets.only(bottom: _height * 0.05),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  verifyText(isFake: true, percentage: percentage.toString()),
-                  SizedBox(
-                    width: _width * 0.15,
+    return Stack(
+      children: <Widget>[
+        Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 0.4,
+                    ),
                   ),
-                  verifyText(
-                      isFake: false, percentage: (100 - percentage).toString()),
-                ],
-              ),
-            ),
-          Container(
-            width: _width * 0.55,
-            height: _height * 0.09,
-            child: FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-                side: BorderSide(color: Colors.red),
-              ),
-              onPressed: () {
-                _handleSubmitted(_controller.text);
-              },
-              color: Colors.pink,
-              child: Text(
-                'VERIFY',
-                style: TextStyle(fontSize: _height * 0.03, color: Colors.white),
-              ),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                  width: _width * 0.7,
+                  height: _height * 0.5,
+                  child: TextField(
+                    maxLines: 200,
+                    textAlignVertical: TextAlignVertical.bottom,
+                    enableInteractiveSelection: true,
+                    controller: _controller,
+                    keyboardType: TextInputType.multiline,
+                    decoration: InputDecoration.collapsed(
+                        border: InputBorder.none,
+                        hintText: 'Enter text...',
+                        hintStyle: TextStyle(fontSize: _height * 0.03)),
+                    style: TextStyle(
+                      fontSize: _height * 0.03,
+                    ),
+                    scrollPhysics: BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
+                  ),
+                ),
+                SizedBox(
+                  height: _height * 0.05,
+                ),
+                if (onVerifyClick)
+                  Container(
+                    padding: EdgeInsets.only(bottom: _height * 0.05),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        verifyText(
+                            isFake: true, percentage: percentage.toString()),
+                        SizedBox(
+                          width: _width * 0.15,
+                        ),
+                        verifyText(
+                            isFake: false,
+                            percentage: (100 - percentage).toString()),
+                      ],
+                    ),
+                  ),
+                Container(
+                  width: _width * 0.55,
+                  height: _height * 0.09,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                      side: BorderSide(color: Colors.red),
+                    ),
+                    onPressed: () {
+                      _handleSubmitted(_controller.text);
+                    },
+                    color: Colors.pink,
+                    child: Text(
+                      'VERIFY',
+                      style: TextStyle(
+                          fontSize: _height * 0.03, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+        if (isVisible)
+          Opacity(
+            opacity: 0.60,
+            child: Container(
+              color: Colors.grey[100],
+              height: _height,
+              width: _width,
+            ),
+          ),
+        Center(
+          child: Visibility(
+            maintainSize: false,
+            maintainAnimation: true,
+            maintainState: true,
+            visible: isVisible,
+            child: const SpinKitThreeBounce(
+              color: Colors.blue,
+              size: 20.0,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
