@@ -1,9 +1,20 @@
 import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart';
 
 class Networking {
+  readFilesFromAssets() async {
+    // Users can load any kind of files like txt, doc or json files as well
+    String assetContent = await rootBundle.loadString('apiFile.txt');
+    return assetContent;
+  }
+
   Future getData(String q) async {
     List<dynamic> responseList;
     List queryHelper = q.split(' ');
+
+    String key = await readFilesFromAssets();
+
+    String engineId = '306d2336ed7e743ae';
     List removedWords = [
       'was',
       'a',
@@ -60,9 +71,9 @@ class Networking {
     }
     q = queryHelper.join('+');
     http.Response response1 = await http.get(Uri.encodeFull(
-        'https://www.googleapis.com/customsearch/v1?key=AIzaSyAq5PYzfOx80-oP7fXKjwfNzs-yx7ZNpAs&cx=306d2336ed7e743ae&q=$q&safe=1'));
+        'https://www.googleapis.com/customsearch/v1?key=$key&cx=$engineId&q=$q&safe=1'));
     http.Response response2 = await http.get(Uri.encodeFull(
-        'https://www.googleapis.com/customsearch/v1?key=AIzaSyAq5PYzfOx80-oP7fXKjwfNzs-yx7ZNpAs&cx=306d2336ed7e743ae&q=$q&safe=1&start=10'));
+        'https://www.googleapis.com/customsearch/v1?key=$key&cx=$engineId&q=$q&safe=1&start=10'));
     if (response1.statusCode == 200 && response1.statusCode == 200) {
       String data1 = response1.body;
       String data2 = response2.body;
