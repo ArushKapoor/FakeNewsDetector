@@ -51,7 +51,7 @@ class Networking {
       'its',
       'has',
       'an',
-      'as'
+      'as',
     ];
     for (int i = 0; i < removedWords.length; i++) {
       if (queryHelper.contains(removedWords[i])) {
@@ -59,10 +59,10 @@ class Networking {
       }
     }
     q = queryHelper.join('+');
-    http.Response response1 = await http.get(
-        'https://www.googleapis.com/customsearch/v1?key=AIzaSyAUQBHw-MsjQHYAYDTBzduuRfmW5vh4RHc&cx=306d2336ed7e743ae&q=$q&safe=1');
-    http.Response response2 = await http.get(
-        'https://www.googleapis.com/customsearch/v1?key=AIzaSyAUQBHw-MsjQHYAYDTBzduuRfmW5vh4RHc&cx=306d2336ed7e743ae&q=$q&safe=1&start=10');
+    http.Response response1 = await http.get(Uri.encodeFull(
+        'https://www.googleapis.com/customsearch/v1?key=AIzaSyAq5PYzfOx80-oP7fXKjwfNzs-yx7ZNpAs&cx=306d2336ed7e743ae&q=$q&safe=1'));
+    http.Response response2 = await http.get(Uri.encodeFull(
+        'https://www.googleapis.com/customsearch/v1?key=AIzaSyAq5PYzfOx80-oP7fXKjwfNzs-yx7ZNpAs&cx=306d2336ed7e743ae&q=$q&safe=1&start=10'));
     if (response1.statusCode == 200 && response1.statusCode == 200) {
       String data1 = response1.body;
       String data2 = response2.body;
