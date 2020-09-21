@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:fake_news_detector/Utilities/Networking.dart';
+import 'package:flutter/material.dart';
 import 'package:rake/rake.dart';
 import 'package:document_analysis/document_analysis.dart';
 
@@ -30,28 +31,98 @@ class Analyzer {
     List<String> title = [];
     List<String> link = [];
     List<String> url = [];
-    String wordset =
-        'falsehood lie forgery fraud phoney pirate false pseudo fakey cheat bluff fake viral hoax rumour';
+    List<String> wordSet = [
+      'falsehood',
+      'lie',
+      'forgery',
+      'fraud',
+      'phoney',
+      'pirate',
+      'false',
+      'pseudo',
+      'fakey',
+      'cheat',
+      'bluff',
+      'fake',
+      'viral',
+      'hoax',
+      'rumour'
+    ];
+
+    // for (int i = 0; i < 10; i++) {
+    //   snip.add(decodeJson1['items'][i]['snippet']);
+    //   snip.add(decodeJson2['items'][i]['snippet']);
+    //   title.add(decodeJson1['items'][i]['title']);
+    //   title.add(decodeJson2['items'][i]['title']);
+    //   link.add(decodeJson1['items'][i]['displayLink']);
+    //   link.add(decodeJson2['items'][i]['displayLink']);
+    //   url.add(decodeJson1['items'][i]['formattedUrl']);
+    //   url.add(decodeJson2['items'][i]['formattedUrl']);
+    // }
+    Rake rake = Rake();
+    int totalMatched = 0;
+    int fakeMatched = 0;
 
     for (int i = 0; i < 10; i++) {
-      snip.add(decodeJson1['items'][i]['snippet']);
-      snip.add(decodeJson2['items'][i]['snippet']);
-      title.add(decodeJson1['items'][i]['title']);
-      title.add(decodeJson2['items'][i]['title']);
-      link.add(decodeJson1['items'][i]['displayLink']);
-      link.add(decodeJson2['items'][i]['displayLink']);
-      url.add(decodeJson1['items'][i]['formattedUrl']);
-      url.add(decodeJson2['items'][i]['formattedUrl']);
+      String wordSnip, wordTitle, wordUrl;
+      if (i < 10) {
+        wordSnip = decodeJson1['items'][i]['snippet'];
+        wordTitle = decodeJson1['items'][i]['title'];
+        wordUrl = decodeJson1['items'][i]['formattedUrl'];
+      }
+      // else {
+      //   wordSnip = decodeJson2['items'][i - 10]['snippet'];
+      //   wordTitle = decodeJson2['items'][i - 10]['title'];
+      //   wordUrl = decodeJson2['items'][i - 10]['formattedUrl'];
+      // }
+      String rakeWordSnip = rake.rank(wordSnip.toString()).toString();
+      double ratioSnip =
+          wordFrequencySimilarity(rakeWordSnip, rake.rank(q).toString());
+
+      String rakeWordTitle = rake.rank(wordTitle.toString()).toString();
+      double ratioTitle =
+          wordFrequencySimilarity(rakeWordTitle, rake.rank(q).toString());
+
+      wordUrl = wordUrl.replaceAll('-', ' ');
+      wordUrl = wordUrl.replaceAll(',', ' ');
+      wordUrl = wordUrl.replaceAll('/', ' ');
+      wordUrl = wordUrl.replaceAll(':', ' ');
+      wordUrl = wordUrl.replaceAll('.', ' ');
+      wordUrl = wordUrl.replaceAll('_', ' ');
+
+      if (ratioSnip >= 0.30 || ratioTitle >= 0.35) {
+        // print('Ratios are for $i : $ratioSnip and $ratioTitle');
+        // print('Rake for $i are : $rakeWordSnip and $rakeWordTitle');
+        // print('');
+        totalMatched++;
+
+        for (int i = 0; i < wordSet.length; i++) {
+          if (rakeWordSnip.contains(wordSet[i]) ||
+              rakeWordTitle.contains(wordSet[i]) ||
+              wordUrl.contains(wordSet[i])) {
+            fakeMatched++;
+            break;
+          }
+        }
+      }
+      // print('$i     $percentage');
     }
-    Rake rake = Rake();
-    print(wordFrequencySimilarity(
-        rake
-            .rank(snip.join(" ") +
-                title.join(" ") +
-                link.join(" ") +
-                url.join(" "))
-            .toString(),
-        wordset));
+
+    int percentage =
+        (fakeMatched.toDouble() / totalMatched.toDouble() * 100.0).toInt();
+
+    // Display Link not required
+
+    // Formatted url only to check fake
+
+    // print(wordFrequencySimilarity(
+    //     rake
+    //         .rank(snip.join(" ") +
+    //             title.join(" ") +
+    //             link.join(" ") +
+    //             url.join(" "))
+    //         .toString(),
+    //     wordset));
     // print(tfIdfSimilarity(
     //     rake
     //         .rank(snip.join(" ") +
@@ -63,16 +134,16 @@ class Analyzer {
     //     smartEnglish));
     // print(wordFrequencyProbability(documentTokenizer(snip)));
     // print(tfIdfProbability(documentTokenizer(snip)));
-    int percentage = (wordFrequencySimilarity(
-                rake
-                    .rank(snip.join(" ") +
-                        title.join(" ") +
-                        link.join(" ") +
-                        url.join(" "))
-                    .toString(),
-                wordset) *
-            100)
-        .toInt();
+    // int percentage = (wordFrequencySimilarity(
+    //             rake
+    //                 .rank(snip.join(" ") +
+    //                     title.join(" ") +
+    //                     link.join(" ") +
+    //                     url.join(" "))
+    //                 .toString(),
+    //             wordSet.toString()) *
+    //         100)
+    //     .toInt();
     return percentage;
   }
 }
