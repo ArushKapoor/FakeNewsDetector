@@ -1,3 +1,4 @@
+import 'package:fake_news_detector/Screens/NewsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'Screens/MainScreen.dart';
@@ -10,15 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Fake News Detector'),
-          backgroundColor: Colors.pink,
-        ),
-        body: SafeArea(
-          child: Center(child: AppBody()),
-        ),
-      ),
+      initialRoute: AppBody.id,
+      routes: {
+        AppBody.id: (context) => AppBody(),
+        NewsScreen.id: (context) => NewsScreen()
+      },
     );
   }
 }
