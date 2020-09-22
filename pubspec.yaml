@@ -33,6 +33,7 @@ dependencies:
   document_analysis: ^0.1.3
   path_provider: ^1.6.16
   flutter_spinkit: ^4.1.2+1
+  google_fonts: ^1.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

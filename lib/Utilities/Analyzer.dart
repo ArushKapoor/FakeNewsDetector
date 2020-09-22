@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:fake_news_detector/Utilities/Networking.dart';
-import 'package:flutter/material.dart';
 import 'package:rake/rake.dart';
 import 'package:document_analysis/document_analysis.dart';
 
@@ -11,6 +10,15 @@ class Analyzer {
   static String snippetToSend;
   Networking obj = Networking();
   Future query(String q) async {
+    Rake rake = Rake();
+    q = rake.rank(q).join(' ');
+    q = q.replaceAll('-', ' ');
+    q = q.replaceAll(',', ' ');
+    q = q.replaceAll('/', ' ');
+    q = q.replaceAll(':', ' ');
+    q = q.replaceAll('.', ' ');
+    q = q.replaceAll('_', ' ');
+
     var joinedStrings = await obj.getData(q);
     List joinedList = joinedStrings
         .toString()
@@ -59,7 +67,7 @@ class Analyzer {
     //   url.add(decodeJson1['items'][i]['formattedUrl']);
     //   url.add(decodeJson2['items'][i]['formattedUrl']);
     // }
-    Rake rake = Rake();
+
     int totalMatched = 0;
     int fakeMatched = 0;
 
