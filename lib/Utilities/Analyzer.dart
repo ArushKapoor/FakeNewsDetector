@@ -10,6 +10,15 @@ class Analyzer {
   static String snippetToSend;
   Networking obj = Networking();
   Future query(String q) async {
+    Rake rake = Rake();
+    q = rake.rank(q).join(' ');
+    q = q.replaceAll('-', ' ');
+    q = q.replaceAll(',', ' ');
+    q = q.replaceAll('/', ' ');
+    q = q.replaceAll(':', ' ');
+    q = q.replaceAll('.', ' ');
+    q = q.replaceAll('_', ' ');
+
     var joinedStrings = await obj.getData(q);
     List joinedList = joinedStrings
         .toString()
@@ -43,14 +52,14 @@ class Analyzer {
       url.add(decodeJson1['items'][i]['formattedUrl']);
       url.add(decodeJson2['items'][i]['formattedUrl']);
     }
-    Rake rake = Rake();
+
     print(wordFrequencySimilarity(
         rake
             .rank(snip.join(" ") +
                 title.join(" ") +
                 link.join(" ") +
                 url.join(" "))
-            .toString(),
+            .join(' '),
         wordset));
     // print(tfIdfSimilarity(
     //     rake
