@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'dart:io';
 
 class SplashScreen extends StatefulWidget {
   static const String id = 'splash_screen';
@@ -12,12 +11,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool isInitialized = false;
   void inititalizeFlutterFire() async {
     try {
       await Firebase.initializeApp();
       final _auth = FirebaseAuth.instance;
       await _auth.signInAnonymously();
-      Navigator.pushNamed(context, ShowcaseScreen.id);
+      isInitialized = true;
     } catch (e) {
       print(e);
     }
@@ -28,9 +28,8 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     inititalizeFlutterFire();
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushNamed(context, '/screen0');
+      if (isInitialized) Navigator.pushNamed(context, ShowcaseScreen.id);
     });
-    //sleep(Duration(seconds: 10));
   }
 
   @override
