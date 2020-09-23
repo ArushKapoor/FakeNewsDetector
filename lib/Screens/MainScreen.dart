@@ -178,7 +178,9 @@ class _AppBodyState extends State<AppBody> {
                           child: Text(
                             'View Page',
                             style: TextStyle(
-                                fontSize: _height * 0.028, color: Colors.grey),
+                                fontSize: _height * 0.028,
+                                color: Colors.grey,
+                                decoration: TextDecoration.underline),
                           ),
                         ),
                       ),
@@ -195,18 +197,13 @@ class _AppBodyState extends State<AppBody> {
                   width: _width,
                 ),
               ),
-            Center(
-              child: Visibility(
-                maintainSize: false,
-                maintainAnimation: true,
-                maintainState: true,
-                visible: isVisible,
+            if (isVisible)
+              Center(
                 child: const SpinKitThreeBounce(
                   color: Colors.blue,
                   size: 20.0,
                 ),
               ),
-            ),
           ],
         ),
       ),
