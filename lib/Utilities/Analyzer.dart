@@ -33,12 +33,9 @@ class Analyzer {
           decodeJson1['items'][1]['pagemap']['metatags'][0]['og:image'];
       siteNameToSend =
           decodeJson1['items'][1]['pagemap']['metatags'][0]['og:site_name'];
-    } catch (e) {}
-    var decodeJson2 = json.decode(joinedList[1]);
-    List<String> snip = [];
-    List<String> title = [];
-    List<String> link = [];
-    List<String> url = [];
+    } catch (e) {
+      print(e);
+    }
     List<String> wordSet = [
       'falsehood',
       'lie',
@@ -123,35 +120,6 @@ class Analyzer {
 
     // Formatted url only to check fake
 
-    // print(wordFrequencySimilarity(
-    //     rake
-    //         .rank(snip.join(" ") +
-    //             title.join(" ") +
-    //             link.join(" ") +
-    //             url.join(" "))
-    //         .toString(),
-    //     wordset));
-    // print(tfIdfSimilarity(
-    //     rake
-    //         .rank(snip.join(" ") +
-    //             title.join(" ") +
-    //             link.join(" ") +
-    //             url.join(" "))
-    //         .toString(),
-    //     wordset,
-    //     smartEnglish));
-    // print(wordFrequencyProbability(documentTokenizer(snip)));
-    // print(tfIdfProbability(documentTokenizer(snip)));
-    // int percentage = (wordFrequencySimilarity(
-    //             rake
-    //                 .rank(snip.join(" ") +
-    //                     title.join(" ") +
-    //                     link.join(" ") +
-    //                     url.join(" "))
-    //                 .toString(),
-    //             wordSet.toString()) *
-    //         100)
-    //     .toInt();
     return percentage;
   }
 }
