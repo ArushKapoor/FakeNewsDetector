@@ -14,6 +14,51 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         MediaQuery.of(context).padding.top -
         kToolbarHeight;
     final _width = MediaQuery.of(context).size.width;
+
+    int newsNumber = 0;
+
+    Column singleNews(
+        {String title, String siteName, String imageLink, String snippet}) {
+      newsNumber++;
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (title != null)
+            Text(
+              '$newsNumber. $title',
+              style: TextStyle(
+                  fontSize: _height * 0.035, fontWeight: FontWeight.bold),
+            ),
+          SizedBox(
+            height: _height * 0.02,
+          ),
+          if (siteName != null) Text(siteName),
+          if (siteName != null)
+            SizedBox(
+              height: _height * 0.0,
+            ),
+          if (imageLink != null)
+            Image.network(
+              imageLink,
+              height: _height * 0.3,
+            ),
+          if (imageLink != null)
+            SizedBox(
+              height: _height * 0.01,
+            ),
+          if (snippet != null)
+            Text(
+              snippet,
+              style: TextStyle(fontSize: _height * 0.026),
+            ),
+          SizedBox(
+            height: _height * 0.05,
+          ),
+        ],
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Fake News Detector'),
@@ -22,122 +67,40 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
       body: SafeArea(
         child: Stack(
           children: <Widget>[
-            SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.all(_width * 0.05),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(15.0)),
-                  height: _height,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Image.network(
-                          'https://factcheck.afp.com/sites/default/files/styles/twitter_card/public/medias/factchecking/india/factcheck-visual_14.png?itok=-C0YJAQw',
-                          width: _width * 0.9,
-                          height: _height * 0.22,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+            Container(
+              height: _height * 0.87,
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: EdgeInsets.all(_width * 0.05),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(15.0)),
+                    child: Padding(
+                      padding: EdgeInsets.all(_width * 0.03),
+                      child: Column(
                         children: [
-                          Text('1.'),
-                          SizedBox(width: _width * 0.02),
-                          Text('Times of India'),
+                          singleNews(
+                              title:
+                                  '2016: Top 10 Fake News Forwards That We (Almost) Believed ...,',
+                              siteName:
+                                  'IndiaSpend-Journalism India |Data Journalism India|Investigative Journalism-IndiaSpend',
+                              imageLink:
+                                  'https://archive.indiaspend.com/wp-content/uploads/fake_960.jpeg',
+                              snippet:
+                                  'Dec 26, 2016 ... 1. UNESCO declares PM Modi best Prime Minister. UNESCO has been one of the primary alleged sources of fake news in India. In June 2016 ...'),
+                          singleNews(
+                              title:
+                                  '2016: Top 10 Fake News Forwards That We (Almost) Believed ...,',
+                              siteName:
+                                  'IndiaSpend-Journalism India |Data Journalism India|Investigative Journalism-IndiaSpend',
+                              imageLink:
+                                  'https://archive.indiaspend.com/wp-content/uploads/fake_960.jpeg',
+                              snippet:
+                                  'Dec 26, 2016 ... 1. UNESCO declares PM Modi best Prime Minister. UNESCO has been one of the primary alleged sources of fake news in India. In June 2016 ...'),
                         ],
                       ),
-                      Text(
-                        'Unesco declares pm modi best of india',
-                        style: TextStyle(
-                            fontSize: _height * 0.035,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Expanded(
-                        child: Image.network(
-                          'https://factcheck.afp.com/sites/default/files/styles/twitter_card/public/medias/factchecking/india/factcheck-visual_14.png?itok=-C0YJAQw',
-                          width: _width * 0.9,
-                          height: _height * 0.22,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text('1.'),
-                          SizedBox(width: _width * 0.02),
-                          Text('Times of India'),
-                        ],
-                      ),
-                      Text(
-                        'Unesco declares pm modi best of india',
-                        style: TextStyle(
-                            fontSize: _height * 0.035,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Expanded(
-                        child: Image.network(
-                          'https://factcheck.afp.com/sites/default/files/styles/twitter_card/public/medias/factchecking/india/factcheck-visual_14.png?itok=-C0YJAQw',
-                          width: _width * 0.9,
-                          height: _height * 0.22,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text('1.'),
-                          SizedBox(width: _width * 0.02),
-                          Text('Times of India'),
-                        ],
-                      ),
-                      Text(
-                        'Unesco declares pm modi best of india',
-                        style: TextStyle(
-                            fontSize: _height * 0.035,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Expanded(
-                        child: Image.network(
-                          'https://factcheck.afp.com/sites/default/files/styles/twitter_card/public/medias/factchecking/india/factcheck-visual_14.png?itok=-C0YJAQw',
-                          width: _width * 0.9,
-                          height: _height * 0.22,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text('1.'),
-                          SizedBox(width: _width * 0.02),
-                          Text('Times of India'),
-                        ],
-                      ),
-                      Text(
-                        'Unesco declares pm modi best of india',
-                        style: TextStyle(
-                            fontSize: _height * 0.035,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Expanded(
-                        child: Image.network(
-                          'https://factcheck.afp.com/sites/default/files/styles/twitter_card/public/medias/factchecking/india/factcheck-visual_14.png?itok=-C0YJAQw',
-                          width: _width * 0.9,
-                          height: _height * 0.22,
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text('1.'),
-                          SizedBox(width: _width * 0.02),
-                          Text('Times of India'),
-                        ],
-                      ),
-                      Text(
-                        'Unesco declares pm modi best of india',
-                        style: TextStyle(
-                            fontSize: _height * 0.035,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
