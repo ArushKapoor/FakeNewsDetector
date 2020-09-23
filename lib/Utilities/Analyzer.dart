@@ -19,9 +19,11 @@ class Analyzer {
     q = q.replaceAll('.', ' ');
     q = q.replaceAll('_', ' ');
 
-    var rawData = await obj.getData(q);
-
-    var decodeJson1 = await json.decode(rawData);
+    var joinedStrings = await obj.getData(q);
+    // List joinedList = joinedStrings
+    //     .toString()
+    //     .split('%*!@#Debuggers will beat everyone%*!@#');
+    var decodeJson1 = json.decode(joinedStrings /*joinedList[0]*/);
     titleToSend = decodeJson1['items'][1]['title'];
     snippetToSend = decodeJson1['items'][1]['snippet'];
     try {
@@ -52,26 +54,26 @@ class Analyzer {
 
     int totalMatched = 0;
     int fakeMatched = 0;
-
+    int percentage = 0;
     for (int i = 0; i < 10; i++) {
       String wordSnip, wordTitle, wordUrl;
-      if (i < 10) {
-        wordSnip = decodeJson1['items'][i]['snippet'];
-        wordTitle = decodeJson1['items'][i]['title'];
-        wordUrl = decodeJson1['items'][i]['formattedUrl'];
-      }
+
+      wordSnip = decodeJson1['items'][i]['snippet'];
+      wordTitle = decodeJson1['items'][i]['title'];
+      wordUrl = decodeJson1['items'][i]['formattedUrl'];
+
       // else {
       //   wordSnip = decodeJson2['items'][i - 10]['snippet'];
       //   wordTitle = decodeJson2['items'][i - 10]['title'];
       //   wordUrl = decodeJson2['items'][i - 10]['formattedUrl'];
       // }
-      String rakeWordSnip = rake.rank(wordSnip.toString()).toString();
+      String rakeWordSnip = rake.rank(wordSnip).join(' ');
       double ratioSnip =
-          wordFrequencySimilarity(rakeWordSnip, rake.rank(q).toString());
+          wordFrequencySimilarity(rakeWordSnip, rake.rank(q).join(''));
 
-      String rakeWordTitle = rake.rank(wordTitle.toString()).toString();
+      String rakeWordTitle = rake.rank(wordTitle).join('');
       double ratioTitle =
-          wordFrequencySimilarity(rakeWordTitle, rake.rank(q).toString());
+          wordFrequencySimilarity(rakeWordTitle, rake.rank(q).join(''));
 
       wordUrl = wordUrl.replaceAll('-', ' ');
       wordUrl = wordUrl.replaceAll(',', ' ');
@@ -81,9 +83,9 @@ class Analyzer {
       wordUrl = wordUrl.replaceAll('_', ' ');
 
       if (ratioSnip >= 0.30 || ratioTitle >= 0.35) {
-        // print('Ratios are for $i : $ratioSnip and $ratioTitle');
-        // print('Rake for $i are : $rakeWordSnip and $rakeWordTitle');
-        // print('');
+        print('Ratios are for $i : $ratioSnip and $ratioTitle');
+        print('Rake for $i are : $rakeWordSnip and $rakeWordTitle');
+        print('');
         totalMatched++;
 
         for (int i = 0; i < wordSet.length; i++) {
@@ -95,11 +97,11 @@ class Analyzer {
           }
         }
       }
-      // print('$i     $percentage');
+      print('$i     $percentage');
     }
 
-    int percentage =
-        (fakeMatched.toDouble() / totalMatched.toDouble() * 100.0).toInt();
+    percentage =
+        ((fakeMatched.toDouble() / totalMatched.toDouble()) * 100.0).toInt();
 
     // Display Link not required
 
