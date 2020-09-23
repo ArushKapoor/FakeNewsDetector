@@ -1,5 +1,6 @@
 import 'package:fake_news_detector/Screens/NewsScreen.dart';
 import 'package:fake_news_detector/Screens/ShowcaseScreen.dart';
+import 'package:fake_news_detector/Screens/SplashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'Screens/MainScreen.dart';
@@ -18,8 +19,9 @@ class MyApp extends StatelessWidget {
           Theme.of(context).textTheme,
         ),
       ),
-      initialRoute: ShowcaseScreen.id,
+      initialRoute: SplashScreen.id,
       routes: {
+        SplashScreen.id: (context) => SplashScreen(),
         ShowcaseScreen.id: (context) => ShowcaseScreen(),
         AppBody.id: (context) => AppBody(),
         NewsScreen.id: (context) => NewsScreen()

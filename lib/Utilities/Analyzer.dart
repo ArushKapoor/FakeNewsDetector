@@ -19,26 +19,19 @@ class Analyzer {
     q = q.replaceAll('.', ' ');
     q = q.replaceAll('_', ' ');
 
-    var joinedStrings = await obj.getData(q);
-    List joinedList = joinedStrings
-        .toString()
-        .split('%*!@#Debuggers will beat everyone%*!@#');
-    var decodeJson1 = json.decode(joinedList[0]);
+    var rawData = await obj.getData(q);
 
+    var decodeJson1 = await json.decode(rawData);
     titleToSend = decodeJson1['items'][1]['title'];
     snippetToSend = decodeJson1['items'][1]['snippet'];
-
     try {
       imageLinkToSend =
           decodeJson1['items'][1]['pagemap']['metatags'][0]['og:image'];
       siteNameToSend =
           decodeJson1['items'][1]['pagemap']['metatags'][0]['og:site_name'];
-    } catch (e) {}
-    var decodeJson2 = json.decode(joinedList[1]);
-    List<String> snip = [];
-    List<String> title = [];
-    List<String> link = [];
-    List<String> url = [];
+    } catch (e) {
+      print(e);
+    }
     List<String> wordSet = [
       'falsehood',
       'lie',
@@ -56,17 +49,6 @@ class Analyzer {
       'hoax',
       'rumour'
     ];
-
-    // for (int i = 0; i < 10; i++) {
-    //   snip.add(decodeJson1['items'][i]['snippet']);
-    //   snip.add(decodeJson2['items'][i]['snippet']);
-    //   title.add(decodeJson1['items'][i]['title']);
-    //   title.add(decodeJson2['items'][i]['title']);
-    //   link.add(decodeJson1['items'][i]['displayLink']);
-    //   link.add(decodeJson2['items'][i]['displayLink']);
-    //   url.add(decodeJson1['items'][i]['formattedUrl']);
-    //   url.add(decodeJson2['items'][i]['formattedUrl']);
-    // }
 
     int totalMatched = 0;
     int fakeMatched = 0;
@@ -123,35 +105,6 @@ class Analyzer {
 
     // Formatted url only to check fake
 
-    // print(wordFrequencySimilarity(
-    //     rake
-    //         .rank(snip.join(" ") +
-    //             title.join(" ") +
-    //             link.join(" ") +
-    //             url.join(" "))
-    //         .toString(),
-    //     wordset));
-    // print(tfIdfSimilarity(
-    //     rake
-    //         .rank(snip.join(" ") +
-    //             title.join(" ") +
-    //             link.join(" ") +
-    //             url.join(" "))
-    //         .toString(),
-    //     wordset,
-    //     smartEnglish));
-    // print(wordFrequencyProbability(documentTokenizer(snip)));
-    // print(tfIdfProbability(documentTokenizer(snip)));
-    // int percentage = (wordFrequencySimilarity(
-    //             rake
-    //                 .rank(snip.join(" ") +
-    //                     title.join(" ") +
-    //                     link.join(" ") +
-    //                     url.join(" "))
-    //                 .toString(),
-    //             wordSet.toString()) *
-    //         100)
-    //     .toInt();
     return percentage;
   }
 }

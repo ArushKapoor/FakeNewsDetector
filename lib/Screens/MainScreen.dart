@@ -152,7 +152,8 @@ class _AppBodyState extends State<AppBody> {
                           side: BorderSide(color: Colors.red),
                         ),
                         onPressed: () {
-                          _handleSubmitted(_controller.text);
+                          if (_controller.text != null)
+                            _handleSubmitted(_controller.text);
                         },
                         color: Colors.pink,
                         child: Text(
