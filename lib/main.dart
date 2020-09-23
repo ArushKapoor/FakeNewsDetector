@@ -2,7 +2,6 @@ import 'package:fake_news_detector/Screens/NewsScreen.dart';
 import 'package:fake_news_detector/Screens/ShowcaseScreen.dart';
 import 'package:fake_news_detector/Screens/SplashScreen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'Screens/MainScreen.dart';
 import 'package:google_fonts/google_fonts.dart';
 

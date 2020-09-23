@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_news_detector/Screens/NewsScreen.dart';
 import 'package:fake_news_detector/Utilities/Analyzer.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class AppBody extends StatefulWidget {
 }
 
 class _AppBodyState extends State<AppBody> {
+  final _firestore = FirebaseFirestore.instance;
   TextEditingController _controller;
   bool onVerifyClick = false;
   bool isVisible = false;
@@ -35,6 +37,15 @@ class _AppBodyState extends State<AppBody> {
         onVerifyClick = true;
         isVisible = false;
       });
+      if (percentage > 50) {
+        _firestore.collection('news').add({
+          'snippet': Analyzer.snippetToSend,
+          'sitename': Analyzer.siteNameToSend,
+          'img': Analyzer.imageLinkToSend,
+          'time': DateTime.now(),
+          'title': Analyzer.titleToSend,
+        });
+      }
     }
   }
 
@@ -81,6 +92,11 @@ class _AppBodyState extends State<AppBody> {
 
     return Scaffold(
       appBar: AppBar(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10)),
+        ),
         title: Text('Fake News Detector'),
         backgroundColor: Colors.pink,
       ),

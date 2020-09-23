@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_news_detector/Screens/MainScreen.dart';
+import 'package:fake_news_detector/Screens/NewsScreen.dart';
 import 'package:flutter/material.dart';
 
 class ShowcaseScreen extends StatefulWidget {
@@ -24,12 +25,21 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         backgroundColor: Colors.pink,
         centerTitle: true,
         leading: null,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10)),
+        ),
       ),
       body: SafeArea(
         child: Stack(
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(_width * 0.05),
+              padding: EdgeInsets.only(
+                  left: _width * 0.02,
+                  bottom: _width * 0.05,
+                  right: _width * 0.02,
+                  top: _height * 0.01),
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Container(
@@ -135,59 +145,6 @@ class NewsStream extends StatelessWidget {
   }
 }
 
-class NewsTile extends StatelessWidget {
-  NewsTile(
-      {this.height,
-      this.width,
-      this.imageUrl,
-      this.siteName,
-      this.snippet,
-      this.title});
-
-  final double width;
-  final double height;
-  final String imageUrl;
-  final String siteName;
-  final String snippet;
-  final String title;
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(width * 0.05),
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.grey[200], borderRadius: BorderRadius.circular(15.0)),
-        height: height * 0.35,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Image.network(
-                imageUrl,
-                width: width * 0.9,
-                height: height * 0.22,
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text('1.'),
-                SizedBox(width: width * 0.02),
-                Text(siteName),
-              ],
-            ),
-            Text(
-              title,
-              style: TextStyle(
-                  fontSize: height * 0.035, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class SingleNewsTile extends StatelessWidget {
   SingleNewsTile(
       {this.title,
@@ -206,42 +163,104 @@ class SingleNewsTile extends StatelessWidget {
   final int newsNumber;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (title != null)
-          Text(
-            '$newsNumber. $title',
-            style: TextStyle(
-                fontSize: height * 0.035, fontWeight: FontWeight.bold),
-          ),
-        SizedBox(
-          height: height * 0.02,
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, NewsScreen.id,
+            arguments: ScreenArguments(
+                imageLink: imageLink,
+                siteName: siteName,
+                snippet: snippet,
+                title: title));
+      },
+      child: Container(
+        padding: EdgeInsets.all(15),
+        margin: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          color: Colors.greenAccent[100],
         ),
-        if (siteName != null) Text(siteName),
-        if (siteName != null)
-          SizedBox(
-            height: height * 0.0,
-          ),
-        if (imageLink != null)
-          Image.network(
-            imageLink,
-            height: height * 0.3,
-          ),
-        if (imageLink != null)
-          SizedBox(
-            height: height * 0.01,
-          ),
-        if (snippet != null)
-          Text(
-            snippet,
-            style: TextStyle(fontSize: height * 0.026),
-          ),
-        SizedBox(
-          height: height * 0.05,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '$newsNumber. $title',
+              style: TextStyle(
+                  fontSize: height * 0.035, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: height * 0.005,
+            ),
+            Text(siteName),
+            SizedBox(
+              height: height * 0.0,
+            ),
+            Image.network(
+              imageLink,
+              height: height * 0.24,
+              fit: BoxFit.fill,
+            ),
+            SizedBox(
+              height: height * 0.01,
+            ),
+            SizedBox(
+              height: height * 0.0,
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
+// class NewsTile extends StatelessWidget {
+//   NewsTile(
+//       {this.height,
+//       this.width,
+//       this.imageUrl,
+//       this.siteName,
+//       this.snippet,
+//       this.title});
+
+//   final double width;
+//   final double height;
+//   final String imageUrl;
+//   final String siteName;
+//   final String snippet;
+//   final String title;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: EdgeInsets.all(width * 0.05),
+//       child: Container(
+//         decoration: BoxDecoration(
+//             color: Colors.grey[200], borderRadius: BorderRadius.circular(15.0)),
+//         height: height * 0.35,
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.start,
+//           children: [
+//             Expanded(
+//               child: Image.network(
+//                 imageUrl,
+//                 width: width * 0.9,
+//                 height: height * 0.22,
+//               ),
+//             ),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.start,
+//               children: [
+//                 Text('1.'),
+//                 SizedBox(width: width * 0.02),
+//                 Text(siteName),
+//               ],
+//             ),
+//             Text(
+//               title,
+//               style: TextStyle(
+//                   fontSize: height * 0.035, fontWeight: FontWeight.bold),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

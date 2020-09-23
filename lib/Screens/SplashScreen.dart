@@ -28,7 +28,9 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     inititalizeFlutterFire();
     Future.delayed(Duration(seconds: 3), () {
-      if (isInitialized) Navigator.pushNamed(context, ShowcaseScreen.id);
+      if (isInitialized) {
+        Navigator.pushNamed(context, ShowcaseScreen.id);
+      }
     });
   }
 

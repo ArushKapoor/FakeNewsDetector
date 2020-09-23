@@ -14,12 +14,15 @@ class Networking {
     q = q.replaceAll(' ', '+');
     http.Response response1 = await http.get(Uri.encodeFull(
         'https://www.googleapis.com/customsearch/v1?key=$key&cx=$engineId&q=$q&safe=1'));
-
-    if (response1.statusCode == 200) {
+    //http.Response response2 = await http.get(Uri.encodeFull(
+    //'https://www.googleapis.com/customsearch/v1?key=$key&cx=$engineId&q=$q&safe=1&start=11'));
+    if (response1.statusCode == 200 /* && response1.statusCode == 200*/) {
       String data1 = response1.body;
-      return data1;
+      // String data2 = response2.body;
+      return data1 /* + '%*!@#Debuggers will beat everyone%*!@#' + data2*/;
     } else {
       print(response1.statusCode);
+      //   print(response2.statusCode);
     }
   }
 }
