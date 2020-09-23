@@ -24,16 +24,16 @@ class Analyzer {
     //     .toString()
     //     .split('%*!@#Debuggers will beat everyone%*!@#');
     var decodeJson1 = json.decode(joinedStrings /*joinedList[0]*/);
-    titleToSend = decodeJson1['items'][1]['title'];
-    snippetToSend = decodeJson1['items'][1]['snippet'];
-    try {
-      imageLinkToSend =
-          decodeJson1['items'][1]['pagemap']['metatags'][0]['og:image'];
-      siteNameToSend =
-          decodeJson1['items'][1]['pagemap']['metatags'][0]['og:site_name'];
-    } catch (e) {
-      print(e);
-    }
+    // titleToSend = decodeJson1['items'][1]['title'];
+    // snippetToSend = decodeJson1['items'][1]['snippet'];
+    // try {
+    //   imageLinkToSend =
+    //       decodeJson1['items'][1]['pagemap']['metatags'][0]['og:image'];
+    //   siteNameToSend =
+    //       decodeJson1['items'][1]['pagemap']['metatags'][0]['og:site_name'];
+    // } catch (e) {
+    //   print(e);
+    // }
     List<String> wordSet = [
       'falsehood',
       'lie',
@@ -55,6 +55,9 @@ class Analyzer {
     int totalMatched = 0;
     int fakeMatched = 0;
     int percentage = 0;
+    bool isFakeChecked = false;
+    bool isTrueChecked = false;
+    int posForTrue = 0;
     for (int i = 0; i < 10; i++) {
       String wordSnip, wordTitle, wordUrl;
 
@@ -87,13 +90,37 @@ class Analyzer {
         print('Rake for $i are : $rakeWordSnip and $rakeWordTitle');
         print('');
         totalMatched++;
+        int checkFakeMatched = fakeMatched;
 
         for (int i = 0; i < wordSet.length; i++) {
           if (rakeWordSnip.contains(wordSet[i]) ||
               rakeWordTitle.contains(wordSet[i]) ||
               wordUrl.contains(wordSet[i])) {
+            if (!isFakeChecked) {
+              imageLinkToSend =
+                  decodeJson1['items'][i]['pagemap']['metatags'][0]['og:image'];
+              siteNameToSend = decodeJson1['items'][i]['pagemap']['metatags'][0]
+                  ['og:site_name'];
+              if (imageLinkToSend != null && siteNameToSend != null) {
+                titleToSend = decodeJson1['items'][i]['title'];
+                snippetToSend = decodeJson1['items'][i]['snippet'];
+                isFakeChecked = true;
+              }
+            }
             fakeMatched++;
             break;
+          }
+        }
+        if (checkFakeMatched != fakeMatched) {
+          if (!isTrueChecked) {
+            String imageLinkToSend =
+                decodeJson1['items'][i]['pagemap']['metatags'][0]['og:image'];
+            String siteNameToSend = decodeJson1['items'][i]['pagemap']
+                ['metatags'][0]['og:site_name'];
+            if (imageLinkToSend != null && siteNameToSend != null) {
+              posForTrue = i;
+              isTrueChecked = true;
+            }
           }
         }
       }
@@ -102,6 +129,15 @@ class Analyzer {
 
     percentage =
         ((fakeMatched.toDouble() / totalMatched.toDouble()) * 100.0).toInt();
+
+    if (percentage < 50) {
+      imageLinkToSend = decodeJson1['items'][posForTrue]['pagemap']['metatags']
+          [0]['og:image'];
+      siteNameToSend = decodeJson1['items'][posForTrue]['pagemap']['metatags']
+          [0]['og:site_name'];
+      titleToSend = decodeJson1['items'][posForTrue]['title'];
+      snippetToSend = decodeJson1['items'][posForTrue]['snippet'];
+    }
 
     // Display Link not required
 

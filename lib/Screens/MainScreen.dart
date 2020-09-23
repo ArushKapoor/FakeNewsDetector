@@ -24,7 +24,7 @@ class _AppBodyState extends State<AppBody> {
   int percent = 0;
   int percentage = 0;
   void _handleSubmitted(String text) async {
-    if (text != null) {
+    if (text != null && text.isNotEmpty) {
       setState(() {
         isVisible = true;
       });
