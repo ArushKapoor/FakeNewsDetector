@@ -29,7 +29,7 @@ class _SplashScreenState extends State<SplashScreen> {
     inititalizeFlutterFire();
     Future.delayed(Duration(seconds: 3), () {
       if (isInitialized) {
-        Navigator.pushNamed(context, ShowcaseScreen.id);
+        Navigator.pushReplacementNamed(context, ShowcaseScreen.id);
       }
     });
   }
