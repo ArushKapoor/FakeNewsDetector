@@ -7,7 +7,9 @@ class Analyzer {
   static String titleToSend;
   static String imageLinkToSend;
   static String siteNameToSend;
-  static String snippetToSend;
+  // static String snippetToSend;
+  static String descriptionToSend;
+  static String formattedUrlToSend;
   Networking obj = Networking();
   Future query(String q) async {
     Rake rake = Rake();
@@ -97,13 +99,18 @@ class Analyzer {
               rakeWordTitle.contains(wordSet[i]) ||
               wordUrl.contains(wordSet[i])) {
             if (!isFakeChecked) {
+              descriptionToSend = decodeJson1['items'][i]['pagemap']['metatags']
+                  [0]['og: description'];
               imageLinkToSend =
                   decodeJson1['items'][i]['pagemap']['metatags'][0]['og:image'];
               siteNameToSend = decodeJson1['items'][i]['pagemap']['metatags'][0]
                   ['og:site_name'];
-              if (imageLinkToSend != null && siteNameToSend != null) {
+              if (imageLinkToSend != null &&
+                  siteNameToSend != null &&
+                  descriptionToSend != null) {
                 titleToSend = decodeJson1['items'][i]['title'];
-                snippetToSend = decodeJson1['items'][i]['snippet'];
+                formattedUrlToSend = decodeJson1['items'][i]['formattedUrl'];
+                // snippetToSend = decodeJson1['items'][i]['snippet'];
                 isFakeChecked = true;
               }
             }
@@ -113,11 +120,15 @@ class Analyzer {
         }
         if (checkFakeMatched != fakeMatched) {
           if (!isTrueChecked) {
+            String descriptionToSend = decodeJson1['items'][i]['pagemap']
+                ['metatags'][0]['og: description'];
             String imageLinkToSend =
                 decodeJson1['items'][i]['pagemap']['metatags'][0]['og:image'];
             String siteNameToSend = decodeJson1['items'][i]['pagemap']
                 ['metatags'][0]['og:site_name'];
-            if (imageLinkToSend != null && siteNameToSend != null) {
+            if (imageLinkToSend != null &&
+                siteNameToSend != null &&
+                descriptionToSend != null) {
               posForTrue = i;
               isTrueChecked = true;
             }
@@ -131,12 +142,15 @@ class Analyzer {
         ((fakeMatched.toDouble() / totalMatched.toDouble()) * 100.0).toInt();
 
     if (percentage < 50) {
+      descriptionToSend = decodeJson1['items'][posForTrue]['pagemap']
+          ['metatags'][0]['og: description'];
       imageLinkToSend = decodeJson1['items'][posForTrue]['pagemap']['metatags']
           [0]['og:image'];
       siteNameToSend = decodeJson1['items'][posForTrue]['pagemap']['metatags']
           [0]['og:site_name'];
       titleToSend = decodeJson1['items'][posForTrue]['title'];
-      snippetToSend = decodeJson1['items'][posForTrue]['snippet'];
+      formattedUrlToSend = decodeJson1['items'][posForTrue]['formattedUrl'];
+      // snippetToSend = decodeJson1['items'][posForTrue]['snippet'];
     }
 
     // Display Link not required
