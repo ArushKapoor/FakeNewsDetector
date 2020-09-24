@@ -125,6 +125,7 @@ class NewsStream extends StatelessWidget {
           final siteName = newNews.get('sitename');
           final snippet = newNews.get('snippet');
           final title = newNews.get('title');
+          final url = newNews.get('url');
           final newTile = SingleNewsTile(
             height: _height,
             imageLink: imageUrl,
@@ -133,6 +134,7 @@ class NewsStream extends StatelessWidget {
             title: title,
             width: _width,
             newsNumber: newsNumber,
+            url: url,
           );
           tiles.add(newTile);
           newsNumber++;
@@ -153,7 +155,8 @@ class SingleNewsTile extends StatelessWidget {
       this.snippet,
       this.height,
       this.width,
-      this.newsNumber});
+      this.newsNumber,
+      this.url});
   final double width;
   final double height;
   final String imageLink;
@@ -161,16 +164,19 @@ class SingleNewsTile extends StatelessWidget {
   final String snippet;
   final String title;
   final int newsNumber;
+  final String url;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, NewsScreen.id,
             arguments: ScreenArguments(
-                imageLink: imageLink,
-                siteName: siteName,
-                snippet: snippet,
-                title: title));
+              imageLink: imageLink,
+              siteName: siteName,
+              snippet: snippet,
+              title: title,
+              url: url,
+            ));
       },
       child: Container(
         padding: EdgeInsets.all(15),

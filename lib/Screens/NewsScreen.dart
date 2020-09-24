@@ -12,13 +12,14 @@ class NewsScreen extends StatelessWidget {
 
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
-    final link = LinkableElement('My Url', 'https://cretezy.com');
+    //final link = LinkableElement('My Url', 'https://cretezy.com');
     return Scaffold(
       appBar: AppBar(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10)),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10),
+          ),
         ),
         title: Text(
           'News Corner',
@@ -74,8 +75,13 @@ class NewsScreen extends StatelessWidget {
                       fontSize: _height * 0.022,
                     ),
                   ),
-                if (args.snippet != null)
-                  Linkify(
+                SizedBox(
+                  height: _height * 0.012,
+                ),
+                //if (args.url != null)
+                Container(
+                  width: _width * 0.7,
+                  child: Linkify(
                     onOpen: (link) async {
                       if (await canLaunch(link.url)) {
                         await launch(link.url);
@@ -83,10 +89,19 @@ class NewsScreen extends StatelessWidget {
                         throw 'Could not launch $link';
                       }
                     },
-                    text: "Go here https://google.com",
-                    style: TextStyle(color: Colors.yellow),
-                    linkStyle: TextStyle(color: Colors.red),
+                    textWidthBasis: TextWidthBasis.parent,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                    text: "Check here : ${args.url}",
+                    style: TextStyle(
+                        color: Colors.black54, fontWeight: FontWeight.bold),
+                    linkStyle: TextStyle(
+                      color: Colors.blueAccent[200],
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
+                ),
               ],
             ),
           ),

@@ -35,7 +35,7 @@ class _AppBodyState extends State<AppBody> {
       percentage = percent;
       final newses = await _firestore.collection('news').get();
       for (var news in newses.docs) {
-        if (news.data().containsValue(Analyzer.snippetToSend) == true) {
+        if (news.data().containsValue(Analyzer.descriptionToSend) == true) {
           isAlreadyANews = true;
         }
       }
@@ -47,6 +47,7 @@ class _AppBodyState extends State<AppBody> {
           'img': Analyzer.imageLinkToSend,
           'time': DateTime.now(),
           'title': Analyzer.titleToSend,
+          'url': Analyzer.formattedUrlToSend,
         });
       }
       setState(() {
@@ -192,14 +193,17 @@ class _AppBodyState extends State<AppBody> {
                         margin: EdgeInsets.only(top: _height * 0.05),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, NewsScreen.id,
-                                arguments: ScreenArguments(
-                                  imageLink: Analyzer.imageLinkToSend,
-                                  siteName: Analyzer.siteNameToSend,
-                                  // snippet: Analyzer.snippetToSend,
-                                  // description: Analyzer.descriptionToSend,
-                                  title: Analyzer.titleToSend,
-                                ));
+                            Navigator.pushNamed(
+                              context,
+                              NewsScreen.id,
+                              arguments: ScreenArguments(
+                                imageLink: Analyzer.imageLinkToSend,
+                                siteName: Analyzer.siteNameToSend,
+                                snippet: Analyzer.descriptionToSend,
+                                title: Analyzer.titleToSend,
+                                url: Analyzer.formattedUrlToSend,
+                              ),
+                            );
                           },
                           child: Text(
                             'View Page',
@@ -242,5 +246,7 @@ class ScreenArguments {
   final String siteName;
   final String imageLink;
   final String snippet;
-  ScreenArguments({this.title, this.siteName, this.imageLink, this.snippet});
+  final String url;
+  ScreenArguments(
+      {this.title, this.siteName, this.imageLink, this.snippet, this.url});
 }
