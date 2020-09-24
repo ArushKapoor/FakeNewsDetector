@@ -39,7 +39,7 @@ class _AppBodyState extends State<AppBody> {
           isAlreadyANews = true;
         }
       }
-      if (percentage > 50 && isAlreadyANews == false) {
+      if (isAlreadyANews == false) {
         _firestore.collection('news').add({
           // 'snippet': Analyzer.snippetToSend,
           'description': Analyzer.descriptionToSend,
