@@ -23,6 +23,7 @@ class _AppBodyState extends State<AppBody> {
 
   int percent = 0;
   int percentage = 0;
+  bool isAlreadyANews = false;
   void _handleSubmitted(String text) async {
     if (text != null && text.isNotEmpty) {
       setState(() {
@@ -32,12 +33,13 @@ class _AppBodyState extends State<AppBody> {
       percent = await networking.query(text);
       print(percent);
       percentage = percent;
-      setState(() {
-        percentage = percent;
-        onVerifyClick = true;
-        isVisible = false;
-      });
-      if (percentage > 50) {
+      final newses = await _firestore.collection('news').get();
+      for (var news in newses.docs) {
+        if (news.data().containsValue(Analyzer.descriptionToSend) == true) {
+          isAlreadyANews = true;
+        }
+      }
+      if (percentage > 50 && isAlreadyANews == false) {
         _firestore.collection('news').add({
           // 'snippet': Analyzer.snippetToSend,
           'description': Analyzer.descriptionToSend,
@@ -45,8 +47,14 @@ class _AppBodyState extends State<AppBody> {
           'img': Analyzer.imageLinkToSend,
           'time': DateTime.now(),
           'title': Analyzer.titleToSend,
+          'url': Analyzer.formattedUrlToSend,
         });
       }
+      setState(() {
+        percentage = percent;
+        onVerifyClick = true;
+        isVisible = false;
+      });
     }
   }
 
@@ -185,14 +193,17 @@ class _AppBodyState extends State<AppBody> {
                         margin: EdgeInsets.only(top: _height * 0.05),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, NewsScreen.id,
-                                arguments: ScreenArguments(
-                                  imageLink: Analyzer.imageLinkToSend,
-                                  siteName: Analyzer.siteNameToSend,
-                                  // snippet: Analyzer.snippetToSend,
-                                  // description: Analyzer.descriptionToSend,
-                                  title: Analyzer.titleToSend,
-                                ));
+                            Navigator.pushNamed(
+                              context,
+                              NewsScreen.id,
+                              arguments: ScreenArguments(
+                                imageLink: Analyzer.imageLinkToSend,
+                                siteName: Analyzer.siteNameToSend,
+                                snippet: Analyzer.descriptionToSend,
+                                title: Analyzer.titleToSend,
+                                url: Analyzer.formattedUrlToSend,
+                              ),
+                            );
                           },
                           child: Text(
                             'View Page',
@@ -235,5 +246,7 @@ class ScreenArguments {
   final String siteName;
   final String imageLink;
   final String snippet;
-  ScreenArguments({this.title, this.siteName, this.imageLink, this.snippet});
+  final String url;
+  ScreenArguments(
+      {this.title, this.siteName, this.imageLink, this.snippet, this.url});
 }

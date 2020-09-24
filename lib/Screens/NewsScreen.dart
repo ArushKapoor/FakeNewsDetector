@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'MainScreen.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsScreen extends StatelessWidget {
   static const String id = 'news_screen';
@@ -10,12 +12,14 @@ class NewsScreen extends StatelessWidget {
 
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
+    //final link = LinkableElement('My Url', 'https://cretezy.com');
     return Scaffold(
       appBar: AppBar(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10)),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10),
+          ),
         ),
         title: Text(
           'News Corner',
@@ -71,6 +75,33 @@ class NewsScreen extends StatelessWidget {
                       fontSize: _height * 0.022,
                     ),
                   ),
+                SizedBox(
+                  height: _height * 0.012,
+                ),
+                //if (args.url != null)
+                Container(
+                  width: _width * 0.7,
+                  child: Linkify(
+                    onOpen: (link) async {
+                      if (await canLaunch(link.url)) {
+                        await launch(link.url);
+                      } else {
+                        throw 'Could not launch $link';
+                      }
+                    },
+                    textWidthBasis: TextWidthBasis.parent,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                    text: "Check here : ${args.url}",
+                    style: TextStyle(
+                        color: Colors.black54, fontWeight: FontWeight.bold),
+                    linkStyle: TextStyle(
+                      color: Colors.blueAccent[200],
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
