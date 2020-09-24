@@ -41,7 +41,8 @@ class _AppBodyState extends State<AppBody> {
       }
       if (percentage > 50 && isAlreadyANews == false) {
         _firestore.collection('news').add({
-          'snippet': Analyzer.snippetToSend,
+          // 'snippet': Analyzer.snippetToSend,
+          'description': Analyzer.descriptionToSend,
           'sitename': Analyzer.siteNameToSend,
           'img': Analyzer.imageLinkToSend,
           'time': DateTime.now(),
@@ -195,7 +196,8 @@ class _AppBodyState extends State<AppBody> {
                                 arguments: ScreenArguments(
                                   imageLink: Analyzer.imageLinkToSend,
                                   siteName: Analyzer.siteNameToSend,
-                                  snippet: Analyzer.snippetToSend,
+                                  // snippet: Analyzer.snippetToSend,
+                                  // description: Analyzer.descriptionToSend,
                                   title: Analyzer.titleToSend,
                                 ));
                           },
