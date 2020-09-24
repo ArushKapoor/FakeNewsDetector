@@ -23,6 +23,7 @@ class _AppBodyState extends State<AppBody> {
 
   int percent = 0;
   int percentage = 0;
+  bool isAlreadyANews = false;
   void _handleSubmitted(String text) async {
     if (text != null) {
       setState(() {
@@ -32,12 +33,13 @@ class _AppBodyState extends State<AppBody> {
       percent = await networking.query(text);
       print(percent);
       percentage = percent;
-      setState(() {
-        percentage = percent;
-        onVerifyClick = true;
-        isVisible = false;
-      });
-      if (percentage > 50) {
+      final newses = await _firestore.collection('news').get();
+      for (var news in newses.docs) {
+        if (news.data().containsValue(Analyzer.snippetToSend) == true) {
+          isAlreadyANews = true;
+        }
+      }
+      if (percentage > 50 && isAlreadyANews == false) {
         _firestore.collection('news').add({
           'snippet': Analyzer.snippetToSend,
           'sitename': Analyzer.siteNameToSend,
@@ -46,6 +48,11 @@ class _AppBodyState extends State<AppBody> {
           'title': Analyzer.titleToSend,
         });
       }
+      setState(() {
+        percentage = percent;
+        onVerifyClick = true;
+        isVisible = false;
+      });
     }
   }
 

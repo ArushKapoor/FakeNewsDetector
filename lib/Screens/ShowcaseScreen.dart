@@ -177,7 +177,7 @@ class SingleNewsTile extends StatelessWidget {
         margin: EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: Colors.greenAccent[100],
+          color: Colors.lime[700],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -186,7 +186,9 @@ class SingleNewsTile extends StatelessWidget {
             Text(
               '$newsNumber. $title',
               style: TextStyle(
-                  fontSize: height * 0.035, fontWeight: FontWeight.bold),
+                  fontSize: height * 0.03,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xffffffff)),
             ),
             SizedBox(
               height: height * 0.005,

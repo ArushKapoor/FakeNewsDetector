@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'MainScreen.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewsScreen extends StatelessWidget {
   static const String id = 'news_screen';
@@ -10,6 +12,7 @@ class NewsScreen extends StatelessWidget {
 
     final _height = MediaQuery.of(context).size.height;
     final _width = MediaQuery.of(context).size.width;
+    final link = LinkableElement('My Url', 'https://cretezy.com');
     return Scaffold(
       appBar: AppBar(
         shape: RoundedRectangleBorder(
@@ -70,6 +73,19 @@ class NewsScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: _height * 0.022,
                     ),
+                  ),
+                if (args.snippet != null)
+                  Linkify(
+                    onOpen: (link) async {
+                      if (await canLaunch(link.url)) {
+                        await launch(link.url);
+                      } else {
+                        throw 'Could not launch $link';
+                      }
+                    },
+                    text: "Go here https://google.com",
+                    style: TextStyle(color: Colors.yellow),
+                    linkStyle: TextStyle(color: Colors.red),
                   ),
               ],
             ),
