@@ -47,7 +47,7 @@ class _AppBodyState extends State<AppBody> with SingleTickerProviderStateMixin {
           break;
         }
       }
-      if (percentage > 50 && isAlreadyANews == false) {
+      if (isAlreadyANews == false) {
         _firestore.collection('news').add({
           // 'snippet': Analyzer.snippetToSend,
           'description': Analyzer.descriptionToSend,

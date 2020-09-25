@@ -123,7 +123,7 @@ class NewsStream extends StatelessWidget {
         for (var newNews in news) {
           final imageUrl = newNews.get('img');
           final siteName = newNews.get('sitename');
-          final snippet = newNews.get('snippet');
+          final snippet = newNews.get('description');
           final title = newNews.get('title');
           final url = newNews.get('url');
           final newTile = SingleNewsTile(

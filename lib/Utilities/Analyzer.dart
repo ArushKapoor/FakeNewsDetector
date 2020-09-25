@@ -94,13 +94,13 @@ class Analyzer {
         totalMatched++;
         int checkFakeMatched = fakeMatched;
 
-        for (int i = 0; i < wordSet.length; i++) {
-          if (rakeWordSnip.contains(wordSet[i]) ||
-              rakeWordTitle.contains(wordSet[i]) ||
-              wordUrl.contains(wordSet[i])) {
+        for (int j = 0; j < wordSet.length; j++) {
+          if (rakeWordSnip.contains(wordSet[j]) ||
+              rakeWordTitle.contains(wordSet[j]) ||
+              wordUrl.contains(wordSet[j])) {
             if (!isFakeChecked) {
               descriptionToSend = decodeJson1['items'][i]['pagemap']['metatags']
-                  [0]['og: description'];
+                  [0]['og:description'];
               imageLinkToSend =
                   decodeJson1['items'][i]['pagemap']['metatags'][0]['og:image'];
               siteNameToSend = decodeJson1['items'][i]['pagemap']['metatags'][0]
@@ -121,7 +121,7 @@ class Analyzer {
         if (checkFakeMatched != fakeMatched) {
           if (!isTrueChecked) {
             String descriptionToSend = decodeJson1['items'][i]['pagemap']
-                ['metatags'][0]['og: description'];
+                ['metatags'][0]['og:description'];
             String imageLinkToSend =
                 decodeJson1['items'][i]['pagemap']['metatags'][0]['og:image'];
             String siteNameToSend = decodeJson1['items'][i]['pagemap']
@@ -143,7 +143,7 @@ class Analyzer {
 
     if (percentage < 50) {
       descriptionToSend = decodeJson1['items'][posForTrue]['pagemap']
-          ['metatags'][0]['og: description'];
+          ['metatags'][0]['og:description'];
       imageLinkToSend = decodeJson1['items'][posForTrue]['pagemap']['metatags']
           [0]['og:image'];
       siteNameToSend = decodeJson1['items'][posForTrue]['pagemap']['metatags']
@@ -152,6 +152,9 @@ class Analyzer {
       formattedUrlToSend = decodeJson1['items'][posForTrue]['formattedUrl'];
       // snippetToSend = decodeJson1['items'][posForTrue]['snippet'];
     }
+
+    // print('$titleToSend  ->  $formattedUrlToSend   ->   $descriptionToSend'
+    //     '  ->  $siteNameToSend  ->  $imageLinkToSend');
 
     // Display Link not required
 
