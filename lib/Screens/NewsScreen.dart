@@ -75,33 +75,34 @@ class NewsScreen extends StatelessWidget {
                       fontSize: _height * 0.022,
                     ),
                   ),
-                SizedBox(
-                  height: _height * 0.012,
-                ),
-                //if (args.url != null)
-                Container(
-                  width: _width * 0.7,
-                  child: Linkify(
-                    onOpen: (link) async {
-                      if (await canLaunch(link.url)) {
-                        await launch(link.url);
-                      } else {
-                        throw 'Could not launch $link';
-                      }
-                    },
-                    textWidthBasis: TextWidthBasis.parent,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    softWrap: true,
-                    text: "Check here : ${args.url}",
-                    style: TextStyle(
-                        color: Colors.black54, fontWeight: FontWeight.bold),
-                    linkStyle: TextStyle(
-                      color: Colors.blueAccent[200],
-                      fontWeight: FontWeight.normal,
+                if (args.snippet != null)
+                  SizedBox(
+                    height: _height * 0.012,
+                  ),
+                if (args.url != null)
+                  Container(
+                    width: _width * 0.7,
+                    child: Linkify(
+                      onOpen: (link) async {
+                        if (await canLaunch(link.url)) {
+                          await launch(link.url);
+                        } else {
+                          throw 'Could not launch $link';
+                        }
+                      },
+                      textWidthBasis: TextWidthBasis.parent,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
+                      text: "Check here : ${args.url}",
+                      style: TextStyle(
+                          color: Colors.black54, fontWeight: FontWeight.bold),
+                      linkStyle: TextStyle(
+                        color: Colors.blueAccent[200],
+                        fontWeight: FontWeight.normal,
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ),

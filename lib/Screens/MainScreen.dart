@@ -10,16 +10,27 @@ class AppBody extends StatefulWidget {
   _AppBodyState createState() => _AppBodyState();
 }
 
-class _AppBodyState extends State<AppBody> with SingleTickerProviderStateMixin {
+class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   final _firestore = FirebaseFirestore.instance;
   TextEditingController _controller;
   AnimationController _animationController;
+  Color backGroundColor = Colors.white;
+  Animation _animationRed;
+  Animation _animationGreen;
   bool onVerifyClick = false;
   bool isVisible = false;
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    _animationController = AnimationController(
+      duration: Duration(seconds: 7),
+      vsync: this,
+    );
+    _animationRed = ColorTween(begin: Colors.white, end: Colors.red)
+        .animate(_animationController);
+    _animationGreen = ColorTween(begin: Colors.white, end: Colors.green)
+        .animate(_animationController);
   }
 
   int percent = 0;
@@ -29,17 +40,13 @@ class _AppBodyState extends State<AppBody> with SingleTickerProviderStateMixin {
     if (text != null && text.isNotEmpty) {
       setState(() {
         isVisible = true;
+        //onVerifyClick = false;
       });
       Analyzer networking = Analyzer();
       percent = await networking.query(text);
-      print(percent);
+      //print(percent);
       percentage = percent;
-      if (percentage > 50) {
-        _animationController = AnimationController(
-          vsync: this,
-        );
-        _animationController.addListener(() {});
-      }
+
       final newses = await _firestore.collection('news').get();
       for (var news in newses.docs) {
         if (news.data().containsValue(Analyzer.descriptionToSend) == true) {
@@ -47,7 +54,12 @@ class _AppBodyState extends State<AppBody> with SingleTickerProviderStateMixin {
           break;
         }
       }
-      if (isAlreadyANews == false) {
+      if (isAlreadyANews == false &&
+          Analyzer.descriptionToSend != null &&
+          Analyzer.siteNameToSend != null &&
+          Analyzer.imageLinkToSend != null &&
+          Analyzer.titleToSend != null &&
+          Analyzer.formattedUrlToSend != null) {
         _firestore.collection('news').add({
           // 'snippet': Analyzer.snippetToSend,
           'description': Analyzer.descriptionToSend,
@@ -63,12 +75,18 @@ class _AppBodyState extends State<AppBody> with SingleTickerProviderStateMixin {
         onVerifyClick = true;
         isVisible = false;
       });
+
+      _animationController.forward();
+      _animationController.addListener(() {
+        setState(() {});
+      });
     }
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
@@ -108,6 +126,7 @@ class _AppBodyState extends State<AppBody> with SingleTickerProviderStateMixin {
     }
 
     return Scaffold(
+      backgroundColor: backGroundColor,
       appBar: AppBar(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -145,6 +164,7 @@ class _AppBodyState extends State<AppBody> with SingleTickerProviderStateMixin {
                         controller: _controller,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration.collapsed(
+                            fillColor: Color(0xff0000),
                             border: InputBorder.none,
                             hintText: 'Enter text...',
                             hintStyle: TextStyle(fontSize: _height * 0.03)),
@@ -166,13 +186,20 @@ class _AppBodyState extends State<AppBody> with SingleTickerProviderStateMixin {
                           children: [
                             verifyText(
                                 isFake: true,
-                                percentage: percentage.toString()),
+                                percentage:
+                                    (_animationController.value * percentage)
+                                        .toInt()
+                                        .toString()),
                             SizedBox(
                               width: _width * 0.15,
                             ),
                             verifyText(
                                 isFake: false,
-                                percentage: (100 - percentage).toString()),
+                                percentage: (100 -
+                                        (_animationController.value *
+                                            percentage))
+                                    .toInt()
+                                    .toString()),
                           ],
                         ),
                       ),

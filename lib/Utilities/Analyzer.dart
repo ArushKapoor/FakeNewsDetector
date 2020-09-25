@@ -88,9 +88,9 @@ class Analyzer {
       wordUrl = wordUrl.replaceAll('_', ' ');
 
       if (ratioSnip >= 0.30 || ratioTitle >= 0.35) {
-        print('Ratios are for $i : $ratioSnip and $ratioTitle');
-        print('Rake for $i are : $rakeWordSnip and $rakeWordTitle');
-        print('');
+        // print('Ratios are for $i : $ratioSnip and $ratioTitle');
+        // print('Rake for $i are : $rakeWordSnip and $rakeWordTitle');
+        // print('');
         totalMatched++;
         int checkFakeMatched = fakeMatched;
 
@@ -135,7 +135,7 @@ class Analyzer {
           }
         }
       }
-      print('$i     $percentage');
+      // print('$i     $percentage');
     }
 
     percentage =
