@@ -10,9 +10,10 @@ class AppBody extends StatefulWidget {
   _AppBodyState createState() => _AppBodyState();
 }
 
-class _AppBodyState extends State<AppBody> {
+class _AppBodyState extends State<AppBody> with SingleTickerProviderStateMixin {
   final _firestore = FirebaseFirestore.instance;
   TextEditingController _controller;
+  AnimationController _animationController;
   bool onVerifyClick = false;
   bool isVisible = false;
   @override
@@ -33,10 +34,17 @@ class _AppBodyState extends State<AppBody> {
       percent = await networking.query(text);
       print(percent);
       percentage = percent;
+      if (percentage > 50) {
+        _animationController = AnimationController(
+          vsync: this,
+        );
+        _animationController.addListener(() {});
+      }
       final newses = await _firestore.collection('news').get();
       for (var news in newses.docs) {
         if (news.data().containsValue(Analyzer.descriptionToSend) == true) {
           isAlreadyANews = true;
+          break;
         }
       }
       if (percentage > 50 && isAlreadyANews == false) {
