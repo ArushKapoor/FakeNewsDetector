@@ -121,11 +121,6 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10)),
-        ),
         title: Text('Fake News Detector'),
         backgroundColor: Colors.pink,
       ),
