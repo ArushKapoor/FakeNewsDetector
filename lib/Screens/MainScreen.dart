@@ -15,22 +15,11 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   TextEditingController _controller;
   AnimationController _animationController;
   Color backGroundColor = Colors.white;
-  Animation _animationRed;
-  Animation _animationGreen;
   bool onVerifyClick = false;
   bool isVisible = false;
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
-    _animationController = AnimationController(
-      duration: Duration(seconds: 7),
-      vsync: this,
-    );
-    _animationRed = ColorTween(begin: Colors.white, end: Colors.red)
-        .animate(_animationController);
-    _animationGreen = ColorTween(begin: Colors.white, end: Colors.green)
-        .animate(_animationController);
   }
 
   int percent = 0;
@@ -40,13 +29,17 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
     if (text != null && text.isNotEmpty) {
       setState(() {
         isVisible = true;
-        //onVerifyClick = false;
+        onVerifyClick = false;
       });
       Analyzer networking = Analyzer();
       percent = await networking.query(text);
       //print(percent);
       percentage = percent;
-
+      _controller = TextEditingController();
+      _animationController = AnimationController(
+        duration: Duration(seconds: 4),
+        vsync: this,
+      );
       final newses = await _firestore.collection('news').get();
       for (var news in newses.docs) {
         if (news.data().containsValue(Analyzer.descriptionToSend) == true) {
@@ -126,7 +119,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
     }
 
     return Scaffold(
-      backgroundColor: backGroundColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
