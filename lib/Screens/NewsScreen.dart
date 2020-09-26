@@ -20,7 +20,6 @@ class NewsScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Colors.pink,
         automaticallyImplyLeading: true,
         leading: IconButton(
           icon: Icon(
