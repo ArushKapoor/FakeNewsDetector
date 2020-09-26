@@ -22,9 +22,8 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Fake News Detector'),
-        backgroundColor: Colors.pink,
         centerTitle: true,
-        leading: null,
+        backgroundColor: Color(0xff2487ff),
       ),
       body: SafeArea(
         child: Stack(
@@ -62,12 +61,12 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                   child: FlatButton(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0),
-                      side: BorderSide(color: Colors.red),
+                      side: BorderSide(color: Colors.blue[900]),
                     ),
                     onPressed: () {
                       Navigator.pushNamed(context, AppBody.id);
                     },
-                    color: Colors.pink,
+                    color: Color(0xff2487ff),
                     child: Text(
                       'VERIFY',
                       style: TextStyle(
@@ -103,7 +102,10 @@ class NewsStream extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: _firestore.collection('news').orderBy('time').snapshots(),
+      stream: _firestore
+          .collection('news')
+          .orderBy('count', descending: true)
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Center(
@@ -178,7 +180,7 @@ class SingleNewsTile extends StatelessWidget {
         margin: EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: Colors.pink[50],
+          color: Color(0xff005dce),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -194,7 +196,10 @@ class SingleNewsTile extends StatelessWidget {
             SizedBox(
               height: height * 0.005,
             ),
-            Text(siteName),
+            Text(
+              siteName,
+              style: TextStyle(color: Colors.white54),
+            ),
             SizedBox(
               height: height * 0.0,
             ),

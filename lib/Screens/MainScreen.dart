@@ -14,9 +14,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   final _firestore = FirebaseFirestore.instance;
   TextEditingController _controller;
   AnimationController _animationController;
-  Color backGroundColor = Colors.white;
-  Animation _animationRed;
-  Animation _animationGreen;
+
   bool onVerifyClick = false;
   bool isVisible = false;
   @override
@@ -24,23 +22,19 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
     super.initState();
     _controller = TextEditingController();
     _animationController = AnimationController(
-      duration: Duration(seconds: 7),
+      duration: Duration(seconds: 4),
       vsync: this,
     );
-    _animationRed = ColorTween(begin: Colors.white, end: Colors.red)
-        .animate(_animationController);
-    _animationGreen = ColorTween(begin: Colors.white, end: Colors.green)
-        .animate(_animationController);
   }
 
   int percent = 0;
   int percentage = 0;
   bool isAlreadyANews = false;
   void _handleSubmitted(String text) async {
-    if (text != null && text.isNotEmpty) {
+    if (text.isNotEmpty) {
       setState(() {
         isVisible = true;
-        //onVerifyClick = false;
+        onVerifyClick = false;
       });
       Analyzer networking = Analyzer();
       percent = await networking.query(text);
@@ -49,9 +43,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
 
       final newses = await _firestore.collection('news').get();
       for (var news in newses.docs) {
-        if (news.data().containsValue(Analyzer.descriptionToSend) == true) {
+        if (news.data().containsValue(Analyzer.descriptionToSend)) {
           isAlreadyANews = true;
-          break;
+          news.data().update('count', (value) => value++);
         }
       }
       if (isAlreadyANews == false &&
@@ -68,6 +62,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
           'time': DateTime.now(),
           'title': Analyzer.titleToSend,
           'url': Analyzer.formattedUrlToSend,
+          'count': 0,
         });
       }
       setState(() {
@@ -75,8 +70,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         onVerifyClick = true;
         isVisible = false;
       });
-
+      _animationController.repeat();
       _animationController.forward();
+
       _animationController.addListener(() {
         setState(() {});
       });
@@ -126,10 +122,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
     }
 
     return Scaffold(
-      backgroundColor: backGroundColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Fake News Detector'),
-        backgroundColor: Colors.pink,
       ),
       body: SafeArea(
         child: Stack(
@@ -204,13 +199,13 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                       child: FlatButton(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
-                          side: BorderSide(color: Colors.red),
+                          side: BorderSide(color: Colors.blue[900]),
                         ),
                         onPressed: () {
                           if (_controller.text != null)
                             _handleSubmitted(_controller.text);
                         },
-                        color: Colors.pink,
+                        color: Color(0xff2487ff),
                         child: Text(
                           'VERIFY',
                           style: TextStyle(

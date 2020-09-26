@@ -91,9 +91,9 @@ class Analyzer {
         // print('');
         totalMatched++;
         checkCount++;
-        print('$checkCount  -->   $ratioSnip  -->   $ratioTitle');
-        print('$rakeWordSnip  -->  $rakeWordTitle');
-        print('');
+        // print('$checkCount  -->   $ratioSnip  -->   $ratioTitle');
+        // print('$rakeWordSnip  -->  $rakeWordTitle');
+        // print('');
         int checkFakeMatched = fakeMatched;
 
         for (int j = 0; j < wordSet.length; j++) {
