@@ -25,11 +25,6 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         backgroundColor: Colors.pink,
         centerTitle: true,
         leading: null,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10)),
-        ),
       ),
       body: SafeArea(
         child: Stack(
@@ -183,7 +178,7 @@ class SingleNewsTile extends StatelessWidget {
         margin: EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: Colors.lime[700],
+          color: Colors.pink[50],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

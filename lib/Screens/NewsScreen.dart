@@ -15,12 +15,6 @@ class NewsScreen extends StatelessWidget {
     //final link = LinkableElement('My Url', 'https://cretezy.com');
     return Scaffold(
       appBar: AppBar(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(10),
-          ),
-        ),
         title: Text(
           'News Corner',
           style: TextStyle(color: Colors.white),

@@ -51,7 +51,8 @@ class Analyzer {
       'fake',
       'viral',
       'hoax',
-      'rumour'
+      'rumour',
+      'alleged'
     ];
 
     int totalMatched = 0;
@@ -60,18 +61,13 @@ class Analyzer {
     bool isFakeChecked = false;
     bool isTrueChecked = false;
     int posForTrue = 0;
+    int checkCount = 0;
     for (int i = 0; i < 10; i++) {
       String wordSnip, wordTitle, wordUrl;
 
       wordSnip = decodeJson1['items'][i]['snippet'];
       wordTitle = decodeJson1['items'][i]['title'];
       wordUrl = decodeJson1['items'][i]['formattedUrl'];
-
-      // else {
-      //   wordSnip = decodeJson2['items'][i - 10]['snippet'];
-      //   wordTitle = decodeJson2['items'][i - 10]['title'];
-      //   wordUrl = decodeJson2['items'][i - 10]['formattedUrl'];
-      // }
       String rakeWordSnip = rake.rank(wordSnip).join(' ');
       double ratioSnip =
           wordFrequencySimilarity(rakeWordSnip, rake.rank(q).join(''));
@@ -87,11 +83,17 @@ class Analyzer {
       wordUrl = wordUrl.replaceAll('.', ' ');
       wordUrl = wordUrl.replaceAll('_', ' ');
 
-      if (ratioSnip >= 0.30 || ratioTitle >= 0.35) {
+      // if (ratioSnip >= 0.30 || ratioTitle >= 0.35)
+
+      if (ratioSnip >= 0.45) {
         // print('Ratios are for $i : $ratioSnip and $ratioTitle');
         // print('Rake for $i are : $rakeWordSnip and $rakeWordTitle');
         // print('');
         totalMatched++;
+        checkCount++;
+        print('$checkCount  -->   $ratioSnip  -->   $ratioTitle');
+        print('$rakeWordSnip  -->  $rakeWordTitle');
+        print('');
         int checkFakeMatched = fakeMatched;
 
         for (int j = 0; j < wordSet.length; j++) {
@@ -138,8 +140,12 @@ class Analyzer {
       // print('$i     $percentage');
     }
 
-    percentage =
-        ((fakeMatched.toDouble() / totalMatched.toDouble()) * 100.0).toInt();
+    try {
+      percentage =
+          ((fakeMatched.toDouble() / totalMatched.toDouble()) * 100.0).toInt();
+    } catch (e) {
+      print(e);
+    }
 
     if (percentage < 50) {
       descriptionToSend = decodeJson1['items'][posForTrue]['pagemap']
