@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:fake_news_detector/Utilities/Networking.dart';
 import 'package:rake/rake.dart';
 import 'package:document_analysis/document_analysis.dart';
+import 'package:string_similarity/string_similarity.dart';
+import 'package:edit_distance/edit_distance.dart';
 
 class Analyzer {
   static String titleToSend;
@@ -62,7 +64,8 @@ class Analyzer {
     bool isTrueChecked = false;
     int posForTrue = 0;
     int checkCount = 0;
-    for (int i = 0; i < 10; i++) {
+    print(wordFrequencySimilarity('Pete Parker', 'Peter Parker'));
+    for (int i = 0; i < 3; i++) {
       String wordSnip, wordTitle, wordUrl;
 
       wordSnip = decodeJson1['items'][i]['snippet'];
@@ -83,6 +86,14 @@ class Analyzer {
       wordUrl = wordUrl.replaceAll('.', ' ');
       wordUrl = wordUrl.replaceAll('_', ' ');
 
+      Levenshtein d = new Levenshtein();
+
+      checkCount++;
+      print('$checkCount   -->   ${rakeWordSnip.similarityTo(q)}');
+      print('$rakeWordSnip    -->     $ratioSnip');
+      print(
+          'Levenshtein    -->     ${1 - d.normalizedDistance(rakeWordSnip, q)}');
+
       // if (ratioSnip >= 0.30 || ratioTitle >= 0.35)
 
       if (ratioSnip >= 0.45) {
@@ -90,7 +101,7 @@ class Analyzer {
         // print('Rake for $i are : $rakeWordSnip and $rakeWordTitle');
         // print('');
         totalMatched++;
-        checkCount++;
+        // checkCount++;
         // print('$checkCount  -->   $ratioSnip  -->   $ratioTitle');
         // print('$rakeWordSnip  -->  $rakeWordTitle');
         // print('');
