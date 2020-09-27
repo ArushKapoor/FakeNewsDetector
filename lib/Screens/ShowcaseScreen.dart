@@ -23,60 +23,62 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
       appBar: AppBar(
         title: Text('Fake News Detector'),
         centerTitle: true,
-        backgroundColor: Color(0xff2487ff),
+        backgroundColor: Color(0xffff841b),
       ),
       body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(
-                  left: _width * 0.02,
-                  bottom: _width * 0.05,
-                  right: _width * 0.02,
-                  top: _height * 0.01),
-              child: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Container(
-                  height: _height * 0.87,
-                  child: NewsStream(
-                      firestore: _firestore, height: _height, width: _width),
+        child: Container(
+          color: Color(0xffe5e5e5),
+          child: Stack(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(
+                    left: _width * 0.02,
+                    bottom: _width * 0.05,
+                    right: _width * 0.02,
+                    top: _height * 0.01),
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Container(
+                    height: _height * 0.87,
+                    child: NewsStream(
+                        firestore: _firestore, height: _height, width: _width),
+                  ),
                 ),
               ),
-            ),
-            Align(
-              alignment: AlignmentDirectional.bottomCenter,
-              child: Container(
-                color: Colors.white,
-                width: _width,
-                height: _height * 0.13,
-              ),
-            ),
-            Align(
-              alignment: AlignmentDirectional.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+              Align(
+                alignment: AlignmentDirectional.bottomCenter,
                 child: Container(
-                  width: _width * 0.55,
-                  height: _height * 0.09,
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                      side: BorderSide(color: Colors.blue[900]),
-                    ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, AppBody.id);
-                    },
-                    color: Color(0xff2487ff),
-                    child: Text(
-                      'VERIFY',
-                      style: TextStyle(
-                          fontSize: _height * 0.03, color: Colors.white),
+                  color: Colors.white,
+                  width: _width,
+                  height: _height * 0.13,
+                ),
+              ),
+              Align(
+                alignment: AlignmentDirectional.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: _width * 0.55,
+                    height: _height * 0.09,
+                    child: FlatButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                      ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppBody.id);
+                      },
+                      color: Color(0xffff841b),
+                      child: Text(
+                        'VERIFY',
+                        style: TextStyle(
+                            fontSize: _height * 0.03, color: Colors.white),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -180,7 +182,7 @@ class SingleNewsTile extends StatelessWidget {
         margin: EdgeInsets.all(10),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: Color(0xff005dce),
+          color: Color(0xffffffff), //card color
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -191,14 +193,14 @@ class SingleNewsTile extends StatelessWidget {
               style: TextStyle(
                   fontSize: height * 0.03,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xffffffff)),
+                  color: Color(0xff000000)),
             ),
             SizedBox(
               height: height * 0.005,
             ),
             Text(
               siteName,
-              style: TextStyle(color: Colors.white54),
+              style: TextStyle(color: Color(0xff173f5f)),
             ),
             SizedBox(
               height: height * 0.0,

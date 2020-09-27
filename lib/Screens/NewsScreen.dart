@@ -56,6 +56,7 @@ class NewsScreen extends StatelessWidget {
                   Image.network(
                     args.imageLink,
                     height: _height * 0.3,
+                    fit: BoxFit.fill,
                   ),
                 if (args.imageLink != null)
                   SizedBox(

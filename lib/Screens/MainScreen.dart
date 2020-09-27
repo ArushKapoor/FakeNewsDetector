@@ -14,7 +14,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   final _firestore = FirebaseFirestore.instance;
   TextEditingController _controller;
   AnimationController _animationController;
-
+  Animation _animation;
   bool onVerifyClick = false;
   bool isVisible = false;
   @override
@@ -22,9 +22,11 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
     super.initState();
     _controller = TextEditingController();
     _animationController = AnimationController(
-      duration: Duration(seconds: 4),
+      duration: Duration(seconds: 5),
       vsync: this,
     );
+    _animation =
+        CurvedAnimation(parent: _animationController, curve: Curves.slowMiddle);
   }
 
   int percent = 0;
@@ -40,13 +42,27 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
       percent = await networking.query(text);
       //print(percent);
       percentage = percent;
-
+      int counter = 0;
+      String id;
       final newses = await _firestore.collection('news').get();
       for (var news in newses.docs) {
         if (news.data().containsValue(Analyzer.descriptionToSend)) {
           isAlreadyANews = true;
-          news.data().update('count', (value) => value++);
+          counter = news.data()['count'];
+          print(news.data()['count']);
+          id = news.id;
         }
+      }
+      if (isAlreadyANews) {
+        await _firestore.collection('news').doc(id).set({
+          'description': Analyzer.descriptionToSend,
+          'sitename': Analyzer.siteNameToSend,
+          'img': Analyzer.imageLinkToSend,
+          'time': DateTime.now(),
+          'title': Analyzer.titleToSend,
+          'url': Analyzer.formattedUrlToSend,
+          'count': ++counter,
+        });
       }
       if (isAlreadyANews == false &&
           Analyzer.descriptionToSend != null &&
@@ -153,10 +169,12 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                         enableInteractiveSelection: true,
                         controller: _controller,
                         keyboardType: TextInputType.multiline,
+                        scrollController: ScrollController(),
+                        showCursor: true,
                         decoration: InputDecoration.collapsed(
                             fillColor: Color(0xff0000),
                             border: InputBorder.none,
-                            hintText: 'Enter text...',
+                            hintText: 'Enter your query here',
                             hintStyle: TextStyle(fontSize: _height * 0.03)),
                         style: TextStyle(
                           fontSize: _height * 0.03,
@@ -176,20 +194,18 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                           children: [
                             verifyText(
                                 isFake: true,
-                                percentage:
-                                    (_animationController.value * percentage)
-                                        .toInt()
-                                        .toString()),
+                                percentage: (_animation.value * percentage)
+                                    .toInt()
+                                    .toString()),
                             SizedBox(
                               width: _width * 0.15,
                             ),
                             verifyText(
                                 isFake: false,
-                                percentage: (100 -
-                                        (_animationController.value *
-                                            percentage))
-                                    .toInt()
-                                    .toString()),
+                                percentage:
+                                    (100 - (_animation.value * percentage))
+                                        .toInt()
+                                        .toString()),
                           ],
                         ),
                       ),
@@ -199,13 +215,12 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                       child: FlatButton(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
-                          side: BorderSide(color: Colors.blue[900]),
                         ),
                         onPressed: () {
                           if (_controller.text != null)
                             _handleSubmitted(_controller.text);
                         },
-                        color: Color(0xff2487ff),
+                        color: Color(0xffff841b),
                         child: Text(
                           'VERIFY',
                           style: TextStyle(
