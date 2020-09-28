@@ -6,6 +6,7 @@ import 'package:string_similarity/string_similarity.dart';
 import 'package:edit_distance/edit_distance.dart';
 
 class Analyzer {
+  static bool noMatchFound;
   static String titleToSend;
   static String imageLinkToSend;
   static String siteNameToSend;
@@ -28,6 +29,7 @@ class Analyzer {
     siteNameToSend = null;
     descriptionToSend = null;
     formattedUrlToSend = null;
+    noMatchFound = false;
 
     var joinedStrings = await obj.getData(q);
     // List joinedList = joinedStrings
@@ -68,9 +70,12 @@ class Analyzer {
     int percentage = 0;
     bool isFakeChecked = false;
     bool isTrueChecked = false;
-    int posForTrue = 0;
+    int posForTrue;
     int checkCount = 0;
     int firstTime = 0;
+    bool isFirstTruePos = true;
+    int firstTruePos;
+    int containsDescription;
     int searchResults =
         int.parse(decodeJson1['queries']['request'][0]['totalResults']);
     if (decodeJson1['spelling'] != null) {
@@ -116,11 +121,13 @@ class Analyzer {
         // print('Rake for $i are : $rakeWordSnip and $rakeWordTitle');
         // print('');
         totalMatched++;
+        bool isFake;
         // checkCount++;
         // print('$checkCount  -->   $ratioSnip  -->   $ratioTitle');
         // print('$rakeWordSnip  -->  $rakeWordTitle');
         // print('');
-        int checkFakeMatched = fakeMatched;
+        bool checkFakeMatched = isFakeChecked;
+        isFake = false;
 
         for (int j = 0; j < wordSet.length; j++) {
           if (rakeWordSnip.contains(wordSet[j]) ||
@@ -129,13 +136,11 @@ class Analyzer {
             if (!isFakeChecked) {
               descriptionToSend = decodeJson1['items'][i]['pagemap']['metatags']
                   [0]['og:description'];
-              imageLinkToSend =
-                  decodeJson1['items'][i]['pagemap']['metatags'][0]['og:image'];
-              siteNameToSend = decodeJson1['items'][i]['pagemap']['metatags'][0]
-                  ['og:site_name'];
-              if (imageLinkToSend != null &&
-                  siteNameToSend != null &&
-                  descriptionToSend != null) {
+              if (descriptionToSend != null) {
+                imageLinkToSend = decodeJson1['items'][i]['pagemap']['metatags']
+                    [0]['og:image'];
+                siteNameToSend = decodeJson1['items'][i]['pagemap']['metatags']
+                    [0]['og:site_name'];
                 titleToSend = decodeJson1['items'][i]['title'];
                 formattedUrlToSend = decodeJson1['items'][i]['formattedUrl'];
                 // snippetToSend = decodeJson1['items'][i]['snippet'];
@@ -143,25 +148,29 @@ class Analyzer {
                 firstTime = 1;
               }
             }
+            isFake = true;
+            firstTime = 1;
             fakeMatched++;
             break;
           }
         }
-        if (checkFakeMatched != fakeMatched && firstTime == 1) {
-          print('Okayy...   -->   $i');
+        // if (isFake) {
+        //   print('Is fake  -->   $i');
+        // } else {
+        //   print('Its not fake  -->   $i');
+        // }
+
+        if (!isFake && firstTime == 1) {
+          if (isFirstTruePos) {
+            isFirstTruePos = false;
+            firstTruePos = i;
+          }
           if (!isTrueChecked) {
-            print('Yess --->  $i');
-            posForTrue = i;
-            firstTime = 2;
             String descriptionToSend = decodeJson1['items'][i]['pagemap']
                 ['metatags'][0]['og:description'];
-            String imageLinkToSend =
-                decodeJson1['items'][i]['pagemap']['metatags'][0]['og:image'];
-            String siteNameToSend = decodeJson1['items'][i]['pagemap']
-                ['metatags'][0]['og:site_name'];
-            if (imageLinkToSend != null &&
-                siteNameToSend != null &&
-                descriptionToSend != null) {
+            if (descriptionToSend != null) {
+              posForTrue = i;
+              firstTime = 2;
               isTrueChecked = true;
             }
           }
@@ -170,11 +179,22 @@ class Analyzer {
       // print('$i     $percentage');
     }
 
-    try {
+    if (totalMatched == 0) {
+      noMatchFound = true;
+      percentage = 0;
+    } else {
       percentage =
           ((fakeMatched.toDouble() / totalMatched.toDouble()) * 100.0).toInt();
-    } catch (e) {
-      print(e);
+    }
+    // try {
+    //   percentage =
+    //       ((fakeMatched.toDouble() / totalMatched.toDouble()) * 100.0).toInt();
+    // } catch (e) {
+    //   print(e);
+    // }
+
+    if (posForTrue == null) {
+      posForTrue = firstTruePos;
     }
 
     if (percentage < 50) {
@@ -188,8 +208,6 @@ class Analyzer {
       formattedUrlToSend = decodeJson1['items'][posForTrue]['formattedUrl'];
       // snippetToSend = decodeJson1['items'][posForTrue]['snippet'];
     }
-
-    print('Total Matched  -->   $totalMatched');
 
     // print('$titleToSend  ->  $formattedUrlToSend   ->   $descriptionToSend'
     //     '  ->  $siteNameToSend  ->  $imageLinkToSend');
