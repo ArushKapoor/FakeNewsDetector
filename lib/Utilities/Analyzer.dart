@@ -70,6 +70,7 @@ class Analyzer {
     bool isTrueChecked = false;
     int posForTrue = 0;
     int checkCount = 0;
+    int firstTime = 0;
     int searchResults =
         int.parse(decodeJson1['queries']['request'][0]['totalResults']);
     if (decodeJson1['spelling'] != null) {
@@ -101,9 +102,9 @@ class Analyzer {
       Levenshtein l = new Levenshtein();
       Jaccard j = new Jaccard();
 
-      checkCount++;
-      print('$checkCount   -->   $ratioSnip');
-      print('$rakeWordSnip    -->     $ratioRakeSnip');
+      // checkCount++;
+      // print('$checkCount   -->   $ratioSnip');
+      // print('$rakeWordSnip    -->     $ratioRakeSnip');
       // print(
       //     'Levenshtein    -->     ${1 - l.normalizedDistance(rakeWordSnip, q)}');
       // print('Jaccard    -->     ${1 - j.normalizedDistance(rakeWordSnip, q)}');
@@ -139,14 +140,19 @@ class Analyzer {
                 formattedUrlToSend = decodeJson1['items'][i]['formattedUrl'];
                 // snippetToSend = decodeJson1['items'][i]['snippet'];
                 isFakeChecked = true;
+                firstTime = 1;
               }
             }
             fakeMatched++;
             break;
           }
         }
-        if (checkFakeMatched != fakeMatched) {
+        if (checkFakeMatched != fakeMatched && firstTime == 1) {
+          print('Okayy...   -->   $i');
           if (!isTrueChecked) {
+            print('Yess --->  $i');
+            posForTrue = i;
+            firstTime = 2;
             String descriptionToSend = decodeJson1['items'][i]['pagemap']
                 ['metatags'][0]['og:description'];
             String imageLinkToSend =
@@ -156,7 +162,6 @@ class Analyzer {
             if (imageLinkToSend != null &&
                 siteNameToSend != null &&
                 descriptionToSend != null) {
-              posForTrue = i;
               isTrueChecked = true;
             }
           }
@@ -184,12 +189,16 @@ class Analyzer {
       // snippetToSend = decodeJson1['items'][posForTrue]['snippet'];
     }
 
+    print('Total Matched  -->   $totalMatched');
+
     // print('$titleToSend  ->  $formattedUrlToSend   ->   $descriptionToSend'
     //     '  ->  $siteNameToSend  ->  $imageLinkToSend');
 
     // Display Link not required
 
     // Formatted url only to check fake
+
+    // print(posForTrue);
 
     if (descriptionToSend == null) {}
 
