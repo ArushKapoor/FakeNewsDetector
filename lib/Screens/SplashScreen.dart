@@ -14,7 +14,9 @@ class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   bool isInitialized = false;
   AnimationController _animationController;
-  Animation _animation;
+  AnimationController _animateController;
+
+  bool iamhere = false;
   void inititalizeFlutterFire() async {
     try {
       await Firebase.initializeApp();
@@ -30,64 +32,109 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     inititalizeFlutterFire();
-    _animationController = AnimationController(
+    _animateController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
-      upperBound: 1,
+      duration: Duration(seconds: 2),
     );
-    _animation =
-        CurvedAnimation(parent: _animationController, curve: Curves.slowMiddle);
-    _animationController.reverse(from: 1);
-    _animationController.addListener(() {
+    _animateController.forward();
+    _animateController.addListener(() {
       setState(() {});
     });
-    Future.delayed(Duration(seconds: 4), () {
-      if (isInitialized) {
-        Navigator.pushReplacementNamed(context, ShowcaseScreen.id);
-      }
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2),
+      upperBound: 1,
+    );
+
+    _animationController.reverse(from: 1);
+
+    _animationController.addListener(() {
+      setState(() {
+        if (_animationController.value <= 0.154) {
+          _animationController.stop();
+
+          iamhere = true;
+        }
+      });
     });
+    Future.delayed(
+      Duration(seconds: 4),
+      () {
+        if (isInitialized) {
+          Navigator.pushReplacementNamed(context, ShowcaseScreen.id);
+        }
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
-    double _width = MediaQuery.of(context).size.width;
+    //double _width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Colors.brown,
       body: Stack(
+        alignment: AlignmentDirectional.center,
         children: [
           Center(
             child: Container(
-              height: _height * _animationController.value,
-              width: _width * _animationController.value,
-              color: Colors.orange,
-              child: Center(
-                child: Container(
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                        'assets/Images/logo.png',
+              height: 1000 * (_animateController.value),
+              width: 1000 * (_animateController.value),
+              // color: Colors.orange,
+              decoration: BoxDecoration(
+                color: Colors.orange,
+                borderRadius:
+                    BorderRadius.circular((1 - _animateController.value) * 600),
+              ),
+
+              child: Column(
+                children: [
+                  if (iamhere)
+                    SizedBox(
+                      height: _height * 0.65,
+                    ),
+                  if (iamhere)
+                    Text(
+                      'Check Kiya Kya',
+                      style: GoogleFonts.pacifico(
+                        color: Colors.brown,
+                        fontSize: 30,
                       ),
                     ),
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(75),
+                ],
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              height: 1000 * _animationController.value,
+              width: 1000 * _animationController.value,
+              decoration: BoxDecoration(
+                color: Colors.orange[200],
+                borderRadius: BorderRadius.circular(
+                  600 * (1 - _animationController.value),
+                ),
+              ),
+              child: Center(
+                child: Opacity(
+                  opacity: 1,
+                  child: Container(
+                    height: 160,
+                    width: 160,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          'assets/Images/logo.png',
+                        ),
+                      ),
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(100),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-          if (_animation.value <= 0.80)
-            Center(
-              child: Container(
-                height: 1000 * _animationController.value,
-                width: 1000 * _animationController.value,
-                decoration: BoxDecoration(
-                    color: Colors.brown,
-                    borderRadius: BorderRadius.circular(
-                        1000 * (1 - _animationController.value))),
-              ),
-            ),
         ],
       ),
     );
