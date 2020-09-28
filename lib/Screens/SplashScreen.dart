@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
     _animation =
         CurvedAnimation(parent: _animationController, curve: Curves.slowMiddle);
-    _animationController.reverse(from: 1);
+    _animationController.forward();
     _animationController.addListener(() {
       setState(() {});
     });
@@ -72,14 +72,16 @@ class _SplashScreenState extends State<SplashScreen>
               ),
             ),
           ),
-          Center(
-            child: Container(
-              height: _animation.value * _height,
-              width: _animation.value * _width,
-              color: Colors.brown,
-              decoration: BoxDecoration(),
+          if (_animation.value <= 0.80)
+            Center(
+              child: Container(
+                height: _height,
+                width: _width,
+                decoration: BoxDecoration(
+                    color: Colors.brown,
+                    borderRadius: BorderRadius.circular(_animation.value * 50)),
+              ),
             ),
-          ),
         ],
       ),
     );
