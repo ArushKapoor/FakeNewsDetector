@@ -37,7 +37,7 @@ class _SplashScreenState extends State<SplashScreen>
     );
     _animation =
         CurvedAnimation(parent: _animationController, curve: Curves.slowMiddle);
-    _animationController.forward();
+    _animationController.reverse(from: 1);
     _animationController.addListener(() {
       setState(() {});
     });
@@ -55,19 +55,24 @@ class _SplashScreenState extends State<SplashScreen>
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            child: Center(
-              child: Container(
-                height: 150,
-                width: 150,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      'assets/Images/logo.png',
+          Center(
+            child: Container(
+              height: _height * _animationController.value,
+              width: _width * _animationController.value,
+              color: Colors.orange,
+              child: Center(
+                child: Container(
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(
+                        'assets/Images/logo.png',
+                      ),
                     ),
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(75),
                   ),
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(75),
                 ),
               ),
             ),
@@ -75,11 +80,12 @@ class _SplashScreenState extends State<SplashScreen>
           if (_animation.value <= 0.80)
             Center(
               child: Container(
-                height: _height,
-                width: _width,
+                height: 1000 * _animationController.value,
+                width: 1000 * _animationController.value,
                 decoration: BoxDecoration(
                     color: Colors.brown,
-                    borderRadius: BorderRadius.circular(_animation.value * 50)),
+                    borderRadius: BorderRadius.circular(
+                        1000 * (1 - _animationController.value))),
               ),
             ),
         ],
