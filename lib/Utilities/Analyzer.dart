@@ -23,6 +23,7 @@ class Analyzer {
     q = q.replaceAll(':', ' ');
     q = q.replaceAll('.', ' ');
     q = q.replaceAll('_', ' ');
+    q = q.replaceAll('\n', ' ');
 
     titleToSend = null;
     imageLinkToSend = null;
@@ -32,6 +33,7 @@ class Analyzer {
     noMatchFound = false;
 
     var joinedStrings = await obj.getData(q);
+    print(q);
     // List joinedList = joinedStrings
     //     .toString()
     //     .split('%*!@#Debuggers will beat everyone%*!@#');
@@ -62,7 +64,8 @@ class Analyzer {
       'viral',
       'hoax',
       'rumour',
-      'alleged'
+      'alleged',
+      'scam'
     ];
 
     int totalMatched = 0;
@@ -72,10 +75,11 @@ class Analyzer {
     bool isTrueChecked = false;
     int posForTrue;
     int checkCount = 0;
-    int firstTime = 0;
+    bool firstTime = true;
     bool isFirstTruePos = true;
     int firstTruePos;
     int containsDescription;
+    // print(decodeJson1['queries']['request'][0]['totalResults']);
     int searchResults =
         int.parse(decodeJson1['queries']['request'][0]['totalResults']);
     if (decodeJson1['spelling'] != null) {
@@ -145,11 +149,9 @@ class Analyzer {
                 formattedUrlToSend = decodeJson1['items'][i]['formattedUrl'];
                 // snippetToSend = decodeJson1['items'][i]['snippet'];
                 isFakeChecked = true;
-                firstTime = 1;
               }
             }
             isFake = true;
-            firstTime = 1;
             fakeMatched++;
             break;
           }
@@ -160,7 +162,10 @@ class Analyzer {
         //   print('Its not fake  -->   $i');
         // }
 
-        if (!isFake && firstTime == 1) {
+        print('$isFake');
+
+        if (!isFake && firstTime) {
+          print('Inside isFake');
           if (isFirstTruePos) {
             isFirstTruePos = false;
             firstTruePos = i;
@@ -170,7 +175,7 @@ class Analyzer {
                 ['metatags'][0]['og:description'];
             if (descriptionToSend != null) {
               posForTrue = i;
-              firstTime = 2;
+              firstTime = false;
               isTrueChecked = true;
             }
           }
@@ -178,10 +183,14 @@ class Analyzer {
       }
       // print('$i     $percentage');
     }
+    // aTODO -> Remember to remove this later.
+    // totalMatched = 0;
+    // print(totalMatched);
 
     if (totalMatched == 0) {
       noMatchFound = true;
       percentage = 0;
+      posForTrue = 0;
     } else {
       percentage =
           ((fakeMatched.toDouble() / totalMatched.toDouble()) * 100.0).toInt();
@@ -196,6 +205,8 @@ class Analyzer {
     if (posForTrue == null) {
       posForTrue = firstTruePos;
     }
+
+    print('This is posForTrue  --> $posForTrue');
 
     if (percentage < 50) {
       descriptionToSend = decodeJson1['items'][posForTrue]['pagemap']

@@ -32,6 +32,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   int percent = 0;
   int percentage = 0;
   bool isAlreadyANews = false;
+  bool noMatchFound = false;
   void _handleSubmitted(String text) async {
     if (text.isNotEmpty) {
       setState(() {
@@ -40,6 +41,12 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
       });
       Analyzer networking = Analyzer();
       percent = await networking.query(text);
+      if (Analyzer.noMatchFound) {
+        setState(() {
+          noMatchFound = true;
+        });
+        print('No match has been found');
+      }
       //print(percent);
       //percentage = percent;
       print(percentage);
@@ -58,38 +65,40 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
           id = news.id;
         }
       }
-      if (isAlreadyANews &&
-          Analyzer.descriptionToSend != null &&
-          Analyzer.siteNameToSend != null &&
-          Analyzer.imageLinkToSend != null &&
-          Analyzer.titleToSend != null &&
-          Analyzer.formattedUrlToSend != null) {
-        await _firestore.collection('news').doc(id).set({
-          'description': Analyzer.descriptionToSend,
-          'sitename': Analyzer.siteNameToSend,
-          'img': Analyzer.imageLinkToSend,
-          'time': DateTime.now(),
-          'title': Analyzer.titleToSend,
-          'url': Analyzer.formattedUrlToSend,
-          'count': ++counter,
-        });
-      }
-      if (isAlreadyANews == false &&
-          Analyzer.descriptionToSend != null &&
-          Analyzer.siteNameToSend != null &&
-          Analyzer.imageLinkToSend != null &&
-          Analyzer.titleToSend != null &&
-          Analyzer.formattedUrlToSend != null) {
-        _firestore.collection('news').add({
-          // 'snippet': Analyzer.snippetToSend,
-          'description': Analyzer.descriptionToSend,
-          'sitename': Analyzer.siteNameToSend,
-          'img': Analyzer.imageLinkToSend,
-          'time': DateTime.now(),
-          'title': Analyzer.titleToSend,
-          'url': Analyzer.formattedUrlToSend,
-          'count': 0,
-        });
+      if (!noMatchFound) {
+        if (isAlreadyANews &&
+            Analyzer.descriptionToSend != null &&
+            Analyzer.siteNameToSend != null &&
+            Analyzer.imageLinkToSend != null &&
+            Analyzer.titleToSend != null &&
+            Analyzer.formattedUrlToSend != null) {
+          await _firestore.collection('news').doc(id).set({
+            'description': Analyzer.descriptionToSend,
+            'sitename': Analyzer.siteNameToSend,
+            'img': Analyzer.imageLinkToSend,
+            'time': DateTime.now(),
+            'title': Analyzer.titleToSend,
+            'url': Analyzer.formattedUrlToSend,
+            'count': ++counter,
+          });
+        }
+        if (isAlreadyANews == false &&
+            Analyzer.descriptionToSend != null &&
+            Analyzer.siteNameToSend != null &&
+            Analyzer.imageLinkToSend != null &&
+            Analyzer.titleToSend != null &&
+            Analyzer.formattedUrlToSend != null) {
+          _firestore.collection('news').add({
+            // 'snippet': Analyzer.snippetToSend,
+            'description': Analyzer.descriptionToSend,
+            'sitename': Analyzer.siteNameToSend,
+            'img': Analyzer.imageLinkToSend,
+            'time': DateTime.now(),
+            'title': Analyzer.titleToSend,
+            'url': Analyzer.formattedUrlToSend,
+            'count': 0,
+          });
+        }
       }
       setState(() {
         percentage = percent;
@@ -196,7 +205,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                     SizedBox(
                       height: _height * 0.05,
                     ),
-                    if (onVerifyClick)
+                    if (onVerifyClick && !noMatchFound)
                       Container(
                         padding: EdgeInsets.only(bottom: _height * 0.05),
                         child: Row(
@@ -220,6 +229,17 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                     .toInt()
                                     .toString()),
                           ],
+                        ),
+                      ),
+                    if (noMatchFound)
+                      Container(
+                        padding: EdgeInsets.only(
+                            bottom: _height * 0.05,
+                            left: _width * 0.05,
+                            right: _width * 0.05),
+                        child: Text(
+                          'No match has been found on your query. \nYou can check ViewPage for result related to your query',
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     Container(
