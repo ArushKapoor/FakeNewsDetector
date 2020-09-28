@@ -41,7 +41,8 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
       Analyzer networking = Analyzer();
       percent = await networking.query(text);
       //print(percent);
-      percentage = percent;
+      //percentage = percent;
+      print(percentage);
       int counter = 0;
       String id;
       final newses = await _firestore.collection('news').get();
@@ -57,7 +58,12 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
           id = news.id;
         }
       }
-      if (isAlreadyANews) {
+      if (isAlreadyANews &&
+          Analyzer.descriptionToSend != null &&
+          Analyzer.siteNameToSend != null &&
+          Analyzer.imageLinkToSend != null &&
+          Analyzer.titleToSend != null &&
+          Analyzer.formattedUrlToSend != null) {
         await _firestore.collection('news').doc(id).set({
           'description': Analyzer.descriptionToSend,
           'sitename': Analyzer.siteNameToSend,
@@ -200,7 +206,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                 isFake: true,
                                 percentage: (percentage != 0
                                         ? _animation.value * percentage
-                                        : 100 - _animation.value * percentage)
+                                        : (100 - _animation.value * 100))
                                     .toInt()
                                     .toString()),
                             SizedBox(
@@ -208,9 +214,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                             ),
                             verifyText(
                                 isFake: false,
-                                percentage: (percentage != 100
+                                percentage: (percentage != 0
                                         ? 100 - (_animation.value * percentage)
-                                        : _animation.value * percentage)
+                                        : _animation.value * 100)
                                     .toInt()
                                     .toString()),
                           ],
