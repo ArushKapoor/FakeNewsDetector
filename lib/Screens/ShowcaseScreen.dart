@@ -23,7 +23,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
       appBar: AppBar(
         title: Text('Fake News Detector'),
         centerTitle: true,
-        backgroundColor: Color(0xffff841b),
+        //backgroundColor: Color(0xffff841b),
       ),
       body: SafeArea(
         child: Container(
