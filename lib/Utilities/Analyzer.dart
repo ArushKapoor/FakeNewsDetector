@@ -12,16 +12,22 @@ class Analyzer {
   // static String snippetToSend;
   static String descriptionToSend;
   static String formattedUrlToSend;
+
   Networking obj = Networking();
   Future query(String q) async {
     Rake rake = Rake();
-    q = rake.rank(q).join(' ');
     q = q.replaceAll('-', ' ');
     q = q.replaceAll(',', ' ');
     q = q.replaceAll('/', ' ');
     q = q.replaceAll(':', ' ');
     q = q.replaceAll('.', ' ');
     q = q.replaceAll('_', ' ');
+
+    titleToSend = null;
+    imageLinkToSend = null;
+    siteNameToSend = null;
+    descriptionToSend = null;
+    formattedUrlToSend = null;
 
     var joinedStrings = await obj.getData(q);
     // List joinedList = joinedStrings
@@ -64,20 +70,26 @@ class Analyzer {
     bool isTrueChecked = false;
     int posForTrue = 0;
     int checkCount = 0;
-    print(wordFrequencySimilarity('Pete Parker', 'Peter Parker'));
-    for (int i = 0; i < 3; i++) {
+    int searchResults =
+        int.parse(decodeJson1['queries']['request'][0]['totalResults']);
+    if (decodeJson1['spelling'] != null) {
+      q = decodeJson1['spelling']['correctedQuery'];
+    }
+    if (searchResults > 10) searchResults = 10;
+    for (int i = 0; i < searchResults; i++) {
       String wordSnip, wordTitle, wordUrl;
 
       wordSnip = decodeJson1['items'][i]['snippet'];
       wordTitle = decodeJson1['items'][i]['title'];
       wordUrl = decodeJson1['items'][i]['formattedUrl'];
       String rakeWordSnip = rake.rank(wordSnip).join(' ');
-      double ratioSnip =
-          wordFrequencySimilarity(rakeWordSnip, rake.rank(q).join(''));
+      double ratioRakeSnip =
+          wordFrequencySimilarity(rakeWordSnip, rake.rank(q).join(' '));
+      double ratioSnip = wordSnip.similarityTo(rake.rank(q).join(' '));
 
-      String rakeWordTitle = rake.rank(wordTitle).join('');
+      String rakeWordTitle = rake.rank(wordTitle).join(' ');
       double ratioTitle =
-          wordFrequencySimilarity(rakeWordTitle, rake.rank(q).join(''));
+          wordFrequencySimilarity(rakeWordTitle, rake.rank(q).join(' '));
 
       wordUrl = wordUrl.replaceAll('-', ' ');
       wordUrl = wordUrl.replaceAll(',', ' ');
@@ -86,17 +98,19 @@ class Analyzer {
       wordUrl = wordUrl.replaceAll('.', ' ');
       wordUrl = wordUrl.replaceAll('_', ' ');
 
-      Levenshtein d = new Levenshtein();
+      Levenshtein l = new Levenshtein();
+      Jaccard j = new Jaccard();
 
       checkCount++;
-      print('$checkCount   -->   ${rakeWordSnip.similarityTo(q)}');
-      print('$rakeWordSnip    -->     $ratioSnip');
-      print(
-          'Levenshtein    -->     ${1 - d.normalizedDistance(rakeWordSnip, q)}');
+      print('$checkCount   -->   $ratioSnip');
+      print('$rakeWordSnip    -->     $ratioRakeSnip');
+      // print(
+      //     'Levenshtein    -->     ${1 - l.normalizedDistance(rakeWordSnip, q)}');
+      // print('Jaccard    -->     ${1 - j.normalizedDistance(rakeWordSnip, q)}');
 
       // if (ratioSnip >= 0.30 || ratioTitle >= 0.35)
 
-      if (ratioSnip >= 0.45) {
+      if (ratioRakeSnip >= 0.45 || ratioSnip >= 0.40) {
         // print('Ratios are for $i : $ratioSnip and $ratioTitle');
         // print('Rake for $i are : $rakeWordSnip and $rakeWordTitle');
         // print('');
@@ -176,6 +190,8 @@ class Analyzer {
     // Display Link not required
 
     // Formatted url only to check fake
+
+    if (descriptionToSend == null) {}
 
     return percentage;
   }
