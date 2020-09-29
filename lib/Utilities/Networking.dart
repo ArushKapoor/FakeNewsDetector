@@ -11,8 +11,11 @@ class Networking {
   Future getData(String q) async {
     String key = await readFilesFromAssets();
     String engineId = '306d2336ed7e743ae';
+
+    q = q.replaceAll('://', ' ');
+    q = q.replaceFirst('http', 'com');
     q = q.replaceAll(' ', '+');
-    // print(q);
+    print(q);
     http.Response response1 = await http.get(Uri.encodeFull(
         'https://www.googleapis.com/customsearch/v1?key=$key&cx=$engineId&q=$q&safe=1'));
     //http.Response response2 = await http.get(Uri.encodeFull(
