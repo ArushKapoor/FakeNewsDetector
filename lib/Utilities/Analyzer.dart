@@ -7,6 +7,7 @@ import 'package:edit_distance/edit_distance.dart';
 
 class Analyzer {
   static bool noMatchFound;
+  static bool noResultFound;
   static String titleToSend;
   static String imageLinkToSend;
   static String siteNameToSend;
@@ -31,9 +32,10 @@ class Analyzer {
     descriptionToSend = null;
     formattedUrlToSend = null;
     noMatchFound = false;
+    noResultFound = false;
 
     var joinedStrings = await obj.getData(q);
-    print(q);
+    // print(q);
     // List joinedList = joinedStrings
     //     .toString()
     //     .split('%*!@#Debuggers will beat everyone%*!@#');
@@ -65,7 +67,10 @@ class Analyzer {
       'hoax',
       'rumour',
       'alleged',
-      'scam'
+      'scam',
+      'spam',
+      'hoak',
+      'hoaks'
     ];
 
     int totalMatched = 0;
@@ -80,6 +85,10 @@ class Analyzer {
     int firstTruePos;
     int containsDescription;
     // print(decodeJson1['queries']['request'][0]['totalResults']);
+    if (decodeJson1['queries']['request'][0]['totalResults'] == null) {
+      noResultFound = true;
+      return percentage;
+    }
     int searchResults =
         int.parse(decodeJson1['queries']['request'][0]['totalResults']);
     if (decodeJson1['spelling'] != null) {
@@ -133,10 +142,21 @@ class Analyzer {
         bool checkFakeMatched = isFakeChecked;
         isFake = false;
 
+        String description =
+            decodeJson1['items'][i]['pagemap']['metatags'][0]['og:description'];
+        if (description == null) {
+          description = '';
+        }
+        description = description.toLowerCase();
+
+        print(
+            '$rakeWordSnip  -->   $rakeWordTitle    -->    $wordUrl    -->     $description');
+
         for (int j = 0; j < wordSet.length; j++) {
           if (rakeWordSnip.contains(wordSet[j]) ||
               rakeWordTitle.contains(wordSet[j]) ||
-              wordUrl.contains(wordSet[j])) {
+              wordUrl.contains(wordSet[j]) ||
+              description.contains(wordSet[j])) {
             if (!isFakeChecked) {
               descriptionToSend = decodeJson1['items'][i]['pagemap']['metatags']
                   [0]['og:description'];

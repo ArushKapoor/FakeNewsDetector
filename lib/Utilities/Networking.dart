@@ -11,17 +11,23 @@ class Networking {
   Future getData(String q) async {
     String key = await readFilesFromAssets();
     String engineId = '306d2336ed7e743ae';
+<<<<<<< HEAD
 
     q = q.replaceAll('://', ' ');
     q = q.replaceFirst('http', 'com');
     q = q.replaceAll(' ', '+');
     print(q);
+=======
+    // q = q.replaceAll(' ', '+');
+    // print(q);
+>>>>>>> 557f4291576c42554d758ccfe827b4e1fb94cc11
     http.Response response1 = await http.get(Uri.encodeFull(
         'https://www.googleapis.com/customsearch/v1?key=$key&cx=$engineId&q=$q&safe=1'));
     //http.Response response2 = await http.get(Uri.encodeFull(
     //'https://www.googleapis.com/customsearch/v1?key=$key&cx=$engineId&q=$q&safe=1&start=11'));
     if (response1.statusCode == 200 /* && response1.statusCode == 200*/) {
       String data1 = response1.body;
+      // print(data1);
       // String data2 = response2.body;
       return data1 /* + '%*!@#Debuggers will beat everyone%*!@#' + data2*/;
     } else {

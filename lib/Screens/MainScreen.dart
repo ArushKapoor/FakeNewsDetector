@@ -33,6 +33,8 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   int percentage = 0;
   bool isAlreadyANews = false;
   bool noMatchFound = false;
+  bool noResultFound = false;
+  String message;
   void _handleSubmitted(String text) async {
     if (text.isNotEmpty) {
       setState(() {
@@ -44,8 +46,25 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
       if (Analyzer.noMatchFound) {
         setState(() {
           noMatchFound = true;
+          message =
+              'No match has been found on your query. \nYou can check ViewPage for result related to your query';
         });
-        print('No match has been found');
+        // print('No match has been found');
+      } else {
+        setState(() {
+          noMatchFound = false;
+        });
+      }
+      if (Analyzer.noResultFound) {
+        // print('No result has been found');
+        setState(() {
+          noResultFound = true;
+          message = 'No result has been found on your query.';
+        });
+      } else {
+        setState(() {
+          noResultFound = false;
+        });
       }
       //print(percent);
       //percentage = percent;
@@ -205,7 +224,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                     SizedBox(
                       height: _height * 0.05,
                     ),
-                    if (onVerifyClick && !noMatchFound)
+                    if (onVerifyClick && !noMatchFound && !noResultFound)
                       Container(
                         padding: EdgeInsets.only(bottom: _height * 0.05),
                         child: Row(
@@ -231,14 +250,14 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
-                    if (noMatchFound)
+                    if (noMatchFound || noResultFound)
                       Container(
                         padding: EdgeInsets.only(
                             bottom: _height * 0.05,
                             left: _width * 0.05,
                             right: _width * 0.05),
                         child: Text(
-                          'No match has been found on your query. \nYou can check ViewPage for result related to your query',
+                          message,
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -261,7 +280,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                         ),
                       ),
                     ),
-                    if (onVerifyClick)
+                    if (onVerifyClick && !noResultFound)
                       Container(
                         margin: EdgeInsets.only(top: _height * 0.05),
                         child: GestureDetector(
