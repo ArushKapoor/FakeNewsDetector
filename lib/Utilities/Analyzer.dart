@@ -204,8 +204,8 @@ class Analyzer {
       // print('$i     $percentage');
     }
     // aTODO -> Remember to remove this later.
-    // totalMatched = 0;
-    // print(totalMatched);
+    totalMatched = 0;
+    //print(totalMatched);
 
     if (totalMatched == 0) {
       noMatchFound = true;

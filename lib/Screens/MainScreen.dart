@@ -35,6 +35,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   bool noMatchFound = false;
   bool noResultFound = false;
   String message;
+  String viewPage = '';
   void _handleSubmitted(String text) async {
     if (text.isNotEmpty) {
       setState(() {
@@ -43,11 +44,17 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
       });
       Analyzer networking = Analyzer();
       percent = await networking.query(text);
+      if (Analyzer.descriptionToSend != null &&
+          Analyzer.siteNameToSend != null &&
+          Analyzer.imageLinkToSend != null &&
+          Analyzer.titleToSend != null &&
+          Analyzer.formattedUrlToSend != null) {
+        viewPage = 'You can check ViewPage for result related to your query';
+      }
       if (Analyzer.noMatchFound) {
         setState(() {
           noMatchFound = true;
-          message =
-              'No match has been found on your query. \nYou can check ViewPage for result related to your query';
+          message = 'No match has been found on your query.\n $viewPage';
         });
         // print('No match has been found');
       } else {
@@ -90,7 +97,8 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
             Analyzer.siteNameToSend != null &&
             Analyzer.imageLinkToSend != null &&
             Analyzer.titleToSend != null &&
-            Analyzer.formattedUrlToSend != null) {
+            Analyzer.formattedUrlToSend != null &&
+            percentage > 50) {
           await _firestore.collection('news').doc(id).set({
             'description': Analyzer.descriptionToSend,
             'sitename': Analyzer.siteNameToSend,
@@ -106,7 +114,8 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
             Analyzer.siteNameToSend != null &&
             Analyzer.imageLinkToSend != null &&
             Analyzer.titleToSend != null &&
-            Analyzer.formattedUrlToSend != null) {
+            Analyzer.formattedUrlToSend != null &&
+            percentage > 50) {
           _firestore.collection('news').add({
             // 'snippet': Analyzer.snippetToSend,
             'description': Analyzer.descriptionToSend,
@@ -280,7 +289,12 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                         ),
                       ),
                     ),
-                    if (onVerifyClick && !noResultFound)
+                    if (onVerifyClick &&
+                        !noResultFound &&
+                        Analyzer.descriptionToSend != null &&
+                        Analyzer.imageLinkToSend != null &&
+                        Analyzer.titleToSend != null &&
+                        Analyzer.formattedUrlToSend != null)
                       Container(
                         margin: EdgeInsets.only(top: _height * 0.05),
                         child: GestureDetector(

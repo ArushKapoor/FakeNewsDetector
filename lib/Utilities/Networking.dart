@@ -28,8 +28,17 @@ class Networking {
     }
 
     print("$i" + " " + "$j");
-    q = q.replaceFirst(q.substring(i + 5, j), ' ');
-    q = q.replaceAll(' ', '+');
+    try {
+      q = q.replaceFirst(q.substring(i + 5, j), ' ');
+    } catch (e) {
+      print(e);
+    }
+    try {
+      q = q.replaceAll(' ', '+');
+    } catch (e) {
+      print(e);
+    }
+
     print(q);
     http.Response response1 = await http.get(Uri.encodeFull(
         'https://www.googleapis.com/customsearch/v1?key=$key&cx=$engineId&q=$q&safe=1'));
