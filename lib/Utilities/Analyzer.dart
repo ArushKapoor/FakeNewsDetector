@@ -142,12 +142,15 @@ class Analyzer {
         bool checkFakeMatched = isFakeChecked;
         isFake = false;
 
-        String description =
-            decodeJson1['items'][i]['pagemap']['metatags'][0]['og:description'];
-        if (description == null) {
-          description = '';
+        String description = '';
+        if (decodeJson1['items'][i]['pagemap']['metatags'] != null) {
+          description = decodeJson1['items'][i]['pagemap']['metatags'][0]
+              ['og:description'];
+          if (description == null) {
+            description = '';
+          }
+          description = description.toLowerCase();
         }
-        description = description.toLowerCase();
 
         print(
             '$rakeWordSnip  -->   $rakeWordTitle    -->    $wordUrl    -->     $description');
@@ -191,8 +194,11 @@ class Analyzer {
             firstTruePos = i;
           }
           if (!isTrueChecked) {
-            String descriptionToSend = decodeJson1['items'][i]['pagemap']
-                ['metatags'][0]['og:description'];
+            String descriptionToSend;
+            if (decodeJson1['items'][i]['pagemap']['metatags'] != null) {
+              descriptionToSend = decodeJson1['items'][i]['pagemap']['metatags']
+                  [0]['og:description'];
+            }
             if (descriptionToSend != null) {
               posForTrue = i;
               firstTime = false;
@@ -229,12 +235,14 @@ class Analyzer {
     print('This is posForTrue  --> $posForTrue');
 
     if (percentage < 50) {
-      descriptionToSend = decodeJson1['items'][posForTrue]['pagemap']
-          ['metatags'][0]['og:description'];
-      imageLinkToSend = decodeJson1['items'][posForTrue]['pagemap']['metatags']
-          [0]['og:image'];
-      siteNameToSend = decodeJson1['items'][posForTrue]['pagemap']['metatags']
-          [0]['og:site_name'];
+      if (decodeJson1['items'][posForTrue]['pagemap']['metatags'] != null) {
+        descriptionToSend = decodeJson1['items'][posForTrue]['pagemap']
+            ['metatags'][0]['og:description'];
+        imageLinkToSend = decodeJson1['items'][posForTrue]['pagemap']
+            ['metatags'][0]['og:image'];
+        siteNameToSend = decodeJson1['items'][posForTrue]['pagemap']['metatags']
+            [0]['og:site_name'];
+      }
       titleToSend = decodeJson1['items'][posForTrue]['title'];
       formattedUrlToSend = decodeJson1['items'][posForTrue]['formattedUrl'];
       // snippetToSend = decodeJson1['items'][posForTrue]['snippet'];
@@ -248,8 +256,6 @@ class Analyzer {
     // Formatted url only to check fake
 
     // print(posForTrue);
-
-    if (descriptionToSend == null) {}
 
     return percentage;
   }
