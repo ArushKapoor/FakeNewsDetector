@@ -11,7 +11,7 @@ class Networking {
   Future getData(String q) async {
     String key = await readFilesFromAssets();
     String engineId = '306d2336ed7e743ae';
-    q = q.replaceAll(' ', '+');
+    // q = q.replaceAll(' ', '+');
     // print(q);
     http.Response response1 = await http.get(Uri.encodeFull(
         'https://www.googleapis.com/customsearch/v1?key=$key&cx=$engineId&q=$q&safe=1'));
@@ -19,6 +19,7 @@ class Networking {
     //'https://www.googleapis.com/customsearch/v1?key=$key&cx=$engineId&q=$q&safe=1&start=11'));
     if (response1.statusCode == 200 /* && response1.statusCode == 200*/) {
       String data1 = response1.body;
+      // print(data1);
       // String data2 = response2.body;
       return data1 /* + '%*!@#Debuggers will beat everyone%*!@#' + data2*/;
     } else {
