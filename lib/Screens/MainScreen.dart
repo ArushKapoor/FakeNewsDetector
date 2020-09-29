@@ -45,16 +45,15 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
       Analyzer networking = Analyzer();
       percent = await networking.query(text);
       if (Analyzer.descriptionToSend != null &&
-          Analyzer.siteNameToSend != null &&
           Analyzer.imageLinkToSend != null &&
           Analyzer.titleToSend != null &&
           Analyzer.formattedUrlToSend != null) {
-        viewPage = 'You can check ViewPage for result related to your query';
+        viewPage = '\n You can check ViewPage for result related to your query';
       }
       if (Analyzer.noMatchFound) {
         setState(() {
           noMatchFound = true;
-          message = 'No match has been found on your query.\n $viewPage';
+          message = 'No match has been found on your query.$viewPage';
         });
         // print('No match has been found');
       } else {
