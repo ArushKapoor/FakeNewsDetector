@@ -211,7 +211,7 @@ class Analyzer {
     }
     // aTODO -> Remember to remove this later.
     // totalMatched = 0;
-    // print(totalMatched);
+    //print(totalMatched);
 
     if (totalMatched == 0) {
       noMatchFound = true;
@@ -254,7 +254,11 @@ class Analyzer {
     // Display Link not required
 
     // Formatted url only to check fake
-
+    // descriptionToSend = ' ';
+    // titleToSend = ' ';
+    // siteNameToSend = ' ';
+    // formattedUrlToSend = '';
+    // imageLinkToSend = ' ';
     // print(posForTrue);
 
     return percentage;
