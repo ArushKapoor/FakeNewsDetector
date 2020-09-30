@@ -7,7 +7,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="fake_news_detector"
+        android:label="Fake News Detector"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
