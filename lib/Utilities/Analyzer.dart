@@ -185,10 +185,10 @@ class Analyzer {
         //   print('Its not fake  -->   $i');
         // }
 
-        print('$isFake');
+        // print('$isFake');
 
         if (!isFake && firstTime) {
-          print('Inside isFake');
+          // print('Inside isFake');
           if (isFirstTruePos) {
             isFirstTruePos = false;
             firstTruePos = i;
@@ -232,7 +232,7 @@ class Analyzer {
       posForTrue = firstTruePos;
     }
 
-    print('This is posForTrue  --> $posForTrue');
+    //  print('This is posForTrue  --> $posForTrue');
 
     if (percentage < 50) {
       if (decodeJson1['items'][posForTrue]['pagemap']['metatags'] != null) {

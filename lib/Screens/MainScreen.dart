@@ -75,7 +75,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
       }
       //print(percent);
       percentage = percent;
-      print(percentage);
+      // print(percentage);
       int counter = 0;
       String id;
       final newses = await _firestore.collection('news').get();
