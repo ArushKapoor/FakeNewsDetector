@@ -35,9 +35,23 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   bool noMatchFound = false;
   bool noResultFound = false;
   bool isEaster = false;
+  bool hasInternet = false;
   String message;
   String viewPage = '';
   void _handleSubmitted(String text) async {
+    // try {
+    //   final result = await InternetAddress.lookup('google.com');
+    //   if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+    //     setState(() {
+    //       hasInternet = true;
+    //     });
+    //   }
+    // } on SocketException catch (_) {
+    //   setState(() {
+    //     hasInternet = false;
+    //     message = 'No internet connection';
+    //   });
+    // }
     String smallText = text.toLowerCase();
     if (smallText.contains('i am ceo of google')) {
       setState(() {
