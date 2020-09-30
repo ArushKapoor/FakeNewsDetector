@@ -34,9 +34,21 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   bool isAlreadyANews = false;
   bool noMatchFound = false;
   bool noResultFound = false;
+  bool isEaster = false;
   String message;
   String viewPage = '';
   void _handleSubmitted(String text) async {
+    String smallText = text.toLowerCase();
+    if (smallText.contains('i am ceo of google')) {
+      setState(() {
+        isEaster = true;
+        message = 'Aji 🔔😝';
+      });
+    } else {
+      setState(() {
+        isEaster = false;
+      });
+    }
     if (text.isNotEmpty) {
       setState(() {
         isVisible = true;
@@ -49,7 +61,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
           Analyzer.titleToSend != null &&
           Analyzer.imageLinkToSend != null &&
           Analyzer.formattedUrlToSend != null) {
-        viewPage = '\nClick on view page for more details';
+        viewPage = '\nClick on View Page for more details';
       }
       if (Analyzer.noMatchFound) {
         setState(() {
@@ -233,7 +245,10 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                     SizedBox(
                       height: _height * 0.05,
                     ),
-                    if (onVerifyClick && !noMatchFound && !noResultFound)
+                    if (onVerifyClick &&
+                        !noMatchFound &&
+                        !noResultFound &&
+                        !isEaster)
                       Container(
                         padding: EdgeInsets.only(bottom: _height * 0.05),
                         child: Row(
@@ -259,7 +274,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
-                    if (noMatchFound || noResultFound)
+                    if (noMatchFound || noResultFound || isEaster)
                       Container(
                         padding: EdgeInsets.only(
                             bottom: _height * 0.05,
@@ -294,6 +309,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                     ),
                     if (onVerifyClick &&
                         !noResultFound &&
+                        !isEaster &&
                         Analyzer.descriptionToSend != null &&
                         Analyzer.imageLinkToSend != null &&
                         Analyzer.titleToSend != null &&
