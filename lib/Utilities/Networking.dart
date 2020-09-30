@@ -11,13 +11,18 @@ class Networking {
   Future getData(String q) async {
     String key = await readFilesFromAssets();
     String engineId = '306d2336ed7e743ae';
-    int i, j;
+    int i, j, k = 0;
     // q = q.replaceAll(' ', '+');
     // print(q);
-    q = q.replaceAll('://', '+');
+    if (q.contains('://')) {
+      q = q.replaceAll('://', '+');
+    }
+
     if (q.contains('http')) {
+      k = 1;
       i = q.indexOf('http');
-    } else if (q.contains('http')) {
+    } else if (q.contains('https')) {
+      k = 1;
       i = q.indexOf('https');
     }
 
@@ -27,9 +32,11 @@ class Networking {
       j = q.indexOf('com');
     }
 
-    print("$i" + " " + "$j");
+    // print("$i" + " " + "$j");
     try {
-      q = q.replaceFirst(q.substring(i + 5, j), ' ');
+      if (k == 1) {
+        q = q.replaceFirst(q.substring(i + 5, j), ' ');
+      }
     } catch (e) {
       print(e);
     }
@@ -39,7 +46,7 @@ class Networking {
       print(e);
     }
 
-    print(q);
+    //print(q);
     http.Response response1 = await http.get(Uri.encodeFull(
         'https://www.googleapis.com/customsearch/v1?key=$key&cx=$engineId&q=$q&safe=1'));
     //http.Response response2 = await http.get(Uri.encodeFull(
