@@ -3,6 +3,7 @@ import 'package:fake_news_detector/Screens/NewsScreen.dart';
 import 'package:fake_news_detector/Utilities/Analyzer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'dart:io';
 
 class AppBody extends StatefulWidget {
   static const String id = 'news_tracking_screen';
@@ -36,22 +37,25 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   bool noResultFound = false;
   bool isEaster = false;
   bool hasInternet = false;
-  String message;
+  String message = '';
   String viewPage = '';
   void _handleSubmitted(String text) async {
-    // try {
-    //   final result = await InternetAddress.lookup('google.com');
-    //   if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-    //     setState(() {
-    //       hasInternet = true;
-    //     });
-    //   }
-    // } on SocketException catch (_) {
-    //   setState(() {
-    //     hasInternet = false;
-    //     message = 'No internet connection';
-    //   });
-    // }
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        setState(() {
+          hasInternet = true;
+          onVerifyClick = true;
+          message = '';
+        });
+      }
+    } on SocketException catch (_) {
+      setState(() {
+        hasInternet = false;
+        onVerifyClick = false;
+        message = 'No Internet Connection';
+      });
+    }
     String smallText = text.toLowerCase();
     if (smallText.contains('i am ceo of google')) {
       setState(() {
@@ -63,108 +67,110 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         isEaster = false;
       });
     }
-    if (text.isNotEmpty) {
-      setState(() {
-        isVisible = true;
-        onVerifyClick = false;
-      });
-      Analyzer networking = Analyzer();
-      percent = await networking.query(text);
-      if (Analyzer.descriptionToSend != null &&
-          Analyzer.imageLinkToSend != null &&
-          Analyzer.titleToSend != null &&
-          Analyzer.imageLinkToSend != null &&
-          Analyzer.formattedUrlToSend != null) {
-        viewPage = '\nClick on View Page for more details';
-      }
-      if (Analyzer.noMatchFound) {
+    if (hasInternet) {
+      if (text.isNotEmpty) {
         setState(() {
-          noMatchFound = true;
-          message = 'No match has been found on your query.$viewPage';
+          isVisible = true;
+          onVerifyClick = false;
         });
-        // print('No match has been found');
-      } else {
-        setState(() {
-          noMatchFound = false;
-        });
-      }
-      if (Analyzer.noResultFound) {
-        // print('No result has been found');
-        setState(() {
-          noResultFound = true;
-          message = 'No result has been found on your query.';
-        });
-      } else {
-        setState(() {
-          noResultFound = false;
-        });
-      }
-      //print(percent);
-      percentage = percent;
-      // print(percentage);
-      int counter = 0;
-      String id;
-      final newses = await _firestore.collection('news').get();
-      for (var news in newses.docs) {
-        if (news.data().containsValue(Analyzer.descriptionToSend) &&
-            news.data().containsValue(Analyzer.siteNameToSend) &&
-            news.data().containsValue(Analyzer.imageLinkToSend) &&
-            news.data().containsValue(Analyzer.formattedUrlToSend) &&
-            news.data().containsValue(Analyzer.titleToSend)) {
-          isAlreadyANews = true;
-          counter = news.data()['count'];
-          //print(news.data()['count']);
-          id = news.id;
-        }
-      }
-      if (!noMatchFound) {
-        if (isAlreadyANews &&
-            Analyzer.descriptionToSend != null &&
-            Analyzer.siteNameToSend != null &&
+        Analyzer networking = Analyzer();
+        percent = await networking.query(text);
+        if (Analyzer.descriptionToSend != null &&
             Analyzer.imageLinkToSend != null &&
             Analyzer.titleToSend != null &&
-            Analyzer.formattedUrlToSend != null &&
-            percentage > 50) {
-          await _firestore.collection('news').doc(id).set({
-            'description': Analyzer.descriptionToSend,
-            'sitename': Analyzer.siteNameToSend,
-            'img': Analyzer.imageLinkToSend,
-            'time': DateTime.now(),
-            'title': Analyzer.titleToSend,
-            'url': Analyzer.formattedUrlToSend,
-            'count': ++counter,
-          });
-        }
-        if (isAlreadyANews == false &&
-            Analyzer.descriptionToSend != null &&
-            Analyzer.siteNameToSend != null &&
             Analyzer.imageLinkToSend != null &&
-            Analyzer.titleToSend != null &&
-            Analyzer.formattedUrlToSend != null &&
-            percentage > 50) {
-          _firestore.collection('news').add({
-            // 'snippet': Analyzer.snippetToSend,
-            'description': Analyzer.descriptionToSend,
-            'sitename': Analyzer.siteNameToSend,
-            'img': Analyzer.imageLinkToSend,
-            'time': DateTime.now(),
-            'title': Analyzer.titleToSend,
-            'url': Analyzer.formattedUrlToSend,
-            'count': 0,
+            Analyzer.formattedUrlToSend != null) {
+          viewPage = '\nClick on View Page for more details';
+        }
+        if (Analyzer.noMatchFound) {
+          setState(() {
+            noMatchFound = true;
+            message = 'No match has been found on your query.$viewPage';
+          });
+          // print('No match has been found');
+        } else {
+          setState(() {
+            noMatchFound = false;
           });
         }
-      }
-      setState(() {
+        if (Analyzer.noResultFound) {
+          // print('No result has been found');
+          setState(() {
+            noResultFound = true;
+            message = 'No result has been found on your query.';
+          });
+        } else {
+          setState(() {
+            noResultFound = false;
+          });
+        }
+        //print(percent);
         percentage = percent;
-        onVerifyClick = true;
-        isVisible = false;
-      });
-      _animationController.repeat();
-      _animationController.forward();
+        // print(percentage);
+        int counter = 0;
+        String id;
+        final newses = await _firestore.collection('news').get();
+        for (var news in newses.docs) {
+          if (news.data().containsValue(Analyzer.descriptionToSend) &&
+              news.data().containsValue(Analyzer.siteNameToSend) &&
+              news.data().containsValue(Analyzer.imageLinkToSend) &&
+              news.data().containsValue(Analyzer.formattedUrlToSend) &&
+              news.data().containsValue(Analyzer.titleToSend)) {
+            isAlreadyANews = true;
+            counter = news.data()['count'];
+            //print(news.data()['count']);
+            id = news.id;
+          }
+        }
+        if (!noMatchFound) {
+          if (isAlreadyANews &&
+              Analyzer.descriptionToSend != null &&
+              Analyzer.siteNameToSend != null &&
+              Analyzer.imageLinkToSend != null &&
+              Analyzer.titleToSend != null &&
+              Analyzer.formattedUrlToSend != null &&
+              percentage > 50) {
+            await _firestore.collection('news').doc(id).set({
+              'description': Analyzer.descriptionToSend,
+              'sitename': Analyzer.siteNameToSend,
+              'img': Analyzer.imageLinkToSend,
+              'time': DateTime.now(),
+              'title': Analyzer.titleToSend,
+              'url': Analyzer.formattedUrlToSend,
+              'count': ++counter,
+            });
+          }
+          if (isAlreadyANews == false &&
+              Analyzer.descriptionToSend != null &&
+              Analyzer.siteNameToSend != null &&
+              Analyzer.imageLinkToSend != null &&
+              Analyzer.titleToSend != null &&
+              Analyzer.formattedUrlToSend != null &&
+              percentage > 50) {
+            _firestore.collection('news').add({
+              // 'snippet': Analyzer.snippetToSend,
+              'description': Analyzer.descriptionToSend,
+              'sitename': Analyzer.siteNameToSend,
+              'img': Analyzer.imageLinkToSend,
+              'time': DateTime.now(),
+              'title': Analyzer.titleToSend,
+              'url': Analyzer.formattedUrlToSend,
+              'count': 0,
+            });
+          }
+        }
+        setState(() {
+          percentage = percent;
+          onVerifyClick = true;
+          isVisible = false;
+        });
+        _animationController.repeat();
+        _animationController.forward();
 
-      _animationController.addListener(() {
-        setState(() {});
-      });
+        _animationController.addListener(() {
+          setState(() {});
+        });
+      }
     }
   }
 
@@ -288,7 +294,10 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
-                    if (noMatchFound || noResultFound || isEaster)
+                    if (noMatchFound ||
+                        noResultFound ||
+                        isEaster ||
+                        !hasInternet)
                       Container(
                         padding: EdgeInsets.only(
                             bottom: _height * 0.05,
