@@ -47,8 +47,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
       if (Analyzer.descriptionToSend != null &&
           Analyzer.imageLinkToSend != null &&
           Analyzer.titleToSend != null &&
+          Analyzer.imageLinkToSend != null &&
           Analyzer.formattedUrlToSend != null) {
-        viewPage = '\n You can check ViewPage for result related to your query';
+        viewPage = '\nClick on view page for more details';
       }
       if (Analyzer.noMatchFound) {
         setState(() {
@@ -267,6 +268,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                         child: Text(
                           message,
                           textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black87,
+                          ),
                         ),
                       ),
                     Container(
@@ -314,7 +318,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                             'View Page',
                             style: TextStyle(
                                 fontSize: _height * 0.028,
-                                color: Colors.grey,
+                                color: Color(0xffff841b),
                                 decoration: TextDecoration.underline),
                           ),
                         ),
