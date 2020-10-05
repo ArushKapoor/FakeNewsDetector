@@ -36,7 +36,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   bool noMatchFound = false;
   bool noResultFound = false;
   bool isEaster = false;
-  bool hasInternet = false;
+  bool hasInternet = true;
   String message = '';
   String viewPage = '';
   void _handleSubmitted(String text) async {
@@ -45,14 +45,14 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         setState(() {
           hasInternet = true;
-          onVerifyClick = true;
+          // onVerifyClick = true;
           message = '';
         });
       }
     } on SocketException catch (_) {
       setState(() {
         hasInternet = false;
-        onVerifyClick = false;
+        // onVerifyClick = false;
         message = 'No Internet Connection';
       });
     }
@@ -164,6 +164,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
           onVerifyClick = true;
           isVisible = false;
         });
+
         _animationController.repeat();
         _animationController.forward();
 
