@@ -75,9 +75,11 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                       collapseMode: CollapseMode.parallax,
                       background: Stack(
                         children: [
-                          Image(
-                            image: AssetImage(imgSrc),
-                            fit: BoxFit.fill,
+                          Expanded(
+                            child: Image(
+                              image: AssetImage(imgSrc),
+                              fit: BoxFit.fill,
+                            ),
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
