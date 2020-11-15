@@ -3,7 +3,7 @@ import 'package:fake_news_detector/Utilities/Networking.dart';
 import 'package:rake/rake.dart';
 import 'package:document_analysis/document_analysis.dart';
 import 'package:string_similarity/string_similarity.dart';
-import 'package:edit_distance/edit_distance.dart';
+//import 'package:edit_distance/edit_distance.dart';
 
 class Analyzer {
   static bool noMatchFound;
@@ -79,11 +79,11 @@ class Analyzer {
     bool isFakeChecked = false;
     bool isTrueChecked = false;
     int posForTrue;
-    int checkCount = 0;
+    //int checkCount = 0;
     bool firstTime = true;
     bool isFirstTruePos = true;
     int firstTruePos;
-    int containsDescription;
+    //int containsDescription;
     // print(decodeJson1['queries']['request'][0]['totalResults']);
     if (decodeJson1['queries']['request'][0]['totalResults'] == null) {
       noResultFound = true;
@@ -107,8 +107,8 @@ class Analyzer {
       double ratioSnip = wordSnip.similarityTo(rake.rank(q).join(' '));
 
       String rakeWordTitle = rake.rank(wordTitle).join(' ');
-      double ratioTitle =
-          wordFrequencySimilarity(rakeWordTitle, rake.rank(q).join(' '));
+      // double ratioTitle =
+      //     wordFrequencySimilarity(rakeWordTitle, rake.rank(q).join(' '));
 
       wordUrl = wordUrl.replaceAll('-', ' ');
       wordUrl = wordUrl.replaceAll(',', ' ');
@@ -117,8 +117,8 @@ class Analyzer {
       wordUrl = wordUrl.replaceAll('.', ' ');
       wordUrl = wordUrl.replaceAll('_', ' ');
 
-      Levenshtein l = new Levenshtein();
-      Jaccard j = new Jaccard();
+      // Levenshtein l = new Levenshtein();
+      // Jaccard j = new Jaccard();
 
       // checkCount++;
       // print('$checkCount   -->   $ratioSnip');
@@ -139,7 +139,7 @@ class Analyzer {
         // print('$checkCount  -->   $ratioSnip  -->   $ratioTitle');
         // print('$rakeWordSnip  -->  $rakeWordTitle');
         // print('');
-        bool checkFakeMatched = isFakeChecked;
+        //bool checkFakeMatched = isFakeChecked;
         isFake = false;
 
         String description = '';

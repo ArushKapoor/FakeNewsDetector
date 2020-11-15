@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_news_detector/Screens/MainScreen.dart';
-import 'package:fake_news_detector/Screens/NewsScreen.dart';
 import 'package:flutter/material.dart';
+import 'BottomSheetBuilder.dart';
 
 class ShowcaseScreen extends StatefulWidget {
   static const String id = 'showcase_screen';
@@ -11,74 +11,131 @@ class ShowcaseScreen extends StatefulWidget {
 
 class _ShowcaseScreenState extends State<ShowcaseScreen> {
   final _firestore = FirebaseFirestore.instance;
+  String wish, imgSrc;
+  int wishClr = 0xffE7E7E7;
+  int backClr = 0xff181800;
+  void timing() {
+    int hour = DateTime.now().hour;
+    setState(() {
+      if (hour > 5 && hour < 12) {
+        wish = 'Good Morning';
+        imgSrc = 'assets/Images/morning.jpeg';
+        backClr = 0xff181800;
+        wishClr = 0xffe7e7e7;
+      } else if (hour > 12 && hour < 17) {
+        wish = 'Good Afternoon';
+        imgSrc = 'assets/Images/Noon.jpeg';
+        backClr = 0xff604830;
+        wishClr = 0xff9FB7CF;
+      } else if (hour > 17 && hour < 20) {
+        wish = 'Good Evening';
+        imgSrc = 'assets/Images/evening.jpeg';
+        backClr = 0xffCFCF87;
+        wishClr = 0xff;
+      } else {
+        wish = 'Good Night';
+        imgSrc = 'assets/Images/night.jpeg';
+        backClr = 0xff181818;
+        wishClr = 0xffe7e7e7;
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    timing();
+  }
 
   @override
   Widget build(BuildContext context) {
+    //imgSrc = 'assets/Images/night.jpeg';
+    //backClr = 0xff181818;
     final _height = MediaQuery.of(context).size.height -
         MediaQuery.of(context).padding.top -
         kToolbarHeight;
     final _width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Fake News Detector'),
-        centerTitle: true,
-        //backgroundColor: Color(0xffff841b),
-      ),
+      backgroundColor: Color(backClr),
       body: SafeArea(
-        child: Container(
-          color: Color(0xffe5e5e5),
-          child: Stack(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(
-                    left: _width * 0.02,
-                    bottom: _width * 0.05,
-                    right: _width * 0.02,
-                    top: _height * 0.01),
-                child: SingleChildScrollView(
-                  physics: BouncingScrollPhysics(),
-                  child: Container(
-                    height: _height * 0.87,
-                    child: NewsStream(
-                        firestore: _firestore, height: _height, width: _width),
+        child: Stack(
+          children: <Widget>[
+            NestedScrollView(
+              physics: BouncingScrollPhysics(),
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverAppBar(
+                    floating: false,
+                    pinned: false,
+                    snap: false,
+                    backgroundColor: Colors.white10,
+                    flexibleSpace: FlexibleSpaceBar(
+                      collapseMode: CollapseMode.parallax,
+                      background: Stack(
+                        children: [
+                          Image(
+                            image: AssetImage(imgSrc),
+                            fit: BoxFit.fill,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                wish,
+                                style: TextStyle(
+                                    fontSize: _height * 0.04,
+                                    color: Color(wishClr)),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      stretchModes: [
+                        StretchMode.fadeTitle,
+                        StretchMode.zoomBackground,
+                      ],
+                    ),
+                    stretch: true,
+                    centerTitle: true,
+                    expandedHeight: _height * 0.29,
                   ),
-                ),
+                ];
+              },
+              body: Container(
+                //color: Color(0xff181800),
+                height: _height * 0.87,
+                child: NewsStream(
+                    firestore: _firestore, height: _height, width: _width),
               ),
-              Align(
-                alignment: AlignmentDirectional.bottomCenter,
+            ),
+            Align(
+              alignment: AlignmentDirectional.bottomCenter,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  color: Colors.white,
-                  width: _width,
-                  height: _height * 0.13,
-                ),
-              ),
-              Align(
-                alignment: AlignmentDirectional.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    width: _width * 0.55,
-                    height: _height * 0.09,
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamed(context, AppBody.id);
-                      },
-                      color: Color(0xffff841b),
-                      child: Text(
-                        'VERIFY',
-                        style: TextStyle(
-                            fontSize: _height * 0.03, color: Colors.white),
-                      ),
+                  width: _width * 0.55,
+                  height: _height * 0.09,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppBody.id);
+                    },
+                    color: Color(backClr),
+                    child: Text(
+                      'VERIFY',
+                      style: TextStyle(
+                          fontSize: _height * 0.03, color: Color(wishClr)),
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -118,7 +175,7 @@ class NewsStream extends StatelessWidget {
         }
         final news = snapshot.data.docs;
         int newsNumber = 1;
-        List<SingleNewsTile> tiles = [];
+        List<Widget> tiles = [];
         for (var newNews in news) {
           final imageUrl = newNews.get('img');
           final siteName = newNews.get('sitename');
@@ -138,6 +195,9 @@ class NewsStream extends StatelessWidget {
           tiles.add(newTile);
           newsNumber++;
         }
+        tiles.add(Blanck(
+          height: _height,
+        ));
         return ListView(
           children: tiles,
         );
@@ -166,59 +226,67 @@ class SingleNewsTile extends StatelessWidget {
   final String url;
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, NewsScreen.id,
-            arguments: ScreenArguments(
-              imageLink: imageLink,
-              siteName: siteName,
-              snippet: snippet,
-              title: title,
-              url: url,
-            ));
-      },
-      child: Container(
-        padding: EdgeInsets.all(15),
-        margin: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: Color(0xffffffff), //card color
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Card(
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      elevation: 10,
+      child: InkWell(
+        onTap: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            elevation: 10,
+            enableDrag: true,
+            builder: (context) => SingleChildScrollView(
+              child: BottomSheetBuilder(
+                imageLink: imageLink,
+                siteName: siteName,
+                snippet: snippet,
+                title: title,
+                url: url,
+              ),
+            ),
+          );
+        },
+        child: Row(
           children: [
-            Text(
-              '$newsNumber. $title',
-              style: TextStyle(
-                  fontSize: height * 0.03,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff000000)),
-            ),
-            SizedBox(
-              height: height * 0.005,
-            ),
-            Text(
-              siteName,
-              style: TextStyle(color: Color(0xff173f5f)),
-            ),
-            SizedBox(
-              height: height * 0.0,
-            ),
-            Image.network(
-              imageLink,
-              height: height * 0.24,
+            Image(
+              image: NetworkImage(imageLink),
               fit: BoxFit.fill,
+              height: height * 0.2,
+              width: width * 0.35,
             ),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            SizedBox(
-              height: height * 0.0,
-            ),
+            SizedBox(width: width * 0.02),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    softWrap: true,
+                    maxLines: 4,
+                    //textHeightBehavior: TextHeightBehavior.fromEncoded(4),
+                    textWidthBasis: TextWidthBasis.parent,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: height * 0.025),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
+    );
+  }
+}
+
+class Blanck extends StatelessWidget {
+  Blanck({this.height});
+  final height;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: height * 0.1,
     );
   }
 }
@@ -274,3 +342,58 @@ class SingleNewsTile extends StatelessWidget {
 //     );
 //   }
 // }
+
+// GestureDetector(
+// onTap: () {
+//   Navigator.pushNamed(context, NewsScreen.id,
+//       arguments: ScreenArguments(
+//         imageLink: imageLink,
+//         siteName: siteName,
+//         snippet: snippet,
+//         title: title,
+//         url: url,
+//       ));
+// },
+//       child: Container(
+//         padding: EdgeInsets.all(15),
+//         margin: EdgeInsets.all(10),
+//         decoration: BoxDecoration(
+//           borderRadius: BorderRadius.all(Radius.circular(10)),
+//           color: Color(0xffffffff), //card color
+//         ),
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.start,
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Text(
+//               '$newsNumber. $title',
+//               style: TextStyle(
+//                   fontSize: height * 0.03,
+//                   fontWeight: FontWeight.bold,
+//                   color: Color(0xff000000)),
+//             ),
+//             SizedBox(
+//               height: height * 0.005,
+//             ),
+//             Text(
+//               siteName,
+//               style: TextStyle(color: Color(0xff173f5f)),
+//             ),
+//             SizedBox(
+//               height: height * 0.0,
+//             ),
+//             Image.network(
+//               imageLink,
+//               height: height * 0.24,
+//               fit: BoxFit.fill,
+//             ),
+//             SizedBox(
+//               height: height * 0.01,
+//             ),
+//             SizedBox(
+//               height: height * 0.0,
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
