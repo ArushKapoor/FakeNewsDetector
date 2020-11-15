@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fake_news_detector/Screens/NewsScreen.dart';
 import 'package:fake_news_detector/Utilities/Analyzer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'dart:io';
+import 'package:fake_news_detector/Screens/BottomSheetBuilder.dart';
 
 class AppBody extends StatefulWidget {
   static const String id = 'news_tracking_screen';
@@ -197,27 +197,28 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
 
     Column verifyText({bool isFake, String percentage}) {
       String text;
-      Color textColor;
+      Color iconColor;
       if (isFake) {
         text = 'Incorrect';
-        textColor = Colors.red;
+        iconColor = Colors.red;
       } else {
         text = 'Correct';
-        textColor = Colors.green;
+        iconColor = Colors.green;
       }
 
       return Column(
         children: [
-          Text(
-            text,
-            style: TextStyle(fontSize: _height * 0.03, color: textColor),
+          Icon(
+            Icons.check_circle,
+            color: iconColor,
+            size: _width * 0.1,
           ),
           SizedBox(
             height: _height * 0.015,
           ),
           Text(
-            percentage,
-            style: TextStyle(fontSize: _height * 0.03, color: textColor),
+            '$percentage%',
+            style: TextStyle(fontSize: _height * 0.03, color: iconColor),
           ),
         ],
       );
@@ -225,9 +226,6 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text('Fake News Detector'),
-      ),
       body: SafeArea(
         child: GestureDetector(
           onTap: () {
@@ -235,8 +233,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
           },
           child: Stack(
             children: <Widget>[
-              Center(
-                child: SingleChildScrollView(
+              SingleChildScrollView(
+                child: Container(
+                  margin: EdgeInsets.all(_height * 0.05),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -246,13 +245,13 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                           borderRadius: BorderRadius.all(Radius.circular(15.0)),
                           border: Border.all(
                             color: Colors.black,
-                            width: 0.4,
+                            width: 5,
                           ),
                         ),
                         padding: EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 10.0),
                         width: _width * 0.7,
-                        height: _height * 0.5,
+                        height: _height * 0.3,
                         child: TextField(
                           maxLines: 200,
                           textAlignVertical: TextAlignVertical.bottom,
@@ -261,8 +260,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                           keyboardType: TextInputType.multiline,
                           scrollController: ScrollController(),
                           showCursor: true,
+                          cursorColor: Colors.green,
                           decoration: InputDecoration.collapsed(
-                              fillColor: Color(0xff0000),
+                              fillColor: Color(0xff000000),
                               border: InputBorder.none,
                               hintText: 'Enter your query here',
                               hintStyle: TextStyle(fontSize: _height * 0.03)),
@@ -286,21 +286,21 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               verifyText(
-                                  isFake: true,
+                                  isFake: false,
                                   percentage: (percentage != 0
-                                          ? _animation.value * percentage
-                                          : (100 - _animation.value * 100))
+                                          ? 100 -
+                                              (_animation.value * percentage)
+                                          : _animation.value * 100)
                                       .toInt()
                                       .toString()),
                               SizedBox(
                                 width: _width * 0.15,
                               ),
                               verifyText(
-                                  isFake: false,
+                                  isFake: true,
                                   percentage: (percentage != 0
-                                          ? 100 -
-                                              (_animation.value * percentage)
-                                          : _animation.value * 100)
+                                          ? _animation.value * percentage
+                                          : (100 - _animation.value * 100))
                                       .toInt()
                                       .toString()),
                             ],
@@ -353,15 +353,19 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                           margin: EdgeInsets.only(top: _height * 0.05),
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                context,
-                                NewsScreen.id,
-                                arguments: ScreenArguments(
-                                  imageLink: Analyzer.imageLinkToSend,
-                                  siteName: Analyzer.siteNameToSend,
-                                  snippet: Analyzer.descriptionToSend,
-                                  title: Analyzer.titleToSend,
-                                  url: Analyzer.formattedUrlToSend,
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                elevation: 10,
+                                enableDrag: true,
+                                builder: (context) => SingleChildScrollView(
+                                  child: BottomSheetBuilder(
+                                    imageLink: Analyzer.imageLinkToSend,
+                                    siteName: Analyzer.siteNameToSend,
+                                    snippet: Analyzer.descriptionToSend,
+                                    title: Analyzer.titleToSend,
+                                    url: Analyzer.formattedUrlToSend,
+                                  ),
                                 ),
                               );
                             },
@@ -400,14 +404,4 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
       ),
     );
   }
-}
-
-class ScreenArguments {
-  final String title;
-  final String siteName;
-  final String imageLink;
-  final String snippet;
-  final String url;
-  ScreenArguments(
-      {this.title, this.siteName, this.imageLink, this.snippet, this.url});
 }
