@@ -42,6 +42,7 @@ dependencies:
   string_similarity: ^1.1.0
   edit_distance: ^0.4.1
   googleapis: ^0.55.0
+  percent_indicator: "^2.1.7+2"
   
 dev_dependencies:
   flutter_test:
