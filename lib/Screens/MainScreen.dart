@@ -25,9 +25,13 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   int gradientBottomContainer = 0xffc294ae;
   int gradientTopButton = 0xffba91b1;
   int gradientBottomButton = 0xffc294ae;
+  int checkTextClr = 0xff62868E;
+  // bool hasClicked = false;
+
   void timing() {
     int hour = DateTime.now().hour;
     setState(() {
+      hour = 6;
       if (hour > 5 && hour < 12) {
         wish = 'Good Morning';
         imgSrc = 'assets/Images/morning.jpeg';
@@ -37,6 +41,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         gradientBottomContainer = 0xffc7d1c9;
         gradientTopButton = 0xffb9c8c5;
         gradientBottomButton = 0xffc7d1c9;
+        checkTextClr = 0xff62868E;
       } else if (hour > 12 && hour < 17) {
         wish = 'Good Afternoon';
         imgSrc = 'assets/Images/Noon.jpeg';
@@ -46,6 +51,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         gradientBottomContainer = 0xffd4b29a;
         gradientTopButton = 0xffcdab91;
         gradientBottomButton = 0xffcdab91;
+        checkTextClr = 0xff856C3E;
       } else if (hour > 17 && hour < 20) {
         wish = 'Good Evening';
         imgSrc = 'assets/Images/evening.jpeg';
@@ -55,6 +61,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         gradientBottomContainer = 0xffc294ae;
         gradientTopButton = 0xffba91b1;
         gradientBottomButton = 0xffc294ae;
+        checkTextClr = 0xff7078D3;
       } else {
         wish = 'Good Night';
         imgSrc = 'assets/Images/night.jpeg';
@@ -64,6 +71,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         gradientBottomContainer = 0xff5e5370;
         gradientTopButton = 0xff5e5370;
         gradientBottomButton = 0xff5e5370;
+        checkTextClr = 0xff3B3657;
       }
     });
   }
@@ -97,6 +105,14 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   bool hasInternet = true;
   String message = '';
   String viewPage = '';
+  // SizedBox changeClicked() {
+  //   setState(() {
+  //     hasClicked = true;
+  //   });
+  //
+  //   return SizedBox();
+  // }
+
   void _handleSubmitted(String text) async {
     FocusScopeNode currentFocus = FocusScope.of(context);
 
@@ -257,12 +273,12 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         MediaQuery.of(context).padding.top -
         kToolbarHeight;
     final _width = MediaQuery.of(context).size.width;
-    backClr = 0xff181800;
-    wishClr = 0xff62868e;
-    gradientTopContainer = 0xff1f6599;
-    gradientBottomContainer = 0xffc7d1c9;
-    gradientTopButton = 0xffb9c8c5;
-    gradientBottomButton = 0xffc7d1c9;
+    // backClr = 0xff181800;
+    // wishClr = 0xff62868e;
+    // gradientTopContainer = 0xff5d848f;
+    // gradientBottomContainer = 0xfffed062;
+    // gradientTopButton = 0xffb9c8c5;
+    // gradientBottomButton = 0xffc7d1c9;
     return Scaffold(
       backgroundColor: Color(gradientTopContainer),
       body: SafeArea(
@@ -330,6 +346,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                             top: _height * 0.18, bottom: _height * 0.18),
                         child: Center(
                           child: CircularPercentIndicator(
+                              backgroundColor: Colors.black.withOpacity(0),
                               animationDuration: 500,
                               radius: 150.0,
                               lineWidth: 13.0,
@@ -338,19 +355,23 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                       percentage) /
                                   100,
                               center: Text(
-                                "${(_animationController.value * percentage).toInt()}%",
+                                (true)
+                                    ? "${(_animationController.value * percentage).toInt()}%"
+                                    : "%",
                                 style: TextStyle(
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20.0),
                               ),
                               footer: Text(
                                 "Fake",
                                 style: TextStyle(
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17.0),
                               ),
                               circularStrokeCap: CircularStrokeCap.round,
-                              progressColor: Color(0xff45BB78)),
+                              progressColor: Colors.white),
                         ),
                       ),
                       // if (onVerifyClick &&
@@ -397,31 +418,34 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                             message,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Colors.black87,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                      Container(
-                        padding: EdgeInsets.only(top: _height * 0.02),
-                        width: _width * 0.55,
-                        height: _height * 0.1,
-                        decoration: BoxDecoration(color: Colors.white),
-                        child: FlatButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          onPressed: () {
-                            if (_controller.text != null)
-                              _handleSubmitted(_controller.text);
-                          },
-                          color: Color(0xff45BB78),
-                          child: Text(
-                            'CHECK',
-                            style: TextStyle(
-                                fontSize: _height * 0.03, color: Colors.white),
+                      GestureDetector(
+                        onTap: () {
+                          if (_controller.text != null)
+                            _handleSubmitted(_controller.text);
+                        },
+                        child: Container(
+                          // padding: EdgeInsets.only(top: _height * 0.02),
+                          width: _width * 0.28,
+                          height: _height * 0.09,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(_width * 0.025))),
+                          child: Center(
+                            child: Text(
+                              'CHECK',
+                              style: TextStyle(
+                                  fontSize: _height * 0.03,
+                                  color: Color(checkTextClr)),
+                            ),
                           ),
                         ),
                       ),
+
                       if (onVerifyClick &&
                           !noResultFound &&
                           !isEaster &&
@@ -429,35 +453,47 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                           Analyzer.imageLinkToSend != null &&
                           Analyzer.titleToSend != null &&
                           Analyzer.formattedUrlToSend != null)
-                        Container(
-                          margin: EdgeInsets.only(top: _height * 0.02),
-                          child: GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                elevation: 10,
-                                enableDrag: true,
-                                builder: (context) => SingleChildScrollView(
-                                  child: BottomSheetBuilder(
-                                    imageLink: Analyzer.imageLinkToSend,
-                                    siteName: Analyzer.siteNameToSend,
-                                    snippet: Analyzer.descriptionToSend,
-                                    title: Analyzer.titleToSend,
-                                    url: Analyzer.formattedUrlToSend,
+                        // changeClicked(),
+
+                        if (onVerifyClick &&
+                            !noResultFound &&
+                            !isEaster &&
+                            Analyzer.descriptionToSend != null &&
+                            Analyzer.imageLinkToSend != null &&
+                            Analyzer.titleToSend != null &&
+                            Analyzer.formattedUrlToSend != null)
+                          Container(
+                            margin: EdgeInsets.only(top: _height * 0.02),
+                            child: GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  elevation: 10,
+                                  enableDrag: true,
+                                  builder: (context) => SingleChildScrollView(
+                                    child: BottomSheetBuilder(
+                                      imageLink: Analyzer.imageLinkToSend,
+                                      siteName: Analyzer.siteNameToSend,
+                                      snippet: Analyzer.descriptionToSend,
+                                      title: Analyzer.titleToSend,
+                                      url: Analyzer.formattedUrlToSend,
+                                    ),
                                   ),
+                                );
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: _height * 0.5),
+                                child: Text(
+                                  'View Source',
+                                  style: TextStyle(
+                                      fontSize: _height * 0.028,
+                                      color: Colors.white,
+                                      decoration: TextDecoration.underline),
                                 ),
-                              );
-                            },
-                            child: Text(
-                              'View Source',
-                              style: TextStyle(
-                                  fontSize: _height * 0.028,
-                                  color: Color(0xff45BB78),
-                                  decoration: TextDecoration.underline),
+                              ),
                             ),
                           ),
-                        ),
                     ],
                   ),
                 ),
@@ -477,6 +513,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                       size: 20.0,
                     ),
                   ),
+                // SizedBox(
+                //   height: _height * 0.5,
+                // ),
               ],
             ),
           ),

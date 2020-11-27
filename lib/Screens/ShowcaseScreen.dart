@@ -95,20 +95,27 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                       collapseMode: CollapseMode.parallax,
                       background: Stack(
                         children: [
-                          Image(
-                            image: AssetImage(imgSrc),
-                            alignment: Alignment.center,
-                            fit: BoxFit.fill,
+                          Align(
+                            alignment: Alignment.topCenter,
+                            child: Image(
+                              image: AssetImage(imgSrc),
+                              // alignment: Alignment.center,
+                              fit: BoxFit.fill,
+                            ),
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              Text(
-                                wish,
-                                style: TextStyle(
-                                    fontSize: _height * 0.04,
-                                    color: Color(wishClr)),
+                              Padding(
+                                padding: EdgeInsets.all(_height * 0.025),
+                                child: Text(
+                                  wish,
+                                  style: TextStyle(
+                                      fontSize: _height * 0.04,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(wishClr)),
+                                ),
                               ),
                             ],
                           ),
