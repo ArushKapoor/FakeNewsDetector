@@ -285,239 +285,237 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
           onTap: () {
             FocusScope.of(context).unfocus();
           },
-          child: SingleChildScrollView(
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: <Color>[
-                        Color(gradientTopContainer),
-                        Color(gradientBottomContainer)
-                      ])),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: _height * 0.1,
-                            left: _width * 0.05,
-                            right: _width * 0.05),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15.0)),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          width: _width,
-                          height: _height * 0.07,
-                          child: TextField(
-                            maxLines: 200,
-                            textAlignVertical: TextAlignVertical.bottom,
-                            enableInteractiveSelection: true,
-                            controller: _controller,
-                            keyboardType: TextInputType.multiline,
-                            scrollController: ScrollController(),
-                            showCursor: true,
-                            cursorColor: Colors.green,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.all(8.0),
-                              prefixIcon: Icon(Icons.search),
-                              fillColor: Color(0xff000000),
-                              border: InputBorder.none,
-                              hintText: 'Enter your query',
-                              hintStyle: TextStyle(fontSize: _height * 0.03),
-                            ),
-                            style: TextStyle(
-                              fontSize: _height * 0.03,
-                            ),
-                            scrollPhysics: BouncingScrollPhysics(
-                                parent: AlwaysScrollableScrollPhysics()),
-                          ),
-                        ),
-                      ),
-                      //if (noMatchFound && noResultFound)
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: _height * 0.18, bottom: _height * 0.18),
-                        child: Center(
-                          child: CircularPercentIndicator(
-                              backgroundColor: Colors.black.withOpacity(0),
-                              animationDuration: 500,
-                              radius: 150.0,
-                              lineWidth: 13.0,
-                              animation: true,
-                              percent: (_animationWidgetController.value *
-                                      percentage) /
-                                  100,
-                              center: Text(
-                                (hasClicked)
-                                    ? "${(_animationController.value * percentage).toInt()}%"
-                                    : "%",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.0),
-                              ),
-                              footer: Text(
-                                "Fake",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17.0),
-                              ),
-                              circularStrokeCap: CircularStrokeCap.round,
-                              progressColor: Colors.white),
-                        ),
-                      ),
-                      // if (onVerifyClick &&
-                      //     !noMatchFound &&
-                      //     !noResultFound &&
-                      //     !isEaster)
-                      // Container(
-                      //   padding: EdgeInsets.only(bottom: _height * 0.05),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       verifyText(
-                      //           isFake: false,
-                      //           percentage: (percentage != 0
-                      //                   ? 100 -
-                      //                       (_animation.value * percentage)
-                      //                   : _animation.value * 100)
-                      //               .toInt()
-                      //               .toString()),
-                      //       SizedBox(
-                      //         width: _width * 0.15,
-                      //       ),
-                      //       verifyText(
-                      //           isFake: true,
-                      //           percentage: (percentage != 0
-                      //                   ? _animation.value * percentage
-                      //                   : (100 - _animation.value * 100))
-                      //               .toInt()
-                      //               .toString()),
-                      //     ],
-                      //   ),
-                      // ),
-                      if (noMatchFound ||
-                          noResultFound ||
-                          isEaster ||
-                          !hasInternet)
-                        Container(
-                          padding: EdgeInsets.only(
-                              //top: _height * 0.05,
-                              bottom: _height * 0.05,
-                              left: _width * 0.05,
-                              right: _width * 0.05),
-                          child: Text(
-                            message,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      GestureDetector(
-                        onTap: () {
-                          if (_controller.text != null)
-                            _handleSubmitted(_controller.text);
-                        },
-                        child: Container(
-                          // padding: EdgeInsets.only(top: _height * 0.02),
-                          width: _width * 0.28,
-                          height: _height * 0.09,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(_width * 0.025))),
-                          child: Center(
-                            child: Text(
-                              'CHECK',
-                              style: TextStyle(
-                                  fontSize: _height * 0.03,
-                                  color: Color(checkTextClr)),
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      if (onVerifyClick &&
-                          !noResultFound &&
-                          !isEaster &&
-                          Analyzer.descriptionToSend != null &&
-                          Analyzer.imageLinkToSend != null &&
-                          Analyzer.titleToSend != null &&
-                          Analyzer.formattedUrlToSend != null)
-                        changeClicked(),
-
-                      if (onVerifyClick &&
-                          !noResultFound &&
-                          !isEaster &&
-                          Analyzer.descriptionToSend != null &&
-                          Analyzer.imageLinkToSend != null &&
-                          Analyzer.titleToSend != null &&
-                          Analyzer.formattedUrlToSend != null)
-                        Container(
-                          margin: EdgeInsets.only(top: _height * 0.02),
-                          child: GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                elevation: 10,
-                                enableDrag: true,
-                                builder: (context) => SingleChildScrollView(
-                                  child: BottomSheetBuilder(
-                                    imageLink: Analyzer.imageLinkToSend,
-                                    siteName: Analyzer.siteNameToSend,
-                                    snippet: Analyzer.descriptionToSend,
-                                    title: Analyzer.titleToSend,
-                                    url: Analyzer.formattedUrlToSend,
-                                  ),
-                                ),
-                              );
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(bottom: _height * 0.5),
-                              child: Text(
-                                'View Source',
-                                style: TextStyle(
-                                    fontSize: _height * 0.028,
-                                    color: Colors.white,
-                                    decoration: TextDecoration.underline),
-                              ),
-                            ),
-                          ),
-                        ),
+          child: Stack(children: [
+            SingleChildScrollView(
+              child: Container(
+                height: _height,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: <Color>[
+                      Color(gradientTopContainer),
+                      Color(gradientBottomContainer)
                     ],
                   ),
                 ),
-                if (isVisible)
-                  Opacity(
-                    opacity: 0.60,
-                    child: Container(
-                      color: Colors.grey[100],
-                      height: _height,
-                      width: _width,
+                child: Column(
+                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: _height * 0.1,
+                          left: _width * 0.05,
+                          right: _width * 0.05),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        width: _width,
+                        height: _height * 0.07,
+                        child: TextField(
+                          maxLines: 200,
+                          textAlignVertical: TextAlignVertical.bottom,
+                          enableInteractiveSelection: true,
+                          controller: _controller,
+                          keyboardType: TextInputType.multiline,
+                          scrollController: ScrollController(),
+                          showCursor: true,
+                          cursorColor: Colors.green,
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.all(8.0),
+                            prefixIcon: Icon(Icons.search),
+                            fillColor: Color(0xff000000),
+                            border: InputBorder.none,
+                            hintText: 'Enter your query',
+                            hintStyle: TextStyle(fontSize: _height * 0.03),
+                          ),
+                          style: TextStyle(
+                            fontSize: _height * 0.03,
+                          ),
+                          scrollPhysics: BouncingScrollPhysics(
+                              parent: AlwaysScrollableScrollPhysics()),
+                        ),
+                      ),
                     ),
-                  ),
-                if (isVisible)
-                  Center(
-                    child: const SpinKitThreeBounce(
-                      color: Colors.blue,
-                      size: 20.0,
+                    //if (noMatchFound && noResultFound)
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: _height * 0.18, bottom: _height * 0.18),
+                      child: Center(
+                        child: CircularPercentIndicator(
+                            backgroundColor: Colors.black.withOpacity(0),
+                            animationDuration: 500,
+                            radius: 150.0,
+                            lineWidth: 13.0,
+                            animation: true,
+                            percent: (_animationWidgetController.value *
+                                    percentage) /
+                                100,
+                            center: Text(
+                              (hasClicked)
+                                  ? "${(_animationController.value * percentage).toInt()}%"
+                                  : "%",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0),
+                            ),
+                            footer: Text(
+                              "Fake",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17.0),
+                            ),
+                            circularStrokeCap: CircularStrokeCap.round,
+                            progressColor: Colors.white),
+                      ),
                     ),
-                  ),
-                // SizedBox(
-                //   height: _height * 0.5,
-                // ),
-              ],
+                    // if (onVerifyClick &&
+                    //     !noMatchFound &&
+                    //     !noResultFound &&
+                    //     !isEaster)
+                    // Container(
+                    //   padding: EdgeInsets.only(bottom: _height * 0.05),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       verifyText(
+                    //           isFake: false,
+                    //           percentage: (percentage != 0
+                    //                   ? 100 -
+                    //                       (_animation.value * percentage)
+                    //                   : _animation.value * 100)
+                    //               .toInt()
+                    //               .toString()),
+                    //       SizedBox(
+                    //         width: _width * 0.15,
+                    //       ),
+                    //       verifyText(
+                    //           isFake: true,
+                    //           percentage: (percentage != 0
+                    //                   ? _animation.value * percentage
+                    //                   : (100 - _animation.value * 100))
+                    //               .toInt()
+                    //               .toString()),
+                    //     ],
+                    //   ),
+                    // ),
+                    if (noMatchFound ||
+                        noResultFound ||
+                        isEaster ||
+                        !hasInternet)
+                      Container(
+                        padding: EdgeInsets.only(
+                            //top: _height * 0.05,
+                            bottom: _height * 0.05,
+                            left: _width * 0.05,
+                            right: _width * 0.05),
+                        child: Text(
+                          message,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    GestureDetector(
+                      onTap: () {
+                        if (_controller.text != null)
+                          _handleSubmitted(_controller.text);
+                      },
+                      child: Container(
+                        // padding: EdgeInsets.only(top: _height * 0.02),
+                        width: _width * 0.28,
+                        height: _height * 0.09,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(_width * 0.025))),
+                        child: Center(
+                          child: Text(
+                            'CHECK',
+                            style: TextStyle(
+                                fontSize: _height * 0.03,
+                                color: Color(checkTextClr)),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    if (onVerifyClick &&
+                        !noResultFound &&
+                        !isEaster &&
+                        Analyzer.descriptionToSend != null &&
+                        Analyzer.imageLinkToSend != null &&
+                        Analyzer.titleToSend != null &&
+                        Analyzer.formattedUrlToSend != null)
+                      changeClicked(),
+
+                    if (onVerifyClick &&
+                        !noResultFound &&
+                        !isEaster &&
+                        Analyzer.descriptionToSend != null &&
+                        Analyzer.imageLinkToSend != null &&
+                        Analyzer.titleToSend != null &&
+                        Analyzer.formattedUrlToSend != null)
+                      Container(
+                        margin: EdgeInsets.only(top: _height * 0.02),
+                        child: GestureDetector(
+                          onTap: () {
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              elevation: 10,
+                              enableDrag: true,
+                              builder: (context) => SingleChildScrollView(
+                                child: BottomSheetBuilder(
+                                  imageLink: Analyzer.imageLinkToSend,
+                                  siteName: Analyzer.siteNameToSend,
+                                  snippet: Analyzer.descriptionToSend,
+                                  title: Analyzer.titleToSend,
+                                  url: Analyzer.formattedUrlToSend,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(),
+                            child: Text(
+                              'View Source',
+                              style: TextStyle(
+                                  fontSize: _height * 0.028,
+                                  color: Colors.white,
+                                  decoration: TextDecoration.underline),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
             ),
-          ),
+            if (isVisible)
+              Opacity(
+                opacity: 0.60,
+                child: Container(
+                  height: _height,
+                  width: _width,
+                ),
+              ),
+            if (isVisible)
+              Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+                ),
+              ),
+            // SizedBox(
+            //   height: _height * 0.5,
+            // ),
+          ]),
         ),
       ),
     );
