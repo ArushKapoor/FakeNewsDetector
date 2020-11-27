@@ -14,6 +14,10 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
   String wish, imgSrc;
   int wishClr = 0xffE7E7E7;
   int backClr = 0xff181800;
+  int gradientTopContainer = 0xff847fca;
+  int gradientBottomContainer = 0xffc294ae;
+  int gradientTopButton = 0xffba91b1;
+  int gradientBottomButton = 0xffc294ae;
   void timing() {
     int hour = DateTime.now().hour;
     setState(() {
@@ -21,22 +25,38 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         wish = 'Good Morning';
         imgSrc = 'assets/Images/morning.jpeg';
         backClr = 0xff181800;
-        wishClr = 0xffe7e7e7;
+        wishClr = 0xffffffff;
+        gradientTopContainer = 0xff1f6599;
+        gradientBottomContainer = 0xffc7d1c9;
+        gradientTopButton = 0xffb9c8c5;
+        gradientBottomButton = 0xffc7d1c9;
       } else if (hour > 12 && hour < 17) {
         wish = 'Good Afternoon';
         imgSrc = 'assets/Images/Noon.jpeg';
-        backClr = 0xff604830;
-        wishClr = 0xff9FB7CF;
+        backClr = 0xff977c54;
+        wishClr = 0xffffffff;
+        gradientTopContainer = 0xff977c53;
+        gradientBottomContainer = 0xffd4b29a;
+        gradientTopButton = 0xffcdab91;
+        gradientBottomButton = 0xffcdab91;
       } else if (hour > 17 && hour < 20) {
         wish = 'Good Evening';
         imgSrc = 'assets/Images/evening.jpeg';
-        backClr = 0xffCFCF87;
-        wishClr = 0xff;
+        backClr = 0xff847fca;
+        wishClr = 0xffffffff;
+        gradientTopContainer = 0xff847fca;
+        gradientBottomContainer = 0xffc294ae;
+        gradientTopButton = 0xffba91b1;
+        gradientBottomButton = 0xffc294ae;
       } else {
         wish = 'Good Night';
         imgSrc = 'assets/Images/night.jpeg';
-        backClr = 0xff181818;
-        wishClr = 0xffe7e7e7;
+        backClr = 0xff1f1e43;
+        wishClr = 0xffffffff;
+        gradientTopContainer = 0xff272445;
+        gradientBottomContainer = 0xff5e5370;
+        gradientTopButton = 0xff5e5370;
+        gradientBottomButton = 0xff5e5370;
       }
     });
   }
@@ -77,6 +97,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                         children: [
                           Image(
                             image: AssetImage(imgSrc),
+                            alignment: Alignment.center,
                             fit: BoxFit.fill,
                           ),
                           Column(
@@ -105,7 +126,15 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                 ];
               },
               body: Container(
-                //color: Color(0xff181800),
+                //color: Color(0xffffffff),
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: <Color>[
+                      Color(gradientTopContainer),
+                      Color(gradientBottomContainer)
+                    ])),
                 height: _height * 0.87,
                 child: NewsStream(
                     firestore: _firestore, height: _height, width: _width),
@@ -114,18 +143,26 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
             Align(
               alignment: AlignmentDirectional.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(top: 8.0),
                 child: Container(
-                  width: _width * 0.55,
-                  height: _height * 0.09,
+                  width: _width,
+                  height: _height * 0.08,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: <Color>[
+                        Color(gradientTopButton),
+                        Color(gradientBottomButton),
+                      ])),
                   child: FlatButton(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
+                        //borderRadius: BorderRadius.circular(15.0),
+                        ),
                     onPressed: () {
                       Navigator.pushNamed(context, AppBody.id);
                     },
-                    color: Color(backClr),
+                    // color: Color(backClr),
                     child: Text(
                       'VERIFY',
                       style: TextStyle(
@@ -195,9 +232,7 @@ class NewsStream extends StatelessWidget {
           tiles.add(newTile);
           newsNumber++;
         }
-        tiles.add(Blanck(
-          height: _height,
-        ));
+
         return ListView(
           children: tiles,
         );
@@ -228,7 +263,7 @@ class SingleNewsTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
-      elevation: 10,
+      //elevation: 10,
       child: InkWell(
         onTap: () {
           showModalBottomSheet(

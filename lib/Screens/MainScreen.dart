@@ -18,12 +18,63 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   TextEditingController _controller;
   AnimationController _animationController;
   AnimationController _animationWidgetController;
+  String wish, imgSrc;
+  int wishClr = 0xffE7E7E7;
+  int backClr = 0xff181800;
+  int gradientTopContainer = 0xff847fca;
+  int gradientBottomContainer = 0xffc294ae;
+  int gradientTopButton = 0xffba91b1;
+  int gradientBottomButton = 0xffc294ae;
+  void timing() {
+    int hour = DateTime.now().hour;
+    setState(() {
+      if (hour > 5 && hour < 12) {
+        wish = 'Good Morning';
+        imgSrc = 'assets/Images/morning.jpeg';
+        backClr = 0xff181800;
+        wishClr = 0xff62868e;
+        gradientTopContainer = 0xff1f6599;
+        gradientBottomContainer = 0xffc7d1c9;
+        gradientTopButton = 0xffb9c8c5;
+        gradientBottomButton = 0xffc7d1c9;
+      } else if (hour > 12 && hour < 17) {
+        wish = 'Good Afternoon';
+        imgSrc = 'assets/Images/Noon.jpeg';
+        backClr = 0xff977c54;
+        wishClr = 0xff865c3e;
+        gradientTopContainer = 0xff977c53;
+        gradientBottomContainer = 0xffd4b29a;
+        gradientTopButton = 0xffcdab91;
+        gradientBottomButton = 0xffcdab91;
+      } else if (hour > 17 && hour < 20) {
+        wish = 'Good Evening';
+        imgSrc = 'assets/Images/evening.jpeg';
+        backClr = 0xff847fca;
+        wishClr = 0xff7078d3;
+        gradientTopContainer = 0xff847fca;
+        gradientBottomContainer = 0xffc294ae;
+        gradientTopButton = 0xffba91b1;
+        gradientBottomButton = 0xffc294ae;
+      } else {
+        wish = 'Good Night';
+        imgSrc = 'assets/Images/night.jpeg';
+        backClr = 0xff1f1e43;
+        wishClr = 0xff3b3657;
+        gradientTopContainer = 0xff272445;
+        gradientBottomContainer = 0xff5e5370;
+        gradientTopButton = 0xff5e5370;
+        gradientBottomButton = 0xff5e5370;
+      }
+    });
+  }
+
   // Animation _animation;
   bool onVerifyClick = false;
   bool isVisible = false;
   @override
   void initState() {
     super.initState();
+    timing();
     _controller = TextEditingController();
     _animationController = AnimationController(
       duration: Duration(seconds: 5),
@@ -206,9 +257,14 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         MediaQuery.of(context).padding.top -
         kToolbarHeight;
     final _width = MediaQuery.of(context).size.width;
-
+    backClr = 0xff181800;
+    wishClr = 0xff62868e;
+    gradientTopContainer = 0xff1f6599;
+    gradientBottomContainer = 0xffc7d1c9;
+    gradientTopButton = 0xffb9c8c5;
+    gradientBottomButton = 0xffc7d1c9;
     return Scaffold(
-      backgroundColor: Color(0xffFFF1BA),
+      backgroundColor: Color(gradientTopContainer),
       body: SafeArea(
         child: GestureDetector(
           onTap: () {
@@ -218,8 +274,16 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
             child: Stack(
               children: <Widget>[
                 Container(
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: <Color>[
+                        Color(gradientTopContainer),
+                        Color(gradientBottomContainer)
+                      ])),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(
@@ -267,7 +331,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                         child: Center(
                           child: CircularPercentIndicator(
                               animationDuration: 500,
-                              radius: 120.0,
+                              radius: 150.0,
                               lineWidth: 13.0,
                               animation: true,
                               percent: (_animationWidgetController.value *
@@ -341,6 +405,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                         padding: EdgeInsets.only(top: _height * 0.02),
                         width: _width * 0.55,
                         height: _height * 0.1,
+                        decoration: BoxDecoration(color: Colors.white),
                         child: FlatButton(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15.0),
@@ -351,7 +416,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                           },
                           color: Color(0xff45BB78),
                           child: Text(
-                            'VERIFY',
+                            'CHECK',
                             style: TextStyle(
                                 fontSize: _height * 0.03, color: Colors.white),
                           ),
@@ -385,7 +450,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                               );
                             },
                             child: Text(
-                              'View Page',
+                              'View Source',
                               style: TextStyle(
                                   fontSize: _height * 0.028,
                                   color: Color(0xff45BB78),
