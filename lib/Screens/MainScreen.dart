@@ -26,12 +26,11 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   int gradientTopButton = 0xffba91b1;
   int gradientBottomButton = 0xffc294ae;
   int checkTextClr = 0xff62868E;
-  // bool hasClicked = false;
+  bool hasClicked = false;
 
   void timing() {
     int hour = DateTime.now().hour;
     setState(() {
-      hour = 6;
       if (hour > 5 && hour < 12) {
         wish = 'Good Morning';
         imgSrc = 'assets/Images/morning.jpeg';
@@ -105,13 +104,13 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   bool hasInternet = true;
   String message = '';
   String viewPage = '';
-  // SizedBox changeClicked() {
-  //   setState(() {
-  //     hasClicked = true;
-  //   });
-  //
-  //   return SizedBox();
-  // }
+  SizedBox changeClicked() {
+    setState(() {
+      hasClicked = true;
+    });
+
+    return SizedBox();
+  }
 
   void _handleSubmitted(String text) async {
     FocusScopeNode currentFocus = FocusScope.of(context);
@@ -355,7 +354,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                       percentage) /
                                   100,
                               center: Text(
-                                (true)
+                                (hasClicked)
                                     ? "${(_animationController.value * percentage).toInt()}%"
                                     : "%",
                                 style: TextStyle(
@@ -453,47 +452,47 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                           Analyzer.imageLinkToSend != null &&
                           Analyzer.titleToSend != null &&
                           Analyzer.formattedUrlToSend != null)
-                        // changeClicked(),
+                        changeClicked(),
 
-                        if (onVerifyClick &&
-                            !noResultFound &&
-                            !isEaster &&
-                            Analyzer.descriptionToSend != null &&
-                            Analyzer.imageLinkToSend != null &&
-                            Analyzer.titleToSend != null &&
-                            Analyzer.formattedUrlToSend != null)
-                          Container(
-                            margin: EdgeInsets.only(top: _height * 0.02),
-                            child: GestureDetector(
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true,
-                                  elevation: 10,
-                                  enableDrag: true,
-                                  builder: (context) => SingleChildScrollView(
-                                    child: BottomSheetBuilder(
-                                      imageLink: Analyzer.imageLinkToSend,
-                                      siteName: Analyzer.siteNameToSend,
-                                      snippet: Analyzer.descriptionToSend,
-                                      title: Analyzer.titleToSend,
-                                      url: Analyzer.formattedUrlToSend,
-                                    ),
+                      if (onVerifyClick &&
+                          !noResultFound &&
+                          !isEaster &&
+                          Analyzer.descriptionToSend != null &&
+                          Analyzer.imageLinkToSend != null &&
+                          Analyzer.titleToSend != null &&
+                          Analyzer.formattedUrlToSend != null)
+                        Container(
+                          margin: EdgeInsets.only(top: _height * 0.02),
+                          child: GestureDetector(
+                            onTap: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                elevation: 10,
+                                enableDrag: true,
+                                builder: (context) => SingleChildScrollView(
+                                  child: BottomSheetBuilder(
+                                    imageLink: Analyzer.imageLinkToSend,
+                                    siteName: Analyzer.siteNameToSend,
+                                    snippet: Analyzer.descriptionToSend,
+                                    title: Analyzer.titleToSend,
+                                    url: Analyzer.formattedUrlToSend,
                                   ),
-                                );
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.only(bottom: _height * 0.5),
-                                child: Text(
-                                  'View Source',
-                                  style: TextStyle(
-                                      fontSize: _height * 0.028,
-                                      color: Colors.white,
-                                      decoration: TextDecoration.underline),
                                 ),
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: _height * 0.5),
+                              child: Text(
+                                'View Source',
+                                style: TextStyle(
+                                    fontSize: _height * 0.028,
+                                    color: Colors.white,
+                                    decoration: TextDecoration.underline),
                               ),
                             ),
                           ),
+                        ),
                     ],
                   ),
                 ),
