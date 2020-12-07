@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_news_detector/Screens/MainScreen.dart';
+import 'package:fake_news_detector/Screens/MiddleSheetBuilder.dart';
 import 'package:flutter/material.dart';
 import 'BottomSheetBuilder.dart';
 
@@ -274,6 +275,7 @@ class SingleNewsTile extends StatelessWidget {
       child: InkWell(
         onTap: () {
           showModalBottomSheet(
+            backgroundColor: Colors.black.withOpacity(0),
             context: context,
             isScrollControlled: true,
             elevation: 10,
