@@ -304,45 +304,45 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                   child: Column(
                     //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      // Padding(
-                      //   padding: EdgeInsets.only(
-                      //       top: _height * 0.05,
-                      //       left: _width * 0.05,
-                      //       right: _width * 0.05),
-                      //   child: Container(
-                      //     decoration: BoxDecoration(
-                      //       color: Colors.white,
-                      //       borderRadius:
-                      //           BorderRadius.all(Radius.circular(15.0)),
-                      //     ),
-                      //     padding: EdgeInsets.symmetric(horizontal: 10.0),
-                      //     width: _width,
-                      //     height: _height * 0.07,
-                      //     child: TextField(
-                      //       maxLines: 200,
-                      //       textAlignVertical: TextAlignVertical.bottom,
-                      //       enableInteractiveSelection: true,
-                      //       controller: _controller,
-                      //       keyboardType: TextInputType.multiline,
-                      //       scrollController: ScrollController(),
-                      //       showCursor: true,
-                      //       cursorColor: Colors.green,
-                      //       decoration: InputDecoration(
-                      //         contentPadding: EdgeInsets.all(8.0),
-                      //         prefixIcon: Icon(Icons.search),
-                      //         fillColor: Color(0xff000000),
-                      //         border: InputBorder.none,
-                      //         hintText: 'Enter your query',
-                      //         hintStyle: TextStyle(fontSize: _height * 0.03),
-                      //       ),
-                      //       style: TextStyle(
-                      //         fontSize: _height * 0.03,
-                      //       ),
-                      //       scrollPhysics: BouncingScrollPhysics(
-                      //           parent: AlwaysScrollableScrollPhysics()),
-                      //     ),
-                      //   ),
-                      // ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top: _height * 0.05,
+                            left: _width * 0.05,
+                            right: _width * 0.05),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15.0)),
+                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          width: _width,
+                          height: _height * 0.07,
+                          child: TextField(
+                            maxLines: 200,
+                            textAlignVertical: TextAlignVertical.bottom,
+                            enableInteractiveSelection: true,
+                            controller: _controller,
+                            keyboardType: TextInputType.multiline,
+                            scrollController: ScrollController(),
+                            showCursor: true,
+                            cursorColor: Colors.green,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.all(8.0),
+                              prefixIcon: Icon(Icons.search),
+                              fillColor: Color(0xff000000),
+                              border: InputBorder.none,
+                              hintText: 'Enter your query',
+                              hintStyle: TextStyle(fontSize: _height * 0.03),
+                            ),
+                            style: TextStyle(
+                              fontSize: _height * 0.03,
+                            ),
+                            scrollPhysics: BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                          ),
+                        ),
+                      ),
 
                       //if (noMatchFound && noResultFound)
                       Padding(
