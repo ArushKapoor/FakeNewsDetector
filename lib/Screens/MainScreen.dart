@@ -359,10 +359,10 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                             radius: 150.0,
                             lineWidth: 13.0,
                             animation: true,
-                            // percent: (_animationWidgetController.value *
-                            //         percentage) /
-                            //     100,
-                            percent: 0.5,
+                            percent: (_animationWidgetController.value *
+                                    percentage) /
+                                100,
+                            // percent: 0.5,
                             center: Text(
                               (hasClicked)
                                   ? "${(_animationController.value * percentage).toInt()}%"
