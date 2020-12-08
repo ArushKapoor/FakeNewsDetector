@@ -100,7 +100,7 @@ class Analyzer {
 
       wordSnip = decodeJson1['items'][i]['snippet'];
       wordTitle = decodeJson1['items'][i]['title'];
-      wordUrl = decodeJson1['items'][i]['formattedUrl'];
+      wordUrl = decodeJson1['items'][i]['link'];
       String rakeWordSnip = rake.rank(wordSnip).join(' ');
       double ratioRakeSnip =
           wordFrequencySimilarity(rakeWordSnip, rake.rank(q).join(' '));
@@ -169,7 +169,7 @@ class Analyzer {
                 siteNameToSend = decodeJson1['items'][i]['pagemap']['metatags']
                     [0]['og:site_name'];
                 titleToSend = decodeJson1['items'][i]['title'];
-                formattedUrlToSend = decodeJson1['items'][i]['formattedUrl'];
+                formattedUrlToSend = decodeJson1['items'][i]['link'];
                 // snippetToSend = decodeJson1['items'][i]['snippet'];
                 isFakeChecked = true;
               }
@@ -244,7 +244,7 @@ class Analyzer {
             [0]['og:site_name'];
       }
       titleToSend = decodeJson1['items'][posForTrue]['title'];
-      formattedUrlToSend = decodeJson1['items'][posForTrue]['formattedUrl'];
+      formattedUrlToSend = decodeJson1['items'][posForTrue]['link'];
       // snippetToSend = decodeJson1['items'][posForTrue]['snippet'];
     }
 
