@@ -240,7 +240,9 @@ class NewsStream extends StatelessWidget {
           tiles.add(newTile);
           newsNumber++;
         }
-
+        tiles.add(Blanck(
+          height: _height,
+        ));
         return ListView(
           children: tiles,
         );
@@ -330,7 +332,7 @@ class Blanck extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height * 0.1,
+      height: height * 0.07,
     );
   }
 }
