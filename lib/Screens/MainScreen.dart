@@ -31,6 +31,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   void timing() {
     int hour = DateTime.now().hour;
     setState(() {
+      hour = 18;
       if (hour > 5 && hour < 12) {
         wish = 'Good Morning';
         imgSrc = 'assets/Images/morning.jpeg';
@@ -272,1238 +273,492 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         MediaQuery.of(context).padding.top -
         kToolbarHeight;
     final _width = MediaQuery.of(context).size.width;
+    print('${_width * 0.4688}');
     // backClr = 0xff181800;
     // wishClr = 0xff62868e;
     // gradientTopContainer = 0xff5d848f;
     // gradientBottomContainer = 0xfffed062;
     // gradientTopButton = 0xffb9c8c5;
     // gradientBottomButton = 0xffc7d1c9;
-    return Scaffold(
-      backgroundColor: Color(gradientTopContainer),
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: Padding(
-            padding: EdgeInsets.only(top: _height * 0.075),
-            child: Stack(children: [
-              SingleChildScrollView(
-                child: Container(
-                  height: _height,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: <Color>[
-                        Color(gradientTopContainer),
-                        Color(gradientBottomContainer)
-                      ],
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color(gradientTopContainer),
+            Color(gradientBottomContainer),
+          ],
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: Padding(
+              padding: EdgeInsets.only(top: _height * 0.075),
+              child: Stack(children: [
+                SingleChildScrollView(
+                  child: Container(
+                    height: _height,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: <Color>[
+                          Color(gradientTopContainer),
+                          Color(gradientBottomContainer)
+                        ],
+                      ),
                     ),
-                  ),
-                  child: Column(
-                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: _height * 0.05,
-                            left: _width * 0.05,
-                            right: _width * 0.05),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15.0)),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
-                          width: _width,
-                          height: _height * 0.07,
-                          child: TextField(
-                            maxLines: 200,
-                            textAlignVertical: TextAlignVertical.bottom,
-                            enableInteractiveSelection: true,
-                            controller: _controller,
-                            keyboardType: TextInputType.multiline,
-                            scrollController: ScrollController(),
-                            showCursor: true,
-                            cursorColor: Colors.green,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.all(8.0),
-                              prefixIcon: Icon(Icons.search),
-                              fillColor: Color(0xff000000),
-                              border: InputBorder.none,
-                              hintText: 'Enter your query',
-                              hintStyle: TextStyle(fontSize: _height * 0.03),
-                            ),
-                            style: TextStyle(
-                              fontSize: _height * 0.03,
-                            ),
-                            scrollPhysics: BouncingScrollPhysics(
-                                parent: AlwaysScrollableScrollPhysics()),
-                          ),
-                        ),
-                      ),
-
-                      //if (noMatchFound && noResultFound)
-                      Padding(
-                        padding: EdgeInsets.only(
-                            top: _height * 0.18, bottom: _height * 0.18),
-                        child: Center(
-                          child: CircularPercentIndicator(
-                            backgroundColor: (hasClicked)
-                                ? Colors.black.withOpacity(0)
-                                : Colors.white.withOpacity(0),
-                            animationDuration: 500,
-                            arcType: ArcType.HALF,
-                            arcBackgroundColor: Colors.white,
-                            radius: 150.0,
-                            lineWidth: 13.0,
-                            animation: true,
-                            percent: (_animationWidgetController.value *
-                                    percentage) /
-                                100,
-                            // percent: 0.5,
-                            center: Text(
-                              (hasClicked)
-                                  ? "${(_animationController.value * percentage).toInt()}%"
-                                  : "%",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25.0),
-                            ),
-                            footer: Text(
-                              "Fake",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17.0),
-                            ),
-                            circularStrokeCap: CircularStrokeCap.round,
-                            linearGradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: [
-                                Colors.green,
-                                Colors.red,
-                              ],
-                              // tileMode: TileMode.clamp,
-                            ),
-                            // progressColor: Colors.white,
-                          ),
-                        ),
-                      ),
-                      // if (onVerifyClick &&
-                      //     !noMatchFound &&
-                      //     !noResultFound &&
-                      //     !isEaster)
-                      // Container(
-                      //   padding: EdgeInsets.only(bottom: _height * 0.05),
-                      //   child: Row(
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      //     children: [
-                      //       verifyText(
-                      //           isFake: false,
-                      //           percentage: (percentage != 0
-                      //                   ? 100 -
-                      //                       (_animation.value * percentage)
-                      //                   : _animation.value * 100)
-                      //               .toInt()
-                      //               .toString()),
-                      //       SizedBox(
-                      //         width: _width * 0.15,
-                      //       ),
-                      //       verifyText(
-                      //           isFake: true,
-                      //           percentage: (percentage != 0
-                      //                   ? _animation.value * percentage
-                      //                   : (100 - _animation.value * 100))
-                      //               .toInt()
-                      //               .toString()),
-                      //     ],
-                      //   ),
-                      // ),
-                      if (noMatchFound ||
-                          noResultFound ||
-                          isEaster ||
-                          !hasInternet)
-                        Container(
+                    child: Column(
+                      //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        Padding(
                           padding: EdgeInsets.only(
-                              //top: _height * 0.05,
-                              bottom: _height * 0.05,
+                              top: _height * 0.05,
                               left: _width * 0.05,
                               right: _width * 0.05),
-                          child: Text(
-                            message,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
+                          child: Container(
+                            decoration: BoxDecoration(
                               color: Colors.white,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15.0)),
                             ),
-                          ),
-                        ),
-                      GestureDetector(
-                        onTap: () {
-                          if (_controller.text != null)
-                            _handleSubmitted(_controller.text);
-                        },
-                        child: Container(
-                          // padding: EdgeInsets.only(bottom: _height * 0.02),
-                          width: _width * 0.28,
-                          height: _height * 0.09,
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.all(
-                                  Radius.circular(_width * 0.025))),
-                          child: Center(
-                            child: Text(
-                              'CHECK',
+                            padding:
+                                EdgeInsets.symmetric(horizontal: _width * 0.04),
+                            width: _width,
+                            height: _height * 0.07,
+                            child: TextField(
+                              maxLines: 200,
+                              textAlignVertical: TextAlignVertical.bottom,
+                              enableInteractiveSelection: true,
+                              controller: _controller,
+                              keyboardType: TextInputType.multiline,
+                              scrollController: ScrollController(),
+                              showCursor: true,
+                              cursorColor: Colors.green,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.all(8.0),
+                                prefixIcon: Icon(Icons.search),
+                                fillColor: Color(0xff000000),
+                                border: InputBorder.none,
+                                hintText: 'Enter your query',
+                                hintStyle: TextStyle(fontSize: _height * 0.03),
+                              ),
                               style: TextStyle(
-                                  fontSize: _height * 0.03,
-                                  color: Color(checkTextClr)),
+                                fontSize: _height * 0.03,
+                              ),
+                              scrollPhysics: BouncingScrollPhysics(
+                                  parent: AlwaysScrollableScrollPhysics()),
                             ),
                           ),
                         ),
-                      ),
 
-                      if (onVerifyClick &&
-                          !noResultFound &&
-                          !isEaster &&
-                          Analyzer.descriptionToSend != null &&
-                          Analyzer.imageLinkToSend != null &&
-                          Analyzer.titleToSend != null &&
-                          Analyzer.formattedUrlToSend != null)
-                        changeClicked(),
+                        //if (noMatchFound && noResultFound)
+                        Padding(
+                          padding: EdgeInsets.only(
+                              top: _height * 0.18, bottom: _height * 0.18),
+                          child: Center(
+                            child: Stack(
+                              children: <Widget>[
+                                Positioned(
+                                  left: _width * 0.265,
+                                  child: CircularPercentIndicator(
+                                    backgroundColor: (hasClicked)
+                                        ? Colors.black.withOpacity(0)
+                                        : Colors.white,
+                                    animationDuration: 500,
+                                    backgroundWidth: _width * 0.0594,
+                                    arcType: ArcType.HALF,
+                                    arcBackgroundColor: Color(0xff8980C8),
+                                    radius: _width * 0.4688,
+                                    lineWidth: _width * 0.04065,
+                                    animation: true,
 
-                      if (onVerifyClick &&
-                          !noResultFound &&
-                          !isEaster &&
-                          Analyzer.descriptionToSend != null &&
-                          Analyzer.imageLinkToSend != null &&
-                          Analyzer.titleToSend != null &&
-                          Analyzer.formattedUrlToSend != null)
-                        Container(
-                          margin: EdgeInsets.only(top: _height * 0.02),
-                          child: GestureDetector(
-                            onTap: () {
-                              showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                elevation: 10,
-                                enableDrag: true,
-                                builder: (context) => SingleChildScrollView(
-                                  child: BottomSheetBuilder(
-                                    imageLink: Analyzer.imageLinkToSend,
-                                    siteName: Analyzer.siteNameToSend,
-                                    snippet: Analyzer.descriptionToSend,
-                                    title: Analyzer.titleToSend,
-                                    url: Analyzer.formattedUrlToSend,
+                                    // percent: (_animationWidgetController.value *
+                                    //         percentage) /
+                                    //     100,
+                                    percent: 0,
+                                    center: Text(
+                                      (hasClicked)
+                                          ? "${(_animationController.value * percentage).toInt()}%"
+                                          : "%",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: _height * 0.06),
+                                    ),
+                                    footer: Text(
+                                      "Fake",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: _height * 0.03),
+                                    ),
+                                    circularStrokeCap: CircularStrokeCap.round,
+                                    linearGradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      colors: [
+                                        Colors.green,
+                                        Colors.red,
+                                      ],
+                                      // tileMode: TileMode.clamp,
+                                    ),
+                                    // progressColor: Colors.white,
                                   ),
                                 ),
-                              );
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(),
+                                Positioned(
+                                  left: _width * 0.248,
+                                  top: _height * 0.173,
+                                  child: Container(
+                                    // margin: EdgeInsets.only(
+                                    //     top: _height * 0.132,
+                                    //     left: _width * 0.248),
+                                    child: RotatedBox(
+                                      quarterTurns: 2,
+                                      child: ClipPath(
+                                        clipper: ArcClipper(
+                                            height: _height, width: _width),
+                                        child: Container(
+                                          // margin: EdgeInsets.only(
+                                          //     top: _height * 0.2,
+                                          //     left: _width * 0.25),
+                                          height: _height * 0.088,
+                                          width: _width * 0.08,
+                                          decoration: BoxDecoration(
+                                            // gradient: LinearGradient(
+                                            //     begin: FractionalOffset.topCenter,
+                                            //     end:
+                                            //         FractionalOffset.bottomCenter,
+                                            //     colors: [
+                                            //       Color(0xffA189BD),
+                                            //       Color(0xffA88BBA),
+                                            //     ],
+                                            //     stops: [
+                                            //       0.0,
+                                            //       1.0
+                                            //     ]),
+                                            color: Colors.teal,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                // Align(
+                                //   alignment: Alignment.bottomLeft,
+                                //   child: Container(
+                                //     child: Container(
+                                //       margin: EdgeInsets.only(
+                                //           top: _height * 0.17,
+                                //           left: _width * 0.31),
+                                //       height: _height * 0.06,
+                                //       width: _width * 0.08,
+                                //       decoration: BoxDecoration(
+                                //         gradient: LinearGradient(
+                                //             begin: FractionalOffset.topCenter,
+                                //             end: FractionalOffset.bottomCenter,
+                                //             colors: [
+                                //               Color(0xffA48ABC),
+                                //               Color(0xffA88BBA),
+                                //             ],
+                                //             stops: [
+                                //               0.0,
+                                //               1.0
+                                //             ]),
+                                //         // color: Colors.teal,
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Container(
+                                    margin: EdgeInsets.only(
+                                        top: _height * 0.132,
+                                        right: _width * 0.243),
+                                    child: RotatedBox(
+                                      quarterTurns: 2,
+                                      child: ClipPath(
+                                        clipper: ArcClipper(
+                                            height: _height, width: _width),
+                                        child: Container(
+                                          // margin: EdgeInsets.only(
+                                          //     top: _height * 0.2,
+                                          //     left: _width * 0.25),
+                                          height: _height * 0.092,
+                                          width: _width * 0.083,
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                                begin:
+                                                    FractionalOffset.topCenter,
+                                                end: FractionalOffset
+                                                    .bottomCenter,
+                                                colors: [
+                                                  Color(0xffA189BD),
+                                                  Color(0xffA88BBA),
+                                                ],
+                                                stops: [
+                                                  0.0,
+                                                  1.0
+                                                ]),
+                                            // color: Colors.teal,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Container(
+                                    child: Container(
+                                      margin: EdgeInsets.only(
+                                          top: _height * 0.17,
+                                          right: _width * 0.31),
+                                      height: _height * 0.06,
+                                      width: _width * 0.08,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                            begin: FractionalOffset.topCenter,
+                                            end: FractionalOffset.bottomCenter,
+                                            colors: [
+                                              Color(0xffA48ABC),
+                                              Color(0xffA88BBA),
+                                            ],
+                                            stops: [
+                                              0.0,
+                                              1.0
+                                            ]),
+                                        // color: Colors.teal,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                // Align(
+                                //   alignment: Alignment.bottomRight,
+                                //   child: Container(
+                                //     margin: EdgeInsets.only(
+                                //         top: _height * 0.2, right: _width * 0.25),
+                                //     height: _height * 0.080,
+                                //     width: _width * 0.12,
+                                //     decoration: BoxDecoration(
+                                //       // gradient: LinearGradient(
+                                //       //     begin: FractionalOffset.topCenter,
+                                //       //     end: FractionalOffset.bottomCenter,
+                                //       //     colors: [
+                                //       //       Color(0xffA38ABD),
+                                //       //       Color(0xffA88BBA),
+                                //       //     ],
+                                //       //     stops: [
+                                //       //       0.0,
+                                //       //       1.0
+                                //       //     ]),
+                                //       color: Colors.teal,
+                                //     ),
+                                //   ),
+                                // ),
+
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    margin:
+                                        EdgeInsets.only(top: _height * 0.22),
+                                    height: _height * 0.06,
+                                    width: _width * 0.5,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                          begin: FractionalOffset.topCenter,
+                                          end: FractionalOffset.bottomCenter,
+                                          colors: [
+                                            Color(0xffA88BBA),
+                                            Color(0xffAC8DB8),
+                                          ],
+                                          stops: [
+                                            0.0,
+                                            1.0
+                                          ]),
+                                      // color: Colors.teal,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // if (onVerifyClick &&
+                        //     !noMatchFound &&
+                        //     !noResultFound &&
+                        //     !isEaster)
+                        // Container(
+                        //   padding: EdgeInsets.only(bottom: _height * 0.05),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        //       verifyText(
+                        //           isFake: false,
+                        //           percentage: (percentage != 0
+                        //                   ? 100 -
+                        //                       (_animation.value * percentage)
+                        //                   : _animation.value * 100)
+                        //               .toInt()
+                        //               .toString()),
+                        //       SizedBox(
+                        //         width: _width * 0.15,
+                        //       ),
+                        //       verifyText(
+                        //           isFake: true,
+                        //           percentage: (percentage != 0
+                        //                   ? _animation.value * percentage
+                        //                   : (100 - _animation.value * 100))
+                        //               .toInt()
+                        //               .toString()),
+                        //     ],
+                        //   ),
+                        // ),
+                        if (noMatchFound ||
+                            noResultFound ||
+                            isEaster ||
+                            !hasInternet)
+                          Container(
+                            padding: EdgeInsets.only(
+                                //top: _height * 0.05,
+                                bottom: _height * 0.05,
+                                left: _width * 0.05,
+                                right: _width * 0.05),
+                            child: Text(
+                              message,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        GestureDetector(
+                          onTap: () {
+                            if (_controller.text != null)
+                              _handleSubmitted(_controller.text);
+                          },
+                          child: Container(
+                            // padding: EdgeInsets.only(bottom: _height * 0.02),
+                            width: _width * 0.28,
+                            height: _height * 0.09,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(_width * 0.025))),
+                            child: Center(
                               child: Text(
-                                'View Source',
+                                'CHECK',
                                 style: TextStyle(
-                                    fontSize: _height * 0.028,
-                                    color: Colors.white,
-                                    decoration: TextDecoration.underline),
+                                    fontSize: _height * 0.03,
+                                    color: Color(checkTextClr)),
                               ),
                             ),
                           ),
                         ),
-                    ],
+
+                        if (onVerifyClick &&
+                            !noResultFound &&
+                            !isEaster &&
+                            Analyzer.descriptionToSend != null &&
+                            Analyzer.imageLinkToSend != null &&
+                            Analyzer.titleToSend != null &&
+                            Analyzer.formattedUrlToSend != null)
+                          changeClicked(),
+
+                        if (onVerifyClick &&
+                            !noResultFound &&
+                            !isEaster &&
+                            Analyzer.descriptionToSend != null &&
+                            Analyzer.imageLinkToSend != null &&
+                            Analyzer.titleToSend != null &&
+                            Analyzer.formattedUrlToSend != null)
+                          Container(
+                            margin: EdgeInsets.only(top: _height * 0.02),
+                            child: GestureDetector(
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  elevation: 10,
+                                  enableDrag: true,
+                                  builder: (context) => SingleChildScrollView(
+                                    child: BottomSheetBuilder(
+                                      imageLink: Analyzer.imageLinkToSend,
+                                      siteName: Analyzer.siteNameToSend,
+                                      snippet: Analyzer.descriptionToSend,
+                                      title: Analyzer.titleToSend,
+                                      url: Analyzer.formattedUrlToSend,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.only(),
+                                child: Text(
+                                  'View Source',
+                                  style: TextStyle(
+                                      fontSize: _height * 0.028,
+                                      color: Colors.white,
+                                      decoration: TextDecoration.underline),
+                                ),
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              if (isVisible)
-                Opacity(
-                  opacity: 0.60,
-                  child: Container(
-                    height: _height,
-                    width: _width,
+                if (isVisible)
+                  Opacity(
+                    opacity: 0.60,
+                    child: Container(
+                      height: _height,
+                      width: _width,
+                    ),
                   ),
-                ),
-              if (isVisible)
-                Center(
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                if (isVisible)
+                  Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    ),
                   ),
-                ),
-            ]),
+              ]),
+            ),
           ),
         ),
       ),
     );
   }
 }
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:fake_news_detector/Utilities/Analyzer.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:flutter_spinkit/flutter_spinkit.dart';
-// import 'dart:io';
-// import 'package:fake_news_detector/Screens/BottomSheetBuilder.dart';
-// import 'package:percent_indicator/percent_indicator.dart';
 
-// class AppBody extends StatefulWidget {
-//   static const String id = 'news_tracking_screen';
-//   @override
-//   _AppBodyState createState() => _AppBodyState();
-// }
+class ArcClipper extends CustomClipper<Path> {
+  final double height;
+  final double width;
 
-// class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
-//   final _firestore = FirebaseFirestore.instance;
-//   TextEditingController _controller;
-//   AnimationController _animationController;
-//   AnimationController _animationWidgetController;
-//   Animation _animation;
-//   bool onVerifyClick = false;
-//   bool isVisible = false;
-//   @override
-//   void initState() {
-//     super.initState();
-//     _controller = TextEditingController();
-//     _animationController = AnimationController(
-//       duration: Duration(seconds: 5),
-//       vsync: this,
-//     );
-//     _animationWidgetController = AnimationController(
-//       duration: Duration(seconds: 5),
-//       vsync: this,
-//     );
-//     _animation =
-//         CurvedAnimation(parent: _animationController, curve: Curves.slowMiddle);
-//   }
+  ArcClipper({this.height, this.width});
+  @override
+  Path getClip(Size size) {
+    print('${width * 0.08} + ${size.width}');
+    var path = Path();
+    path.lineTo(0.0, height * 0.092);
+    path.quadraticBezierTo(
+        width * 0.08 * 0.5,
+        height * 0.092 - (height * 0.092 * 0.56),
+        width * 0.08 + (width * 0.08 * 0.1),
+        height * 0.092);
+    path.lineTo(width * 0.08, 0.0);
+    path.close();
+    return path;
+  }
 
-//   int percent = 0;
-//   int percentage = 0;
-//   bool isAlreadyANews = false;
-//   bool noMatchFound = false;
-//   bool noResultFound = false;
-//   bool isEaster = false;
-//   bool hasInternet = true;
-//   String message = '';
-//   String viewPage = '';
-//   void _handleSubmitted(String text) async {
-//     FocusScopeNode currentFocus = FocusScope.of(context);
-
-//     if (!currentFocus.hasPrimaryFocus) {
-//       currentFocus.unfocus();
-//     }
-//     try {
-//       final result = await InternetAddress.lookup('google.com');
-//       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-//         setState(() {
-//           hasInternet = true;
-//           // onVerifyClick = true;
-//           message = '';
-//         });
-//       }
-//     } on SocketException catch (_) {
-//       setState(() {
-//         hasInternet = false;
-//         // onVerifyClick = false;
-//         message = 'No Internet Connection';
-//       });
-//     }
-//     String smallText = text.toLowerCase();
-//     if (smallText.contains('i am ceo of google')) {
-//       setState(() {
-//         isEaster = true;
-//         message = 'Aji 🔔😝';
-//       });
-//     } else {
-//       setState(() {
-//         isEaster = false;
-//       });
-//     }
-//     if (hasInternet) {
-//       if (text.isNotEmpty) {
-//         setState(() {
-//           isVisible = true;
-//           onVerifyClick = false;
-//         });
-//         Analyzer networking = Analyzer();
-//         percent = await networking.query(text);
-//         if (Analyzer.descriptionToSend != null &&
-//             Analyzer.imageLinkToSend != null &&
-//             Analyzer.titleToSend != null &&
-//             Analyzer.imageLinkToSend != null &&
-//             Analyzer.formattedUrlToSend != null) {
-//           viewPage = '\nClick on View Page for more details';
-//         }
-//         if (Analyzer.noMatchFound) {
-//           setState(() {
-//             noMatchFound = true;
-//             message = 'No match has been found on your query.$viewPage';
-//           });
-//           // print('No match has been found');
-//         } else {
-//           setState(() {
-//             noMatchFound = false;
-//           });
-//         }
-//         if (Analyzer.noResultFound) {
-//           // print('No result has been found');
-//           setState(() {
-//             noResultFound = true;
-//             message = 'No result has been found on your query.';
-//           });
-//         } else {
-//           setState(() {
-//             noResultFound = false;
-//           });
-//         }
-//         //print(percent);
-//         percentage = percent;
-//         // print(percentage);
-//         int counter = 0;
-//         String id;
-//         final newses = await _firestore.collection('news').get();
-//         for (var news in newses.docs) {
-//           if (news.data().containsValue(Analyzer.descriptionToSend) &&
-//               news.data().containsValue(Analyzer.siteNameToSend) &&
-//               news.data().containsValue(Analyzer.imageLinkToSend) &&
-//               news.data().containsValue(Analyzer.formattedUrlToSend) &&
-//               news.data().containsValue(Analyzer.titleToSend)) {
-//             isAlreadyANews = true;
-//             counter = news.data()['count'];
-//             //print(news.data()['count']);
-//             id = news.id;
-//           }
-//         }
-//         if (!noMatchFound) {
-//           if (isAlreadyANews &&
-//               Analyzer.descriptionToSend != null &&
-//               Analyzer.siteNameToSend != null &&
-//               Analyzer.imageLinkToSend != null &&
-//               Analyzer.titleToSend != null &&
-//               Analyzer.formattedUrlToSend != null &&
-//               percentage > 50) {
-//             await _firestore.collection('news').doc(id).set({
-//               'description': Analyzer.descriptionToSend,
-//               'sitename': Analyzer.siteNameToSend,
-//               'img': Analyzer.imageLinkToSend,
-//               'time': DateTime.now(),
-//               'title': Analyzer.titleToSend,
-//               'url': Analyzer.formattedUrlToSend,
-//               'count': ++counter,
-//             });
-//           }
-//           if (isAlreadyANews == false &&
-//               Analyzer.descriptionToSend != null &&
-//               Analyzer.siteNameToSend != null &&
-//               Analyzer.imageLinkToSend != null &&
-//               Analyzer.titleToSend != null &&
-//               Analyzer.formattedUrlToSend != null &&
-//               percentage > 50) {
-//             _firestore.collection('news').add({
-//               // 'snippet': Analyzer.snippetToSend,
-//               'description': Analyzer.descriptionToSend,
-//               'sitename': Analyzer.siteNameToSend,
-//               'img': Analyzer.imageLinkToSend,
-//               'time': DateTime.now(),
-//               'title': Analyzer.titleToSend,
-//               'url': Analyzer.formattedUrlToSend,
-//               'count': 0,
-//             });
-//           }
-//         }
-//         setState(() {
-//           percentage = percent;
-//           onVerifyClick = true;
-//           isVisible = false;
-//         });
-
-//         _animationController.repeat();
-//         _animationController.forward();
-
-//         _animationController.addListener(() {
-//           setState(() {});
-//         });
-//       }
-//     }
-//   }
-
-//   @override
-//   void dispose() {
-//     _controller.dispose();
-//     _animationController.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final _height = MediaQuery.of(context).size.height -
-//         MediaQuery.of(context).padding.top -
-//         kToolbarHeight;
-//     final _width = MediaQuery.of(context).size.width;
-
-//     Column verifyText({bool isFake, String percentage}) {
-//       String text;
-//       Color iconColor;
-//       if (isFake) {
-//         text = 'Incorrect';
-//         iconColor = Colors.red;
-//       } else {
-//         text = 'Correct';
-//         iconColor = Colors.green;
-//       }
-
-//       return Column(
-//         children: [
-//           Icon(
-//             Icons.check_circle,
-//             color: iconColor,
-//             size: _width * 0.1,
-//           ),
-//           SizedBox(
-//             height: _height * 0.015,
-//           ),
-//           Text(
-//             '$percentage%',
-//             style: TextStyle(fontSize: _height * 0.03, color: iconColor),
-//           ),
-//         ],
-//       );
-//     }
-
-//     return Scaffold(
-//       backgroundColor: Color(0xffFFF1BA),
-//       body: SafeArea(
-//         child: GestureDetector(
-//           onTap: () {
-//             FocusScope.of(context).unfocus();
-//           },
-//           child: Stack(
-//             children: <Widget>[
-//               SingleChildScrollView(
-//                 child: Container(
-//                   margin: EdgeInsets.only(
-//                       top: _height * 0.05, bottom: _height * 0.05),
-//                   child: Column(
-//                     mainAxisAlignment: MainAxisAlignment.center,
-//                     children: <Widget>[
-//                       Padding(
-//                         padding: EdgeInsets.only(
-//                             top: _height * 0.1,
-//                             left: _width * 0.05,
-//                             right: _width * 0.05),
-//                         child: Container(
-//                           decoration: BoxDecoration(
-//                             color: Colors.white,
-//                             borderRadius:
-//                                 BorderRadius.all(Radius.circular(15.0)),
-//                           ),
-//                           padding: EdgeInsets.symmetric(horizontal: 10.0),
-//                           width: _width,
-//                           height: _height * 0.07,
-//                           child: TextField(
-//                             maxLines: 200,
-//                             textAlignVertical: TextAlignVertical.bottom,
-//                             enableInteractiveSelection: true,
-//                             controller: _controller,
-//                             keyboardType: TextInputType.multiline,
-//                             scrollController: ScrollController(),
-//                             showCursor: true,
-//                             cursorColor: Colors.green,
-//                             decoration: InputDecoration(
-//                               contentPadding: EdgeInsets.all(8.0),
-//                               prefixIcon: Icon(Icons.search),
-//                               fillColor: Color(0xff000000),
-//                               border: InputBorder.none,
-//                               hintText: 'Enter your query',
-//                               hintStyle: TextStyle(fontSize: _height * 0.03),
-//                             ),
-//                             style: TextStyle(
-//                               fontSize: _height * 0.03,
-//                             ),
-//                             scrollPhysics: BouncingScrollPhysics(
-//                                 parent: AlwaysScrollableScrollPhysics()),
-//                           ),
-//                         ),
-//                       ),
-//                       if (onVerifyClick &&
-//                           noMatchFound &&
-//                           !noResultFound &&
-//                           !isEaster)
-//                         Padding(
-//                           padding: EdgeInsets.only(
-//                               top: _height * 0.15, bottom: _height * 0.15),
-//                           child: Center(
-//                             child: CircularPercentIndicator(
-//                                 animationDuration: 500,
-//                                 radius: 120.0,
-//                                 lineWidth: 13.0,
-//                                 animation: true,
-//                                 percent: (percentage) / 100,
-//                                 center: Text(
-//                                   "${(_animationWidgetController.value * percentage).toInt()}%",
-//                                   style: TextStyle(
-//                                       fontWeight: FontWeight.bold,
-//                                       fontSize: 20.0),
-//                                 ),
-//                                 footer: new Text(
-//                                   "Fake",
-//                                   style: new TextStyle(
-//                                       fontWeight: FontWeight.bold,
-//                                       fontSize: 17.0),
-//                                 ),
-//                                 circularStrokeCap: CircularStrokeCap.round,
-//                                 progressColor: Color(0xff45BB78)),
-//                           ),
-//                         ),
-//                       if (noMatchFound ||
-//                           noResultFound ||
-//                           isEaster ||
-//                           !hasInternet)
-//                         Container(
-//                           padding: EdgeInsets.only(
-//                               bottom: _height * 0.05,
-//                               left: _width * 0.05,
-//                               right: _width * 0.05),
-//                           child: Text(
-//                             message,
-//                             textAlign: TextAlign.center,
-//                             style: TextStyle(
-//                               color: Colors.black87,
-//                             ),
-//                           ),
-//                         ),
-//                       Container(
-//                         width: _width * 0.55,
-//                         height: _height * 0.09,
-//                         child: FlatButton(
-//                           shape: RoundedRectangleBorder(
-//                             borderRadius: BorderRadius.circular(15.0),
-//                           ),
-//                           onPressed: () {
-//                             if (_controller.text != null)
-//                               _handleSubmitted(_controller.text);
-//                           },
-//                           color: Color(0xffff841b),
-//                           child: Text(
-//                             'VERIFY',
-//                             style: TextStyle(
-//                                 fontSize: _height * 0.03, color: Colors.white),
-//                           ),
-//                         ),
-//                       ),
-//                       if (onVerifyClick &&
-//                           !noResultFound &&
-//                           !isEaster &&
-//                           Analyzer.descriptionToSend != null &&
-//                           Analyzer.imageLinkToSend != null &&
-//                           Analyzer.titleToSend != null &&
-//                           Analyzer.formattedUrlToSend != null)
-//                         Container(
-//                           margin: EdgeInsets.only(top: _height * 0.05),
-//                           child: GestureDetector(
-//                             onTap: () {
-//                               showModalBottomSheet(
-//                                 context: context,
-//                                 isScrollControlled: true,
-//                                 elevation: 10,
-//                                 enableDrag: true,
-//                                 builder: (context) => SingleChildScrollView(
-//                                   child: BottomSheetBuilder(
-//                                     imageLink: Analyzer.imageLinkToSend,
-//                                     siteName: Analyzer.siteNameToSend,
-//                                     snippet: Analyzer.descriptionToSend,
-//                                     title: Analyzer.titleToSend,
-//                                     url: Analyzer.formattedUrlToSend,
-//                                   ),
-//                                 ),
-//                               );
-//                             },
-//                             child: Text(
-//                               'View Page',
-//                               style: TextStyle(
-//                                   fontSize: _height * 0.028,
-//                                   color: Color(0xffff841b),
-//                                   decoration: TextDecoration.underline),
-//                             ),
-//                           ),
-//                         ),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//               if (isVisible)
-//                 Opacity(
-//                   opacity: 0.60,
-//                   child: Container(
-//                     color: Colors.grey[100],
-//                     height: _height,
-//                     width: _width,
-//                   ),
-//                 ),
-//               if (isVisible)
-//                 Center(
-//                   child: const SpinKitThreeBounce(
-//                     color: Colors.blue,
-//                     size: 20.0,
-//                   ),
-//                 ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:fake_news_detector/Utilities/Analyzer.dart';
-// import 'package:flutter/material.dart';
-// import 'dart:io';
-// import 'package:fake_news_detector/Screens/BottomSheetBuilder.dart';
-// import 'package:percent_indicator/percent_indicator.dart';
-// import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-// class AppBody extends StatefulWidget {
-//   static const String id = 'news_tracking_screen';
-//   @override
-//   _AppBodyState createState() => _AppBodyState();
-// }
-
-// class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
-//   final _firestore = FirebaseFirestore.instance;
-//   TextEditingController _controller;
-//   AnimationController _animationController;
-//   Animation _animation;
-//   bool onVerifyClick = false;
-//   bool isVisible = false;
-//   @override
-//   void initState() {
-//     super.initState();
-//     _controller = TextEditingController();
-//     _animationController = AnimationController(
-//       duration: Duration(seconds: 5),
-//       vsync: this,
-//     );
-//     _animation =
-//         CurvedAnimation(parent: _animationController, curve: Curves.slowMiddle);
-//   }
-
-//   int percent = 0;
-//   int percentage = 0;
-//   bool isAlreadyANews = false;
-//   bool noMatchFound = false;
-//   bool noResultFound = false;
-//   bool isEaster = false;
-//   bool hasInternet = true;
-//   String message = '';
-//   String viewPage = '';
-//   void _handleSubmitted(String text) async {
-//     FocusScopeNode currentFocus = FocusScope.of(context);
-
-//     if (!currentFocus.hasPrimaryFocus) {
-//       currentFocus.unfocus();
-//     }
-//     try {
-//       final result = await InternetAddress.lookup('google.com');
-//       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-//         setState(() {
-//           hasInternet = true;
-//           // onVerifyClick = true;
-//           message = '';
-//         });
-//       }
-//     } on SocketException catch (_) {
-//       setState(() {
-//         hasInternet = false;
-//         // onVerifyClick = false;
-//         message = 'No Internet Connection';
-//       });
-//     }
-//     String smallText = text.toLowerCase();
-//     if (smallText.contains('i am ceo of google')) {
-//       setState(() {
-//         isEaster = true;
-//         message = 'Aji 🔔😝';
-//       });
-//     } else {
-//       setState(() {
-//         isEaster = false;
-//       });
-//     }
-//     if (hasInternet) {
-//       if (text.isNotEmpty) {
-//         setState(() {
-//           isVisible = true;
-//           onVerifyClick = false;
-//         });
-//         Analyzer networking = Analyzer();
-//         percent = await networking.query(text);
-//         if (Analyzer.descriptionToSend != null &&
-//             Analyzer.imageLinkToSend != null &&
-//             Analyzer.titleToSend != null &&
-//             Analyzer.imageLinkToSend != null &&
-//             Analyzer.formattedUrlToSend != null) {
-//           viewPage = '\nClick on View Page for more details';
-//         }
-//         if (Analyzer.noMatchFound) {
-//           setState(() {
-//             noMatchFound = true;
-//             message = 'No match has been found on your query.$viewPage';
-//           });
-//           // print('No match has been found');
-//         } else {
-//           setState(() {
-//             noMatchFound = false;
-//           });
-//         }
-//         if (Analyzer.noResultFound) {
-//           // print('No result has been found');
-//           setState(() {
-//             noResultFound = true;
-//             message = 'No result has been found on your query.';
-//           });
-//         } else {
-//           setState(() {
-//             noResultFound = false;
-//           });
-//         }
-//         //print(percent);
-//         percentage = percent;
-//         // print(percentage);
-//         int counter = 0;
-//         String id;
-//         final newses = await _firestore.collection('news').get();
-//         for (var news in newses.docs) {
-//           if (news.data().containsValue(Analyzer.descriptionToSend) &&
-//               news.data().containsValue(Analyzer.siteNameToSend) &&
-//               news.data().containsValue(Analyzer.imageLinkToSend) &&
-//               news.data().containsValue(Analyzer.formattedUrlToSend) &&
-//               news.data().containsValue(Analyzer.titleToSend)) {
-//             isAlreadyANews = true;
-//             counter = news.data()['count'];
-//             //print(news.data()['count']);
-//             id = news.id;
-//           }
-//         }
-//         if (!noMatchFound) {
-//           if (isAlreadyANews &&
-//               Analyzer.descriptionToSend != null &&
-//               Analyzer.siteNameToSend != null &&
-//               Analyzer.imageLinkToSend != null &&
-//               Analyzer.titleToSend != null &&
-//               Analyzer.formattedUrlToSend != null &&
-//               percentage > 50) {
-//             await _firestore.collection('news').doc(id).set({
-//               'description': Analyzer.descriptionToSend,
-//               'sitename': Analyzer.siteNameToSend,
-//               'img': Analyzer.imageLinkToSend,
-//               'time': DateTime.now(),
-//               'title': Analyzer.titleToSend,
-//               'url': Analyzer.formattedUrlToSend,
-//               'count': ++counter,
-//             });
-//           }
-//           if (isAlreadyANews == false &&
-//               Analyzer.descriptionToSend != null &&
-//               Analyzer.siteNameToSend != null &&
-//               Analyzer.imageLinkToSend != null &&
-//               Analyzer.titleToSend != null &&
-//               Analyzer.formattedUrlToSend != null &&
-//               percentage > 50) {
-//             _firestore.collection('news').add({
-//               // 'snippet': Analyzer.snippetToSend,
-//               'description': Analyzer.descriptionToSend,
-//               'sitename': Analyzer.siteNameToSend,
-//               'img': Analyzer.imageLinkToSend,
-//               'time': DateTime.now(),
-//               'title': Analyzer.titleToSend,
-//               'url': Analyzer.formattedUrlToSend,
-//               'count': 0,
-//             });
-//           }
-//         }
-//         setState(() {
-//           percentage = percent;
-//           onVerifyClick = true;
-//           isVisible = false;
-//         });
-
-//         _animationController.repeat();
-//         _animationController.forward();
-
-//         _animationController.addListener(() {
-//           setState(() {});
-//         });
-//       }
-//     }
-//   }
-
-//   @override
-//   void dispose() {
-//     _controller.dispose();
-//     _animationController.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final _height = MediaQuery.of(context).size.height -
-//         MediaQuery.of(context).padding.top -
-//         kToolbarHeight;
-//     final _width = MediaQuery.of(context).size.width;
-
-//     return Scaffold(
-//       backgroundColor: Color(0xffFFF1BA),
-//       body: Container(
-//         constraints: BoxConstraints.expand(),
-
-//         child: SingleChildScrollView(
-//           child: Column(
-//             children: [
-//               Padding(
-//                 padding: const EdgeInsets.all(8.0),
-//                 child: Container(
-//                   margin: EdgeInsets.only(top: _height * 0.15),
-//                   padding:
-//                       const EdgeInsets.symmetric(vertical: 4, horizontal: 20),
-//                   decoration: BoxDecoration(
-//                     color: Colors.white,
-//                     borderRadius: BorderRadius.all(
-//                       Radius.circular(20),
-//                     ),
-//                   ),
-//                   child: Row(
-//                     children: <Widget>[
-//                       Expanded(
-//                         child: TextField(
-//                           showCursor: true,
-//                           cursorColor: Colors.green,
-//                           controller: _controller,
-//                           decoration: InputDecoration(
-//                             hintText: "Enter your query",
-//                             hintStyle: TextStyle(
-//                               color: Colors.black,
-//                               fontSize: 20,
-//                             ),
-//                             border: InputBorder.none,
-//                           ),
-//                         ),
-//                       ),
-//                       Icon(
-//                         Icons.search,
-//                         color: Colors.black,
-//                       )
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//               Column(
-//                 children: [
-//                   Padding(
-//                       padding: EdgeInsets.only(
-//                           top: _height * 0.25, bottom: _height * 0.2),
-//                       child: Center(
-//                         child: new CircularPercentIndicator(
-//                             radius: 120.0,
-//                             lineWidth: 13.0,
-//                             animation: true,
-//                             percent: (_animation.value * percentage) / 100,
-//                             center: new Text(
-//                               "${(percentage).toInt()}%",
-//                               style: new TextStyle(
-//                                   fontWeight: FontWeight.bold, fontSize: 20.0),
-//                             ),
-//                             footer: new Text(
-//                               "Fake",
-//                               style: new TextStyle(
-//                                   fontWeight: FontWeight.bold, fontSize: 17.0),
-//                             ),
-//                             circularStrokeCap: CircularStrokeCap.round,
-//                             progressColor: Color(0xff45BB78)),
-//                       ))
-//                 ],
-//               ),
-//               if (noMatchFound || noResultFound || isEaster || !hasInternet)
-//                 Container(
-//                   padding: EdgeInsets.only(),
-//                   child: Text(
-//                     message,
-//                     textAlign: TextAlign.center,
-//                     style: TextStyle(
-//                       color: Colors.black87,
-//                     ),
-//                   ),
-//                 ),
-//               Container(
-//                 width: _width * 0.55,
-//                 height: _height * 0.09,
-//                 child: FlatButton(
-//                   shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(15.0),
-//                   ),
-//                   onPressed: () {
-//                     if (_controller.text != null)
-//                       _handleSubmitted(_controller.text);
-//                   },
-//                   color: Color(0xff45BB78),
-//                   child: Text(
-//                     'VERIFY',
-//                     style: TextStyle(
-//                         fontSize: _height * 0.03, color: Colors.white),
-//                   ),
-//                 ),
-//               ),
-//               if (onVerifyClick &&
-//                   !noResultFound &&
-//                   !isEaster &&
-//                   Analyzer.descriptionToSend != null &&
-//                   Analyzer.imageLinkToSend != null &&
-//                   Analyzer.titleToSend != null &&
-//                   Analyzer.formattedUrlToSend != null)
-//                 Container(
-//                   margin: EdgeInsets.only(top: _height * 0.05),
-//                   child: GestureDetector(
-//                     onTap: () {
-//                       showModalBottomSheet(
-//                         context: context,
-//                         isScrollControlled: true,
-//                         elevation: 10,
-//                         enableDrag: true,
-//                         builder: (context) => SingleChildScrollView(
-//                           child: BottomSheetBuilder(
-//                             imageLink: Analyzer.imageLinkToSend,
-//                             siteName: Analyzer.siteNameToSend,
-//                             snippet: Analyzer.descriptionToSend,
-//                             title: Analyzer.titleToSend,
-//                             url: Analyzer.formattedUrlToSend,
-//                           ),
-//                         ),
-//                       );
-//                     },
-//                     child: Text(
-//                       'View Page',
-//                       style: TextStyle(
-//                           fontSize: _height * 0.028,
-//                           color: Color(0xffff841b),
-//                           decoration: TextDecoration.underline),
-//                     ),
-//                   ),
-//                 ),
-//             ],
-//           ),
-//         ),
-//         // if (isVisible)
-//         //   Opacity(
-//         //     opacity: 0.60,
-//         //     child: Container(
-//         //       color: Colors.grey[100],
-//         //       height: _height,
-//         //       width: _width,
-//         //     ),
-//         //   ),
-//         // if (isVisible)
-//         //   Center(
-//         //     child: const SpinKitCircle(
-//         //       color: Colors.blue,
-//         //       size: 20.0,
-//         //     ),
-//         //   ),
-//       ),
-//     );
-
-//     // return Scaffold(
-//     //   body: SafeArea(
-//     //     child: GestureDetector(
-//     //       onTap: () {
-//     //         FocusScope.of(context).unfocus();
-//     //       },
-//     //       child: Stack(
-//     //         children: <Widget>[
-//     //           SingleChildScrollView(
-//     //             child: Container(
-//     //               child: Column(
-//     //                 mainAxisAlignment: MainAxisAlignment.center,
-//     //                 children: <Widget>[
-//     //                   Padding(
-//     //                     padding: EdgeInsets.all(_height * 0.02),
-//     //                     child: Container(
-//     //                       decoration: BoxDecoration(
-//     //                         color: Colors.white,
-//     //                         borderRadius:
-//     //                             BorderRadius.all(Radius.circular(15.0)),
-//     //                         border: Border.all(
-//     //                           color: Colors.black,
-//     //                           width: 5,
-//     //                         ),
-//     //                       ),
-//     //                       padding: EdgeInsets.symmetric(
-//     //                           horizontal: 10.0, vertical: 10.0),
-//     //                       width: _width * 0.7,
-//     //                       height: _height * 0.2,
-//     //                       child: TextField(
-//     //                         maxLines: 200,
-//     //                         textAlignVertical: TextAlignVertical.bottom,
-//     //                         enableInteractiveSelection: true,
-//     //                         controller: _controller,
-//     //                         keyboardType: TextInputType.multiline,
-//     //                         scrollController: ScrollController(),
-//     //                         showCursor: true,
-//     //                         cursorColor: Colors.green,
-//     //                         decoration: InputDecoration.collapsed(
-//     //                             fillColor: Color(0xff000000),
-//     //                             border: InputBorder.none,
-//     //                             hintText: 'Enter your query here',
-//     //                             hintStyle: TextStyle(fontSize: _height * 0.03)),
-//     //                         style: TextStyle(
-//     //                           fontSize: _height * 0.03,
-//     //                         ),
-//     //                         scrollPhysics: BouncingScrollPhysics(
-//     //                             parent: AlwaysScrollableScrollPhysics()),
-//     //                       ),
-//     //                     ),
-//     //                   ),
-//     //                   Padding(
-//     //                     padding: EdgeInsets.symmetric(
-//     //                         horizontal: _width * 0.04,
-//     //                         vertical: _height * 0.02),
-//     //                     child: Container(
-//     //                       child: Row(
-//     //                         mainAxisAlignment: MainAxisAlignment.center,
-//     //                         crossAxisAlignment: CrossAxisAlignment.center,
-//     //                         children: [
-//     //                           Image(
-//     //                             image: NetworkImage(
-//     //                                 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKsNkKv27ar4oDxu3aahsgl_1-cB_zHD-enw&usqp=CAU'),
-//     //                           ),
-//     //                         ],
-//     //                       ),
-//     //                     ),
-//     //                   ),
-//     //                   if (onVerifyClick &&
-//     //                       !noMatchFound &&
-//     //                       !noResultFound &&
-//     //                       !isEaster)
-//     //                     Container(
-//     //                       padding: EdgeInsets.only(bottom: _height * 0.05),
-//     //                       child: Row(
-//     //                         mainAxisAlignment: MainAxisAlignment.center,
-//     //                         children: [
-//     //                           verifyText(
-//     //                               isFake: false,
-//     //                               percentage: (percentage != 0
-//     //                                       ? 100 -
-//     //                                           (_animation.value * percentage)
-//     //                                       : _animation.value * 100)
-//     //                                   .toInt()
-//     //                                   .toString()),
-//     //                           SizedBox(
-//     //                             width: _width * 0.15,
-//     //                           ),
-//     //                           verifyText(
-//     //                               isFake: true,
-//     //                               percentage: (percentage != 0
-//     //                                       ? _animation.value * percentage
-//     //                                       : (100 - _animation.value * 100))
-//     //                                   .toInt()
-//     //                                   .toString()),
-//     //                         ],
-//     //                       ),
-//     //                     ),
-//     //                   if (noMatchFound ||
-//     //                       noResultFound ||
-//     //                       isEaster ||
-//     //                       !hasInternet)
-//     //                     Container(
-//     //                       padding: EdgeInsets.only(
-//     //                           bottom: _height * 0.05,
-//     //                           left: _width * 0.05,
-//     //                           right: _width * 0.05),
-//     //                       child: Text(
-//     //                         message,
-//     //                         textAlign: TextAlign.center,
-//     //                         style: TextStyle(
-//     //                           color: Colors.black87,
-//     //                         ),
-//     //                       ),
-//     //                     ),
-//     //                   Container(
-//     //                     width: _width * 0.55,
-//     //                     height: _height * 0.09,
-//     //                     child: FlatButton(
-//     //                       shape: RoundedRectangleBorder(
-//     //                         borderRadius: BorderRadius.circular(15.0),
-//     //                       ),
-//     //                       onPressed: () {
-//     //                         if (_controller.text != null)
-//     //                           _handleSubmitted(_controller.text);
-//     //                       },
-//     //                       color: Color(0xff48FD85),
-//     //                       child: Text(
-//     //                         'VERIFY',
-//     //                         style: TextStyle(
-//     //                             fontSize: _height * 0.03, color: Colors.white),
-//     //                       ),
-//     //                     ),
-//     //                   ),
-//     //                   if (onVerifyClick &&
-//     //                       !noResultFound &&
-//     //                       !isEaster &&
-//     //                       Analyzer.descriptionToSend != null &&
-//     //                       Analyzer.imageLinkToSend != null &&
-//     //                       Analyzer.titleToSend != null &&
-//     //                       Analyzer.formattedUrlToSend != null)
-//     //                     Container(
-//     //                       margin: EdgeInsets.only(top: _height * 0.05),
-//     //                       child: GestureDetector(
-//     //                         onTap: () {
-//     //                           showModalBottomSheet(
-//     //                             context: context,
-//     //                             isScrollControlled: true,
-//     //                             elevation: 10,
-//     //                             enableDrag: true,
-//     //                             builder: (context) => SingleChildScrollView(
-//     //                               child: BottomSheetBuilder(
-//     //                                 imageLink: Analyzer.imageLinkToSend,
-//     //                                 siteName: Analyzer.siteNameToSend,
-//     //                                 snippet: Analyzer.descriptionToSend,
-//     //                                 title: Analyzer.titleToSend,
-//     //                                 url: Analyzer.formattedUrlToSend,
-//     //                               ),
-//     //                             ),
-//     //                           );
-//     //                         },
-//     //                         child: Text(
-//     //                           'View Page',
-//     //                           style: TextStyle(
-//     //                               fontSize: _height * 0.028,
-//     //                               color: Color(0xffff841b),
-//     //                               decoration: TextDecoration.underline),
-//     //                         ),
-//     //                       ),
-//     //                     ),
-//     //                 ],
-//     //               ),
-//     //             ),
-//     //           ),
-//     //           if (isVisible)
-//     //             Opacity(
-//     //               opacity: 0.60,
-//     //               child: Container(
-//     //                 color: Colors.grey[100],
-//     //                 height: _height,
-//     //                 width: _width,
-//     //               ),
-//     //             ),
-//     //           if (isVisible)
-//     //             Center(
-//     //               child: const SpinKitThreeBounce(
-//     //                 color: Colors.blue,
-//     //                 size: 20.0,
-//     //               ),
-//     //             ),
-//     //         ],
-//     //       ),
-//     //     ),
-//     //   ),
-//     // );
-//   }
-// }
+  @override
+  bool shouldReclip(CustomClipper old) => false;
+}
