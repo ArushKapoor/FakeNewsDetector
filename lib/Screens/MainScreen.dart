@@ -315,6 +315,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                       ),
                     ),
                     child: Column(
+                      mainAxisSize: MainAxisSize.min,
                       //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: <Widget>[
                         Padding(
@@ -361,230 +362,208 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                         SizedBox(
                           height: _height * 0.2,
                         ),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: <Widget>[
-                            CircularPercentIndicator(
-                              backgroundColor: (hasClicked)
-                                  ? Colors.black.withOpacity(0)
-                                  : Colors.transparent,
-                              animationDuration: 500,
-                              backgroundWidth: _width * 0.0594,
-                              arcType: ArcType.HALF,
-                              arcBackgroundColor: Color(0xff8980C8),
-                              radius: _width * 0.4688,
-                              lineWidth: _width * 0.04065,
-                              animation: true,
+                        Flexible(
+                          fit: FlexFit.loose,
+                          child: LayoutBuilder(
+                            builder: (context, constraints) => Container(
+                              width: _width,
+                              child: Stack(
+                                children: <Widget>[
+                                  LayoutBuilder(
+                                    builder: (context, constraints) =>
+                                        Container(
+                                      margin: EdgeInsets.only(
+                                        left: constraints.maxWidth * 0.25,
+                                      ),
+                                      child: CircularPercentIndicator(
+                                        backgroundColor: (hasClicked)
+                                            ? Colors.black.withOpacity(0)
+                                            : Colors.white,
+                                        animationDuration: 500,
+                                        backgroundWidth:
+                                            constraints.maxWidth * 0.06,
+                                        arcType: ArcType.HALF,
+                                        arcBackgroundColor: Color(0xff8980C8),
+                                        radius: constraints.maxWidth * 0.48,
+                                        lineWidth: constraints.maxWidth * 0.04,
+                                        animation: true,
 
-                              // percent: (_animationWidgetController.value *
-                              //         percentage) /
-                              //     100,
-                              percent: 0,
-                              center: Text(
-                                (hasClicked)
-                                    ? "${(_animationController.value * percentage).toInt()}%"
-                                    : "%",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: _height * 0.06),
-                              ),
-                              footer: Text(
-                                "Fake",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: _height * 0.03),
-                              ),
-                              circularStrokeCap: CircularStrokeCap.round,
-                              linearGradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [
-                                  Colors.green,
-                                  Colors.red,
+                                        // percent: (_animationWidgetController.value *
+                                        //         percentage) /
+                                        //     100,
+                                        percent: 0,
+                                        center: Text(
+                                          (hasClicked)
+                                              ? "${(_animationController.value * percentage).toInt()}%"
+                                              : "%",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: _height * 0.06),
+                                        ),
+                                        footer: Text(
+                                          "Fake",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: _height * 0.03),
+                                        ),
+                                        circularStrokeCap:
+                                            CircularStrokeCap.round,
+                                        linearGradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          colors: [
+                                            Colors.green,
+                                            Colors.red,
+                                          ],
+                                          // tileMode: TileMode.clamp,
+                                        ),
+                                        // progressColor: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                      left: constraints.maxWidth * 0.234,
+                                      top: constraints.maxHeight * 0.373,
+                                    ),
+                                    child: RotatedBox(
+                                      quarterTurns: 2,
+                                      child: ClipPath(
+                                        clipper: ArcClipper(
+                                            height: _height, width: _width),
+                                        child: Container(
+                                          // margin: EdgeInsets.only(
+                                          //     top: _height * 0.2,
+                                          //     left: _width * 0.25),
+                                          height: constraints.maxHeight * 0.18,
+                                          width: constraints.maxWidth * 0.08,
+                                          decoration: BoxDecoration(
+                                            // gradient: LinearGradient(
+                                            //     begin: FractionalOffset.topCenter,
+                                            //     end:
+                                            //         FractionalOffset.bottomCenter,
+                                            //     colors: [
+                                            //       Color(0xffA189BD),
+                                            //       Color(0xffA88BBA),
+                                            //     ],
+                                            //     stops: [
+                                            //       0.0,
+                                            //       1.0
+                                            //     ]),
+                                            color: Colors.teal,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                      top: constraints.maxHeight * 0.48,
+                                      left: constraints.maxWidth * 0.26,
+                                    ),
+                                    height: constraints.maxHeight * 0.13,
+                                    width: constraints.maxWidth * 0.11,
+                                    decoration: BoxDecoration(
+                                      // gradient: LinearGradient(
+                                      //     begin: FractionalOffset.topCenter,
+                                      //     end: FractionalOffset.bottomCenter,
+                                      //     colors: [
+                                      //       Color(0xffA48ABC),
+                                      //       Color(0xffA88BBA),
+                                      //     ],
+                                      //     stops: [
+                                      //       0.0,
+                                      //       1.0
+                                      //     ]),
+                                      color: Colors.teal,
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        top: constraints.maxHeight * 0.353,
+                                        left: constraints.maxWidth * 0.67),
+                                    child: RotatedBox(
+                                      quarterTurns: 2,
+                                      child: ClipPath(
+                                        clipper: ArcClipper(
+                                            height: _height, width: _width),
+                                        child: Container(
+                                          // margin: EdgeInsets.only(
+                                          //     top: _height * 0.2,
+                                          //     left: _width * 0.25),
+                                          height: constraints.maxHeight * 0.20,
+                                          width: constraints.maxWidth * 0.082,
+                                          decoration: BoxDecoration(
+                                            // gradient: LinearGradient(
+                                            //     begin: FractionalOffset.topCenter,
+                                            //     end: FractionalOffset.bottomCenter,
+                                            //     colors: [
+                                            //       Color(0xffA189BD),
+                                            //       Color(0xffA88BBA),
+                                            //     ],
+                                            //     stops: [
+                                            //       0.0,
+                                            //       1.0
+                                            //     ]),
+                                            color: Colors.teal,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        top: constraints.maxHeight * 0.460,
+                                        left: constraints.maxWidth * 0.61),
+                                    height: constraints.maxHeight * 0.13,
+                                    width: constraints.maxWidth * 0.11,
+                                    decoration: BoxDecoration(
+                                      // gradient: LinearGradient(
+                                      //     begin: FractionalOffset.topCenter,
+                                      //     end: FractionalOffset.bottomCenter,
+                                      //     colors: [
+                                      //       Color(0xffA48ABC),
+                                      //       Color(0xffA88BBA),
+                                      //     ],
+                                      //     stops: [
+                                      //       0.0,
+                                      //       1.0
+                                      //     ]),
+                                      color: Colors.teal,
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                      left: constraints.maxWidth * 0.25,
+                                      top: constraints.maxHeight * 0.58,
+                                    ),
+                                    height: constraints.maxHeight * 0.16,
+                                    width: constraints.maxWidth * 0.48,
+                                    decoration: BoxDecoration(
+                                      // gradient: LinearGradient(
+                                      //     begin: FractionalOffset.topCenter,
+                                      //     end: FractionalOffset.bottomCenter,
+                                      //     colors: [
+                                      //       Color(0xffA88BBA),
+                                      //       Color(0xffAC8DB8),
+                                      //     ],
+                                      //     stops: [
+                                      //       0.0,
+                                      //       1.0
+                                      //     ]),
+                                      color: Colors.teal,
+                                    ),
+                                  ),
                                 ],
-                                // tileMode: TileMode.clamp,
                               ),
-                              // progressColor: Colors.white,
                             ),
-
-                            // Positioned(
-                            //   left: _width * 0.248,
-                            //   top: _height * 0.173,
-                            //   child: Container(
-                            //     // margin: EdgeInsets.only(
-                            //     //     top: _height * 0.132,
-                            //     //     left: _width * 0.248),
-                            //     child: RotatedBox(
-                            //       quarterTurns: 2,
-                            //       child: ClipPath(
-                            //         clipper: ArcClipper(
-                            //             height: _height, width: _width),
-                            //         child: Container(
-                            //           // margin: EdgeInsets.only(
-                            //           //     top: _height * 0.2,
-                            //           //     left: _width * 0.25),
-                            //           height: _height * 0.088,
-                            //           width: _width * 0.08,
-                            //           decoration: BoxDecoration(
-                            //             // gradient: LinearGradient(
-                            //             //     begin: FractionalOffset.topCenter,
-                            //             //     end:
-                            //             //         FractionalOffset.bottomCenter,
-                            //             //     colors: [
-                            //             //       Color(0xffA189BD),
-                            //             //       Color(0xffA88BBA),
-                            //             //     ],
-                            //             //     stops: [
-                            //             //       0.0,
-                            //             //       1.0
-                            //             //     ]),
-                            //             color: Colors.teal,
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                            // Align(
-                            //   alignment: Alignment.bottomLeft,
-                            //   child: Container(
-                            //     child: Container(
-                            //       margin: EdgeInsets.only(
-                            //           top: _height * 0.17,
-                            //           left: _width * 0.31),
-                            //       height: _height * 0.06,
-                            //       width: _width * 0.08,
-                            //       decoration: BoxDecoration(
-                            //         gradient: LinearGradient(
-                            //             begin: FractionalOffset.topCenter,
-                            //             end: FractionalOffset.bottomCenter,
-                            //             colors: [
-                            //               Color(0xffA48ABC),
-                            //               Color(0xffA88BBA),
-                            //             ],
-                            //             stops: [
-                            //               0.0,
-                            //               1.0
-                            //             ]),
-                            //         // color: Colors.teal,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                            // Align(
-                            //   alignment: Alignment.bottomRight,
-                            //   child: Container(
-                            //     margin: EdgeInsets.only(
-                            //         top: _height * 0.132,
-                            //         right: _width * 0.243),
-                            //     child: RotatedBox(
-                            //       quarterTurns: 2,
-                            //       child: ClipPath(
-                            //         clipper: ArcClipper(
-                            //             height: _height, width: _width),
-                            //         child: Container(
-                            //           // margin: EdgeInsets.only(
-                            //           //     top: _height * 0.2,
-                            //           //     left: _width * 0.25),
-                            //           height: _height * 0.092,
-                            //           width: _width * 0.083,
-                            //           decoration: BoxDecoration(
-                            //             // gradient: LinearGradient(
-                            //             //     begin: FractionalOffset.topCenter,
-                            //             //     end: FractionalOffset.bottomCenter,
-                            //             //     colors: [
-                            //             //       Color(0xffA189BD),
-                            //             //       Color(0xffA88BBA),
-                            //             //     ],
-                            //             //     stops: [
-                            //             //       0.0,
-                            //             //       1.0
-                            //             //     ]),
-                            //             // color: Colors.teal,
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                            // Align(
-                            //alignment: Alignment.bottomRight,
-                            // child: Container(
-                            //   margin: EdgeInsets.only(
-                            //       top: _height * 0.17, right: _width * 0.31),
-                            //   height: _height * 0.06,
-                            //   width: _width * 0.08,
-                            //   decoration: BoxDecoration(
-                            //       // gradient: LinearGradient(
-                            //       //     begin: FractionalOffset.topCenter,
-                            //       //     end: FractionalOffset.bottomCenter,
-                            //       //     colors: [
-                            //       //       Color(0xffA48ABC),
-                            //       //       Color(0xffA88BBA),
-                            //       //     ],
-                            //       //     stops: [
-                            //       //       0.0,
-                            //       //       1.0
-                            //       //     ]),
-                            //       // color: Colors.teal,
-                            //       ),
-                            // ),
-                            //   ),
-
-                            // Align(
-                            //   alignment: Alignment.bottomRight,
-                            //   child: Container(
-                            //     margin: EdgeInsets.only(
-                            //         top: _height * 0.2, right: _width * 0.25),
-                            //     height: _height * 0.080,
-                            //     width: _width * 0.12,
-                            //     decoration: BoxDecoration(
-                            //       // gradient: LinearGradient(
-                            //       //     begin: FractionalOffset.topCenter,
-                            //       //     end: FractionalOffset.bottomCenter,
-                            //       //     colors: [
-                            //       //       Color(0xffA38ABD),
-                            //       //       Color(0xffA88BBA),
-                            //       //     ],
-                            //       //     stops: [
-                            //       //       0.0,
-                            //       //       1.0
-                            //       //     ]),
-                            //       color: Colors.teal,
-                            //     ),
-                            //   ),
-                            // ),
-
-                            // Align(
-                            //   alignment: Alignment.bottomCenter,
-                            //   child: Container(
-                            //     margin:
-                            //         EdgeInsets.only(top: _height * 0.22),
-                            //     height: _height * 0.06,
-                            //     width: _width * 0.5,
-                            //     decoration: BoxDecoration(
-                            //       gradient: LinearGradient(
-                            //           begin: FractionalOffset.topCenter,
-                            //           end: FractionalOffset.bottomCenter,
-                            //           colors: [
-                            //             Color(0xffA88BBA),
-                            //             Color(0xffAC8DB8),
-                            //           ],
-                            //           stops: [
-                            //             0.0,
-                            //             1.0
-                            //           ]),
-                            //       // color: Colors.teal,
-                            //     ),
-                            //   ),
-                            // ),
-                          ],
+                          ),
                         ),
 
                         SizedBox(
-                          height: _height * 0.2,
+                          height: _height * 0.1,
                         ),
                         // if (onVerifyClick &&
                         //     !noMatchFound &&
