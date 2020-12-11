@@ -9,13 +9,13 @@ import 'package:fake_news_detector/Widget/CircularProgress.dart';
 
 class AppBody extends StatefulWidget {
   static const String id = 'news_tracking_screen';
+  static TextEditingController controller;
   @override
   _AppBodyState createState() => _AppBodyState();
 }
 
 class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   final _firestore = FirebaseFirestore.instance;
-  TextEditingController _controller;
   AnimationController _animationController;
   AnimationController _animationWidgetController;
   String wish, imgSrc;
@@ -83,7 +83,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     timing();
-    _controller = TextEditingController();
+    AppBody.controller = TextEditingController();
     _animationController = AnimationController(
       duration: Duration(seconds: 5),
       vsync: this,
@@ -261,7 +261,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _controller.dispose();
+    AppBody.controller.dispose();
     _animationController.dispose();
     _animationWidgetController.dispose();
     super.dispose();
@@ -331,13 +331,15 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                 isScrollControlled: true,
                                 elevation: 10,
                                 enableDrag: true,
-                                builder: (context) => SearchSheetBuilder(),
+                                builder: (context) => SearchSheetBuilder(
+                                  initialText: AppBody.controller.text,
+                                ),
                               );
                             },
                             maxLines: 200,
                             textAlignVertical: TextAlignVertical.bottom,
                             enableInteractiveSelection: true,
-                            controller: _controller,
+                            controller: AppBody.controller,
                             keyboardType: TextInputType.multiline,
                             scrollController: ScrollController(),
                             showCursor: true,
@@ -629,8 +631,8 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                         ),
                       GestureDetector(
                         onTap: () {
-                          if (_controller.text != null)
-                            _handleSubmitted(_controller.text);
+                          if (AppBody.controller.text != null)
+                            _handleSubmitted(AppBody.controller.text);
                         },
                         child: Container(
                           // padding: EdgeInsets.only(bottom: _height * 0.02),
