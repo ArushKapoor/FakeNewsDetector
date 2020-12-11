@@ -362,7 +362,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                       ),
 
                       SizedBox(
-                        height: _height * 0.30,
+                        height: _height * 0.2,
                       ),
                       Flexible(
                         fit: FlexFit.loose,
@@ -371,72 +371,68 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                             width: _width,
                             child: Stack(
                               children: <Widget>[
-                                LayoutBuilder(
-                                  builder: (context, constraints) => Container(
-                                    margin: EdgeInsets.only(
-                                      left: constraints.maxWidth * 0.25,
-                                    ),
-                                    child: CircularPercentIndicator(
-                                      // backgroundColor: Colors.white,
-                                      animationDuration: 500,
-                                      backgroundWidth:
-                                          constraints.maxWidth * 0.06,
-                                      arcType: ArcType.HALF,
-                                      arcBackgroundColor: Colors.white,
-                                      radius: constraints.maxWidth * 0.48,
-                                      lineWidth: constraints.maxWidth * 0.04,
-                                      animation: true,
+                                Container(
+                                  margin: EdgeInsets.only(
+                                    left: constraints.maxWidth * 0.25,
+                                  ),
+                                  child: CircularPercentIndicator(
+                                    // backgroundColor: Colors.white,
+                                    animationDuration: 500,
+                                    backgroundWidth:
+                                        constraints.maxWidth * 0.06,
+                                    arcType: ArcType.HALF,
+                                    arcBackgroundColor: Colors.transparent,
+                                    radius: constraints.maxWidth * 0.48,
+                                    lineWidth: constraints.maxWidth * 0.04,
+                                    animation: true,
 
-                                      // percent: (_animationWidgetController.value *
-                                      //         percentage) /
-                                      //     100,
-                                      percent: percentage.toDouble() / 100,
-                                      center: Text(
-                                        (hasClicked)
-                                            ? "${(_animationController.value * percentage).toInt()}%"
-                                            : "%",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: _height * 0.06),
-                                      ),
-                                      footer: Text(
-                                        "Fake",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: _height * 0.03),
-                                      ),
-                                      addAutomaticKeepAlive: true,
-                                      fillColor: Colors.transparent,
-                                      // maskFilter:
-                                      //     MaskFilter.blur(BlurStyle.solid, 1),
-                                      rotateLinearGradient: false,
-
-                                      backgroundColor: Colors.green,
-                                      //restartAnimation: true,
-                                      circularStrokeCap:
-                                          CircularStrokeCap.round,
-                                      // linearGradient: LinearGradient(
-                                      //     begin: Alignment.centerLeft,
-                                      //     end: Alignment.centerRight,
-                                      //     colors: [
-                                      //       Colors.blue,
-                                      //       Colors.transparent,
-                                      //       //Colors.red,
-                                      //       //Colors.amber
-                                      //     ],
-                                      //     stops: [
-                                      //       0.0,
-                                      //       1.1,
-                                      //       // 2.2,
-                                      //       // 3.3
-                                      //     ]
-                                      //     // tileMode: TileMode.clamp,
-                                      //     ),
-                                      progressColor: Colors.accents[1],
-                                      // progressColor: Colors.white,
+                                    percent: (_animationWidgetController.value *
+                                            percentage) /
+                                        100,
+                                    center: Text(
+                                      (hasClicked)
+                                          ? "${(_animationController.value * percentage).toInt()}%"
+                                          : "%",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: _height * 0.06),
                                     ),
+                                    footer: Text(
+                                      "Fake",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: _height * 0.03),
+                                    ),
+                                    addAutomaticKeepAlive: true,
+                                    fillColor: Colors.transparent,
+                                    // maskFilter:
+                                    //     MaskFilter.blur(BlurStyle.solid, 1),
+                                    rotateLinearGradient: false,
+
+                                    backgroundColor: Colors.white,
+                                    //restartAnimation: true,
+                                    circularStrokeCap: CircularStrokeCap.round,
+                                    linearGradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          Color(gradientBottomContainer),
+                                          Color(gradientTopContainer),
+                                          //Colors.red,
+                                          //Colors.amber
+                                        ],
+                                        stops: [
+                                          0.0,
+                                          1.1,
+                                          // 2.2,
+                                          // 3.3
+                                        ]
+                                        // tileMode: TileMode.clamp,
+                                        ),
+                                    // progressColor: Colors.accents[1],
+                                    // progressColor: Colors.white,
                                   ),
                                 ),
                                 Container(
