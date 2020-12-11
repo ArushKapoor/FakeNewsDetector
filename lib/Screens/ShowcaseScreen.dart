@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_news_detector/Screens/MainScreen.dart';
-import 'package:fake_news_detector/Screens/MiddleSheetBuilder.dart';
 import 'package:flutter/material.dart';
 import 'BottomSheetBuilder.dart';
 

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fake_news_detector/Screens/SearchSheetBuilder.dart';
 import 'package:fake_news_detector/Utilities/Analyzer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -302,16 +303,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
               SingleChildScrollView(
                 child: Container(
                   height: _height,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: <Color>[
-                        Color(gradientTopContainer),
-                        Color(gradientBottomContainer)
-                      ],
-                    ),
-                  ),
+                  decoration: BoxDecoration(),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -332,6 +324,16 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                           width: _width,
                           height: _height * 0.07,
                           child: TextField(
+                            onTap: () {
+                              showModalBottomSheet(
+                                backgroundColor: Colors.black.withOpacity(0),
+                                context: context,
+                                isScrollControlled: true,
+                                elevation: 10,
+                                enableDrag: true,
+                                builder: (context) => SearchSheetBuilder(),
+                              );
+                            },
                             maxLines: 200,
                             textAlignVertical: TextAlignVertical.bottom,
                             enableInteractiveSelection: true,
