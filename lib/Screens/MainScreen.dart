@@ -383,7 +383,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                       ),
 
                       SizedBox(
-                        height: _height * 0.2,
+                        height: _height * 0.15,
                       ),
                       Flexible(
                         fit: FlexFit.loose,
@@ -393,18 +393,15 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                             child: Stack(
                               children: <Widget>[
                                 Container(
-                                  margin: EdgeInsets.only(
-                                    left: constraints.maxWidth * 0.25,
-                                  ),
+                                  width: _width,
                                   child: CircularPercentIndicator(
                                     // backgroundColor: Colors.white,
                                     animationDuration: 3000,
-                                    backgroundWidth:
-                                        constraints.maxWidth * 0.06,
+                                    backgroundWidth: _width * 0.07,
                                     arcType: ArcType.HALF,
                                     arcBackgroundColor: Colors.transparent,
-                                    radius: constraints.maxWidth * 0.48,
-                                    lineWidth: constraints.maxWidth * 0.04,
+                                    radius: _width * 0.6,
+                                    lineWidth: _width * 0.05,
                                     animation: true,
 
                                     percent: (_animationController.value *
@@ -417,31 +414,33 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                           turns: Tween(begin: -0.25, end: end)
                                               .animate(_rotationController),
                                           child: SvgPicture.asset(
-                                            'assets/Images/knob.svg',
-                                            height: _height * 0.2,
+                                            'assets/Images/arrow.svg',
+                                            color: Colors.white,
+                                            height: _height * _width * 0.00068,
                                           ),
                                         ),
-                                        Positioned(
-                                          top: _height * 0.095,
-                                          child: Text(
-                                            (hasClicked)
-                                                ? "${(_animationController.value * percentage).toInt()}%"
-                                                : "%",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: _height * 0.04),
-                                          ),
+                                        SvgPicture.asset(
+                                          'assets/Images/circle.svg',
+                                          height: _height * _width * 0.00048,
+                                        ),
+                                        Text(
+                                          (hasClicked)
+                                              ? "${(_animationController.value * percentage).toInt()}%"
+                                              : "%",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: _height * 0.04),
                                         ),
                                       ],
                                     ),
-                                    footer: Text(
-                                      "Fake",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: _height * 0.03),
-                                    ),
+                                    // footer: Text(
+                                    //   "Fake",
+                                    //   style: TextStyle(
+                                    //       color: Colors.white,
+                                    //       fontWeight: FontWeight.bold,
+                                    //       fontSize: _height * 0.03),
+                                    // ),
                                     addAutomaticKeepAlive: true,
                                     fillColor: Colors.transparent,
                                     // maskFilter:
@@ -478,9 +477,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                         ),
                       ),
 
-                      SizedBox(
-                        height: _height * 0.1,
-                      ),
+                      // SizedBox(
+                      //   height: _height * 0.0,
+                      // ),
                       // if (onVerifyClick &&
                       //     !noMatchFound &&
                       //     !noResultFound &&
