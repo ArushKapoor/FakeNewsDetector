@@ -43,6 +43,7 @@ dependencies:
   edit_distance: ^0.4.1
   googleapis: ^0.55.0
   percent_indicator: "^2.1.7+2"
+  flutter_svg: ^0.19.1
   
 dev_dependencies:
   flutter_test:

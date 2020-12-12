@@ -6,6 +6,8 @@ import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:fake_news_detector/Screens/BottomSheetBuilder.dart';
 import 'package:fake_news_detector/Widget/CircularProgress.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:googleapis/chat/v1.dart';
 
 class AppBody extends StatefulWidget {
   static const String id = 'news_tracking_screen';
@@ -18,6 +20,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   final _firestore = FirebaseFirestore.instance;
   AnimationController _animationController;
   AnimationController _animationWidgetController;
+  AnimationController _rotationController;
   String wish, imgSrc;
   int wishClr = 0xffE7E7E7;
   int backClr = 0xff181800;
@@ -85,10 +88,14 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
     timing();
     AppBody.controller = TextEditingController();
     _animationController = AnimationController(
-      duration: Duration(seconds: 5),
+      duration: Duration(seconds: 3),
       vsync: this,
     );
     _animationWidgetController = AnimationController(
+      duration: Duration(seconds: 1),
+      vsync: this,
+    );
+    _rotationController = AnimationController(
       duration: Duration(seconds: 3),
       vsync: this,
     );
@@ -105,6 +112,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   bool hasInternet = true;
   String message = '';
   String viewPage = '';
+  double end;
   SizedBox changeClicked() {
     setState(() {
       hasClicked = true;
@@ -246,13 +254,18 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
 
         _animationController.repeat();
         _animationController.forward();
-        _animationWidgetController.repeat();
-        _animationWidgetController.forward();
+        // _animationWidgetController.repeat();
+        // _animationWidgetController.forward();
+        _rotationController.repeat();
+        _rotationController.forward();
 
         _animationWidgetController.addListener(() {
           setState(() {});
         });
         _animationController.addListener(() {
+          setState(() {});
+        });
+        _rotationController.addListener(() {
           setState(() {});
         });
       }
@@ -264,6 +277,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
     AppBody.controller.dispose();
     _animationController.dispose();
     _animationWidgetController.dispose();
+    _rotationController.dispose();
     super.dispose();
   }
 
@@ -275,6 +289,13 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
     final _width = MediaQuery.of(context).size.width;
     final _size = MediaQuery.of(context).size;
     print('${_width * 0.4688}');
+    end = _animationController.value.toDouble() *
+            percentage.toDouble() *
+            0.5 /
+            100.0 -
+        0.25;
+    print('${_rotationController.value} + $end');
+    // print(check);
     // backClr = 0xff181800;
     // wishClr = 0xff62868e;
     // gradientTopContainer = 0xff5d848f;
@@ -377,7 +398,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                   ),
                                   child: CircularPercentIndicator(
                                     // backgroundColor: Colors.white,
-                                    animationDuration: 500,
+                                    animationDuration: 3000,
                                     backgroundWidth:
                                         constraints.maxWidth * 0.06,
                                     arcType: ArcType.HALF,
@@ -386,17 +407,33 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                     lineWidth: constraints.maxWidth * 0.04,
                                     animation: true,
 
-                                    percent: (_animationWidgetController.value *
+                                    percent: (_animationController.value *
                                             percentage) /
                                         100,
-                                    center: Text(
-                                      (hasClicked)
-                                          ? "${(_animationController.value * percentage).toInt()}%"
-                                          : "%",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: _height * 0.06),
+                                    center: Stack(
+                                      alignment: Alignment.center,
+                                      children: <Widget>[
+                                        RotationTransition(
+                                          turns: Tween(begin: -0.25, end: end)
+                                              .animate(_rotationController),
+                                          child: SvgPicture.asset(
+                                            'assets/Images/knob.svg',
+                                            height: _height * 0.2,
+                                          ),
+                                        ),
+                                        Positioned(
+                                          top: _height * 0.095,
+                                          child: Text(
+                                            (hasClicked)
+                                                ? "${(_animationController.value * percentage).toInt()}%"
+                                                : "%",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: _height * 0.04),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     footer: Text(
                                       "Fake",
@@ -434,139 +471,6 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                     // progressColor: Colors.accents[1],
                                     // progressColor: Colors.white,
                                   ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                    left: constraints.maxWidth * 0.234,
-                                    top: constraints.maxHeight * 0.373,
-                                  ),
-                                  child: RotatedBox(
-                                    quarterTurns: 2,
-                                    child: ClipPath(
-                                      clipper: ArcClipper(
-                                          height: _height, width: _width),
-                                      child: Container(
-                                        // margin: EdgeInsets.only(
-                                        //     top: _height * 0.2,
-                                        //     left: _width * 0.25),
-                                        height: constraints.maxHeight * 0.18,
-                                        width: constraints.maxWidth * 0.08,
-                                        decoration: BoxDecoration(
-                                            // gradient: LinearGradient(
-                                            //     begin: FractionalOffset.topCenter,
-                                            //     end:
-                                            //         FractionalOffset.bottomCenter,
-                                            //     colors: [
-                                            //       Color(0xffA189BD),
-                                            //       Color(0xffA88BBA),
-                                            //     ],
-                                            //     stops: [
-                                            //       0.0,
-                                            //       1.0
-                                            //     ]),
-                                            // color: Colors.teal,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                    top: constraints.maxHeight * 0.48,
-                                    left: constraints.maxWidth * 0.26,
-                                  ),
-                                  height: constraints.maxHeight * 0.13,
-                                  width: constraints.maxWidth * 0.11,
-                                  decoration: BoxDecoration(
-                                      // gradient: LinearGradient(
-                                      //     begin: FractionalOffset.topCenter,
-                                      //     end: FractionalOffset.bottomCenter,
-                                      //     colors: [
-                                      //       Color(0xffA48ABC),
-                                      //       Color(0xffA88BBA),
-                                      //     ],
-                                      //     stops: [
-                                      //       0.0,
-                                      //       1.0
-                                      //     ]),
-                                      //color: Colors.teal,
-                                      ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      top: constraints.maxHeight * 0.353,
-                                      left: constraints.maxWidth * 0.67),
-                                  child: RotatedBox(
-                                    quarterTurns: 2,
-                                    child: ClipPath(
-                                      clipper: ArcClipper(
-                                          height: _height, width: _width),
-                                      child: Container(
-                                        // margin: EdgeInsets.only(
-                                        //     top: _height * 0.2,
-                                        //     left: _width * 0.25),
-                                        height: constraints.maxHeight * 0.20,
-                                        width: constraints.maxWidth * 0.082,
-                                        decoration: BoxDecoration(
-                                            // gradient: LinearGradient(
-                                            //     begin: FractionalOffset.topCenter,
-                                            //     end: FractionalOffset.bottomCenter,
-                                            //     colors: [
-                                            //       Color(0xffA189BD),
-                                            //       Color(0xffA88BBA),
-                                            //     ],
-                                            //     stops: [
-                                            //       0.0,
-                                            //       1.0
-                                            //     ]),
-                                            // color: Colors.teal,
-                                            ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                      top: constraints.maxHeight * 0.460,
-                                      left: constraints.maxWidth * 0.61),
-                                  height: constraints.maxHeight * 0.13,
-                                  width: constraints.maxWidth * 0.11,
-                                  decoration: BoxDecoration(
-                                      // gradient: LinearGradient(
-                                      //     begin: FractionalOffset.topCenter,
-                                      //     end: FractionalOffset.bottomCenter,
-                                      //     colors: [
-                                      //       Color(0xffA48ABC),
-                                      //       Color(0xffA88BBA),
-                                      //     ],
-                                      //     stops: [
-                                      //       0.0,
-                                      //       1.0
-                                      //     ]),
-                                      //color: Colors.teal,
-                                      ),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(
-                                    left: constraints.maxWidth * 0.25,
-                                    top: constraints.maxHeight * 0.58,
-                                  ),
-                                  height: constraints.maxHeight * 0.16,
-                                  width: constraints.maxWidth * 0.48,
-                                  decoration: BoxDecoration(
-                                      // gradient: LinearGradient(
-                                      //     begin: FractionalOffset.topCenter,
-                                      //     end: FractionalOffset.bottomCenter,
-                                      //     colors: [
-                                      //       Color(0xffA88BBA),
-                                      //       Color(0xffAC8DB8),
-                                      //     ],
-                                      //     stops: [
-                                      //       0.0,
-                                      //       1.0
-                                      //     ]),
-                                      //color: Colors.teal,
-                                      ),
                                 ),
                               ],
                             ),
@@ -721,28 +625,4 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
       ),
     );
   }
-}
-
-class ArcClipper extends CustomClipper<Path> {
-  final double height;
-  final double width;
-
-  ArcClipper({this.height, this.width});
-  @override
-  Path getClip(Size size) {
-    print('${width * 0.08} + ${size.width}');
-    var path = Path();
-    path.lineTo(0.0, height * 0.092);
-    path.quadraticBezierTo(
-        width * 0.08 * 0.5,
-        height * 0.092 - (height * 0.092 * 0.56),
-        width * 0.08 + (width * 0.08 * 0.1),
-        height * 0.092);
-    path.lineTo(width * 0.08, 0.0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper old) => false;
 }
