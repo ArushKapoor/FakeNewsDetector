@@ -20,6 +20,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   final _firestore = FirebaseFirestore.instance;
   AnimationController _animationController;
   AnimationController _rotationController;
+  Animation _animation;
   String wish, imgSrc;
   int wishClr = 0xffE7E7E7;
   int backClr = 0xff181800;
@@ -33,7 +34,6 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   void timing() {
     int hour = DateTime.now().hour;
     setState(() {
-      //hour = 18;
       if (hour > 5 && hour < 12) {
         wish = 'Good Morning';
         imgSrc = 'assets/Images/morning.jpeg';
@@ -44,7 +44,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         gradientTopButton = 0xffb9c8c5;
         gradientBottomButton = 0xffc7d1c9;
         checkTextClr = 0xff62868E;
-      } else if (hour >= 12 && hour < 17) {
+      } else if (hour > 12 && hour < 17) {
         wish = 'Good Afternoon';
         imgSrc = 'assets/Images/Noon.jpeg';
         backClr = 0xff977c54;
@@ -54,7 +54,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         gradientTopButton = 0xffcdab91;
         gradientBottomButton = 0xffcdab91;
         checkTextClr = 0xff856C3E;
-      } else if (hour >= 17 && hour < 20) {
+      } else if (hour > 17 && hour < 20) {
         wish = 'Good Evening';
         imgSrc = 'assets/Images/evening.jpeg';
         backClr = 0xff847fca;
@@ -94,6 +94,8 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
       duration: Duration(seconds: 3),
       vsync: this,
     );
+    _animation = Tween(begin: 0.0, end: percentage).animate(
+        CurvedAnimation(parent: _rotationController, curve: Curves.linear));
     // _animation =
     //     CurvedAnimation(parent: _animationController, curve: Curves.slowMiddle);
   }
@@ -248,14 +250,19 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         });
 
         _animationController.repeat();
+
         _animationController.forward();
-        _rotationController.repeat();
-        _rotationController.forward();
+        Future.delayed(Duration(milliseconds: 2300), () {
+          _rotationController.repeat();
+          _rotationController.forward();
+        });
 
         _animationController.addListener(() {
+          // print('${_animationController.value}' + 'me');
           setState(() {});
         });
         _rotationController.addListener(() {
+          //  print('${_rotationController.value}' + 'notme');
           setState(() {});
         });
       }
@@ -277,13 +284,13 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         kToolbarHeight;
     final _width = MediaQuery.of(context).size.width;
     final _size = MediaQuery.of(context).size;
-    print('${_width * 0.4688}');
-    end = _animationController.value.toDouble() *
+    // print('${_width * 0.4688}');
+    end = _rotationController.value.toDouble() *
             percentage.toDouble() *
             0.5 /
             100.0 -
         0.25;
-    print('${_rotationController.value} + $end');
+    //print('${_rotationController.value} + $end');
     // print(check);
     // backClr = 0xff181800;
     // wishClr = 0xff62868e;
@@ -372,7 +379,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                       ),
 
                       SizedBox(
-                        height: _height * 0.15,
+                        height: _height * 0.2,
                       ),
                       Flexible(
                         fit: FlexFit.loose,
@@ -384,6 +391,8 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                 Container(
                                   width: _width,
                                   child: CircularPercentIndicator(
+                                    curve: Curves.linear,
+                                    //restartAnimation: true,
                                     // backgroundColor: Colors.white,
                                     animationDuration: 3000,
                                     backgroundWidth: _width * 0.07,
@@ -393,15 +402,17 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                     lineWidth: _width * 0.05,
                                     animation: true,
 
-                                    percent: (_animationController.value *
-                                            percentage) /
+                                    percent: (percentage *
+                                            _animationController.value) /
                                         100,
                                     center: Stack(
                                       alignment: Alignment.center,
                                       children: <Widget>[
                                         RotationTransition(
                                           turns: Tween(begin: -0.25, end: end)
-                                              .animate(_rotationController),
+                                              .animate(CurvedAnimation(
+                                                  curve: Curves.linear,
+                                                  parent: _rotationController)),
                                           child: SvgPicture.asset(
                                             'assets/Images/arrow.svg',
                                             color: Colors.white,
@@ -414,7 +425,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                         ),
                                         Text(
                                           (hasClicked)
-                                              ? "${(_animationController.value * percentage).toInt()}%"
+                                              ? "${(_rotationController.value * percentage).toInt()}%"
                                               : "%",
                                           style: TextStyle(
                                               color: Colors.black,
@@ -466,9 +477,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                         ),
                       ),
 
-                      // SizedBox(
-                      //   height: _height * 0.0,
-                      // ),
+                      SizedBox(
+                        height: _height * 0.1,
+                      ),
                       // if (onVerifyClick &&
                       //     !noMatchFound &&
                       //     !noResultFound &&

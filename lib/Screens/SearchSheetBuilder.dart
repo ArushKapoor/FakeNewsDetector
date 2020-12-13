@@ -19,6 +19,7 @@ class _SearchSheetBuilderState extends State<SearchSheetBuilder> {
     return GestureDetector(
       onTap: () {
         Navigator.pop(context);
+        FocusScope.of(context).unfocus();
       },
       child: Scaffold(
         backgroundColor: Colors.transparent,
