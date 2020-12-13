@@ -249,13 +249,14 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
           isVisible = false;
         });
 
-        _animationController.repeat();
-
-        _animationController.forward();
         Future.delayed(Duration(milliseconds: 2300), () {
           _rotationController.repeat();
           _rotationController.forward();
         });
+
+        _animationController.repeat();
+
+        _animationController.forward();
 
         _animationController.addListener(() {
           // print('${_animationController.value}' + 'me');
@@ -394,7 +395,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                     curve: Curves.linear,
                                     //restartAnimation: true,
                                     // backgroundColor: Colors.white,
-                                    animationDuration: 3000,
+                                    animationDuration: 2400,
                                     backgroundWidth: _width * 0.07,
                                     arcType: ArcType.HALF,
                                     arcBackgroundColor: Colors.transparent,
@@ -615,7 +616,8 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
               if (isVisible)
                 Center(
                   child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        Color(gradientTopContainer)),
                   ),
                 ),
             ]),

@@ -50,7 +50,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         gradientBottomContainer = 0xffc294ae;
         gradientTopButton = 0xffba91b1;
         gradientBottomButton = 0xffc294ae;
-      } else if (hour >= 20 && hour < 5) {
+      } else {
         wish = 'Good Night';
         imgSrc = 'assets/Images/night.jpeg';
         backClr = 0xff1f1e43;
