@@ -237,7 +237,7 @@ class _CircularPercentIndicatorState extends State<CircularPercentIndicator>
                       widget.backgroundWidth >= 0.0
                           ? (widget.backgroundWidth)
                           : widget.lineWidth,
-                  arcBackgroundColor: Colors.black,
+                  arcBackgroundColor: widget.arcBackgroundColor,
                   arcType: widget.arcType,
                   reverse: widget.reverse,
                   linearGradient: widget.linearGradient,
