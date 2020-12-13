@@ -19,7 +19,6 @@ class AppBody extends StatefulWidget {
 class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   final _firestore = FirebaseFirestore.instance;
   AnimationController _animationController;
-  AnimationController _animationWidgetController;
   AnimationController _rotationController;
   String wish, imgSrc;
   int wishClr = 0xffE7E7E7;
@@ -89,10 +88,6 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
     AppBody.controller = TextEditingController();
     _animationController = AnimationController(
       duration: Duration(seconds: 3),
-      vsync: this,
-    );
-    _animationWidgetController = AnimationController(
-      duration: Duration(seconds: 1),
       vsync: this,
     );
     _rotationController = AnimationController(
@@ -254,14 +249,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
 
         _animationController.repeat();
         _animationController.forward();
-        // _animationWidgetController.repeat();
-        // _animationWidgetController.forward();
         _rotationController.repeat();
         _rotationController.forward();
 
-        _animationWidgetController.addListener(() {
-          setState(() {});
-        });
         _animationController.addListener(() {
           setState(() {});
         });
@@ -276,7 +266,6 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   void dispose() {
     AppBody.controller.dispose();
     _animationController.dispose();
-    _animationWidgetController.dispose();
     _rotationController.dispose();
     super.dispose();
   }
