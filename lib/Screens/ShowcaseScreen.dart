@@ -11,15 +11,17 @@ class ShowcaseScreen extends StatefulWidget {
 
 class _ShowcaseScreenState extends State<ShowcaseScreen> {
   final _firestore = FirebaseFirestore.instance;
-  String wish, imgSrc;
+  String wish = '', imgSrc = '';
   int wishClr = 0xffE7E7E7;
   int backClr = 0xff181800;
   int gradientTopContainer = 0xff847fca;
   int gradientBottomContainer = 0xffc294ae;
   int gradientTopButton = 0xffba91b1;
   int gradientBottomButton = 0xffc294ae;
+
   void timing() {
     int hour = DateTime.now().hour;
+    //print(hour);
     setState(() {
       if (hour > 5 && hour < 12) {
         wish = 'Good Morning';
@@ -30,7 +32,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         gradientBottomContainer = 0xffc7d1c9;
         gradientTopButton = 0xffb9c8c5;
         gradientBottomButton = 0xffc7d1c9;
-      } else if (hour > 12 && hour < 17) {
+      } else if (hour >= 12 && hour < 17) {
         wish = 'Good Afternoon';
         imgSrc = 'assets/Images/Noon.jpeg';
         backClr = 0xff977c54;
@@ -39,7 +41,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         gradientBottomContainer = 0xffd4b29a;
         gradientTopButton = 0xffcdab91;
         gradientBottomButton = 0xffcdab91;
-      } else if (hour > 17 && hour < 20) {
+      } else if (hour >= 17 && hour < 20) {
         wish = 'Good Evening';
         imgSrc = 'assets/Images/evening.jpeg';
         backClr = 0xff847fca;
@@ -48,7 +50,7 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         gradientBottomContainer = 0xffc294ae;
         gradientTopButton = 0xffba91b1;
         gradientBottomButton = 0xffc294ae;
-      } else {
+      } else if (hour >= 20 && hour < 5) {
         wish = 'Good Night';
         imgSrc = 'assets/Images/night.jpeg';
         backClr = 0xff1f1e43;
@@ -87,9 +89,9 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
                   (BuildContext context, bool innerBoxIsScrolled) {
                 return <Widget>[
                   SliverAppBar(
-                    floating: false,
+                    floating: true,
                     pinned: false,
-                    snap: false,
+                    snap: true,
                     backgroundColor: Colors.white10,
                     flexibleSpace: FlexibleSpaceBar(
                       collapseMode: CollapseMode.parallax,

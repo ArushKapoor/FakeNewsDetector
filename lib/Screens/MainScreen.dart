@@ -31,7 +31,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   void timing() {
     int hour = DateTime.now().hour;
     setState(() {
-      hour = 18;
+      //hour = 18;
       if (hour > 5 && hour < 12) {
         wish = 'Good Morning';
         imgSrc = 'assets/Images/morning.jpeg';
@@ -42,7 +42,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         gradientTopButton = 0xffb9c8c5;
         gradientBottomButton = 0xffc7d1c9;
         checkTextClr = 0xff62868E;
-      } else if (hour > 12 && hour < 17) {
+      } else if (hour >= 12 && hour < 17) {
         wish = 'Good Afternoon';
         imgSrc = 'assets/Images/Noon.jpeg';
         backClr = 0xff977c54;
@@ -52,7 +52,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
         gradientTopButton = 0xffcdab91;
         gradientBottomButton = 0xffcdab91;
         checkTextClr = 0xff856C3E;
-      } else if (hour > 17 && hour < 20) {
+      } else if (hour >= 17 && hour < 20) {
         wish = 'Good Evening';
         imgSrc = 'assets/Images/evening.jpeg';
         backClr = 0xff847fca;
@@ -324,16 +324,17 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                           width: _width,
                           height: _height * 0.07,
                           child: TextField(
-                            onTap: () {
-                              showModalBottomSheet(
-                                backgroundColor: Colors.black.withOpacity(0),
-                                context: context,
-                                isScrollControlled: true,
-                                elevation: 10,
-                                enableDrag: true,
-                                builder: (context) => SearchSheetBuilder(),
-                              );
-                            },
+                            // onTap: () {
+                            //   showModalBottomSheet(
+                            //     backgroundColor: Colors.black.withOpacity(0),
+                            //     context: context,
+                            //     isScrollControlled: true,
+                            //     elevation: 10,
+                            //     enableDrag: true,
+                            //     builder: (context) => SearchSheetBuilder(),
+                            //   );
+                            // },
+                            onChanged: (value) {},
                             maxLines: 200,
                             textAlignVertical: TextAlignVertical.bottom,
                             enableInteractiveSelection: true,
