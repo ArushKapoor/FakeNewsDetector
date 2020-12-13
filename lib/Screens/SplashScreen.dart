@@ -19,7 +19,6 @@ class _SplashScreenState extends State<SplashScreen>
   bool iamhere = false;
   void inititalizeFlutterFire() async {
     try {
-      await Firebase.initializeApp();
       final _auth = FirebaseAuth.instance;
       await _auth.signInAnonymously();
       isInitialized = true;
@@ -129,13 +128,11 @@ class _SplashScreenState extends State<SplashScreen>
                     height: 160,
                     width: 160,
                     decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage(
-                          'assets/Images/logo.png',
-                        ),
-                      ),
-                      color: Colors.blue,
                       borderRadius: BorderRadius.circular(100),
+                    ),
+                    child: CircleAvatar(
+                      backgroundImage: AssetImage('assets/Images/logo.png'),
+                      //color: Colors.blue,
                     ),
                   ),
                 ),
