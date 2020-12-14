@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen>
   bool isInitialized = false;
   AnimationController _animationController;
   AnimationController _animateController;
-
+  AssetImage logoImage;
   bool iamhere = false;
   void inititalizeFlutterFire() async {
     try {
@@ -31,6 +31,7 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     inititalizeFlutterFire();
+    logoImage = AssetImage('assets/Images/logoWithoutBackground1.png');
     _animateController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 2),
@@ -67,6 +68,12 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   @override
+  void didChangeDependencies() {
+    precacheImage(logoImage, context);
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     super.dispose();
     _animateController.dispose();
@@ -87,8 +94,11 @@ class _SplashScreenState extends State<SplashScreen>
               height: 1000 * (_animateController.value),
               width: 1000 * (_animateController.value),
               // color: Colors.orange,
+              //TODO: CLosing Container
               decoration: BoxDecoration(
-                color: Colors.orange,
+                //color: Colors.orange,
+                gradient: RadialGradient(
+                    colors: [Color(0xffe8b781), Color(0xfff7c784)]),
                 borderRadius:
                     BorderRadius.circular((1 - _animateController.value) * 600),
               ),
@@ -116,7 +126,14 @@ class _SplashScreenState extends State<SplashScreen>
               height: 1000 * _animationController.value,
               width: 1000 * _animationController.value,
               decoration: BoxDecoration(
-                color: Colors.orange[200],
+                //TODO: Opening Container
+                //color: Colors.orange[200],
+                // gradient: RadialGradient(colors: [
+                //   Colors.pink,
+                //   Colors.blue,
+                //   Colors.orange,
+                //   Colors.brown
+                // ]),
                 borderRadius: BorderRadius.circular(
                   600 * (1 - _animationController.value),
                 ),
@@ -131,7 +148,8 @@ class _SplashScreenState extends State<SplashScreen>
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/Images/logo.png'),
+                      backgroundColor: Colors.black,
+                      backgroundImage: logoImage,
                       //color: Colors.blue,
                     ),
                   ),

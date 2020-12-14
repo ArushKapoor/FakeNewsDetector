@@ -90,6 +90,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
       duration: Duration(seconds: 3),
       vsync: this,
     );
+
     _rotationController = AnimationController(
       duration: Duration(seconds: 3),
       vsync: this,
@@ -124,6 +125,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
     if (!currentFocus.hasPrimaryFocus) {
       currentFocus.unfocus();
     }
+
     try {
       final result = await InternetAddress.lookup('google.com');
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
@@ -253,7 +255,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
           _rotationController.repeat();
           _rotationController.forward();
         });
-
+        AppBody.controller.addListener(() {
+          setState(() {});
+        });
         _animationController.repeat();
 
         _animationController.forward();
