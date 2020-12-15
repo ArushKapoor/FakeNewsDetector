@@ -46,7 +46,12 @@ class _SearchSheetBuilderState extends State<SearchSheetBuilder> {
                 scrollPhysics: BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics(),
                 ),
-                keyboardType: TextInputType.multiline,
+                // keyboardType: TextInputType.multiline,
+                keyboardType: TextInputType.text,
+                onFieldSubmitted: (random) {
+                  Navigator.pop(context);
+                  FocusScope.of(context).unfocus();
+                },
                 controller: AppBody.controller,
                 showCursor: true,
                 autofocus: true,

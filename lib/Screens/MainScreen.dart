@@ -112,6 +112,7 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
   String viewPage = '';
   double end;
   SizedBox changeClicked() {
+    print('change Clicked');
     setState(() {
       hasClicked = true;
     });
@@ -407,14 +408,20 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                                     lineWidth: _width * 0.05,
                                     animation: true,
 
-                                    percent: (percentage *
-                                            _animationController.value) /
-                                        100,
+                                    percent: (hasClicked)
+                                        ? (percentage *
+                                                _animationController.value) /
+                                            100
+                                        : 0,
                                     center: Stack(
                                       alignment: Alignment.center,
                                       children: <Widget>[
                                         RotationTransition(
-                                          turns: Tween(begin: -0.25, end: end)
+                                          turns: Tween(
+                                                  begin: -0.25,
+                                                  end: (hasClicked)
+                                                      ? end
+                                                      : -0.25)
                                               .animate(CurvedAnimation(
                                                   curve: Curves.linear,
                                                   parent: _rotationController)),
@@ -518,7 +525,8 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                       if (noMatchFound ||
                           noResultFound ||
                           isEaster ||
-                          !hasInternet)
+                          !hasInternet ||
+                          (onVerifyClick && !hasClicked))
                         Container(
                           padding: EdgeInsets.only(
                               //top: _height * 0.05,
@@ -526,7 +534,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                               left: _width * 0.05,
                               right: _width * 0.05),
                           child: Text(
-                            message,
+                            !(onVerifyClick && !hasClicked)
+                                ? message
+                                : 'No result has been found on your query.',
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.white,
@@ -535,6 +545,9 @@ class _AppBodyState extends State<AppBody> with TickerProviderStateMixin {
                         ),
                       GestureDetector(
                         onTap: () {
+                          setState(() {
+                            hasClicked = false;
+                          });
                           if (AppBody.controller.text != null)
                             _handleSubmitted(AppBody.controller.text);
                         },

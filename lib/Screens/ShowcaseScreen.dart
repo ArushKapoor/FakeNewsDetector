@@ -78,110 +78,121 @@ class _ShowcaseScreenState extends State<ShowcaseScreen> {
         kToolbarHeight;
     final _width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      backgroundColor: Color(backClr),
-      body: SafeArea(
-        child: Stack(
-          children: <Widget>[
-            NestedScrollView(
-              physics: BouncingScrollPhysics(),
-              headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
-                return <Widget>[
-                  SliverAppBar(
-                    floating: true,
-                    pinned: false,
-                    snap: true,
-                    backgroundColor: Colors.white10,
-                    flexibleSpace: FlexibleSpaceBar(
-                      collapseMode: CollapseMode.parallax,
-                      background: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topCenter,
-                            child: Image(
-                              image: AssetImage(imgSrc),
-                              // alignment: Alignment.center,
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.all(_height * 0.025),
-                                child: Text(
-                                  wish,
-                                  style: TextStyle(
-                                      fontSize: _height * 0.04,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(wishClr)),
-                                ),
+    return Container(
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: <Color>[
+            Color(gradientTopContainer),
+            Color(gradientBottomContainer)
+          ])),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
+          child: Stack(
+            children: <Widget>[
+              NestedScrollView(
+                physics: BouncingScrollPhysics(),
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverAppBar(
+                      floating: true,
+                      pinned: false,
+                      snap: true,
+                      backgroundColor: Colors.transparent,
+                      flexibleSpace: FlexibleSpaceBar(
+                        collapseMode: CollapseMode.parallax,
+                        background: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Image(
+                                image: AssetImage(imgSrc),
+                                // alignment: Alignment.center,
+                                fit: BoxFit.fill,
                               ),
-                            ],
-                          ),
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.all(_height * 0.025),
+                                  child: Text(
+                                    wish,
+                                    style: TextStyle(
+                                        fontSize: _height * 0.04,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(wishClr)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        stretchModes: [
+                          StretchMode.fadeTitle,
+                          StretchMode.zoomBackground,
                         ],
                       ),
-                      stretchModes: [
-                        StretchMode.fadeTitle,
-                        StretchMode.zoomBackground,
-                      ],
+                      stretch: true,
+                      centerTitle: true,
+                      expandedHeight: _height * 0.29,
                     ),
-                    stretch: true,
-                    centerTitle: true,
-                    expandedHeight: _height * 0.29,
-                  ),
-                ];
-              },
-              body: Container(
-                //color: Color(0xffffffff),
-                decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: <Color>[
-                      Color(gradientTopContainer),
-                      Color(gradientBottomContainer)
-                    ])),
-                height: _height * 0.87,
-                child: NewsStream(
-                    firestore: _firestore, height: _height, width: _width),
+                  ];
+                },
+                body: Container(
+                  margin: EdgeInsets.only(top: _height * 0.015),
+                  //color: Color(0xffffffff),
+                  // decoration: BoxDecoration(
+                  //     gradient: LinearGradient(
+                  //         begin: Alignment.topCenter,
+                  //         end: Alignment.bottomCenter,
+                  //         colors: <Color>[
+                  //       Color(gradientTopContainer),
+                  //       Color(gradientBottomContainer)
+                  //     ])),
+                  height: _height * 0.87,
+                  child: NewsStream(
+                      firestore: _firestore, height: _height, width: _width),
+                ),
               ),
-            ),
-            Align(
-              alignment: AlignmentDirectional.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Container(
-                  width: _width,
-                  height: _height * 0.08,
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: <Color>[
-                        Color(gradientTopButton),
-                        Color(gradientBottomButton),
-                      ])),
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                        //borderRadius: BorderRadius.circular(15.0),
-                        ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, AppBody.id);
-                    },
-                    // color: Color(backClr),
-                    child: Text(
-                      'VERIFY',
-                      style: TextStyle(
-                          fontSize: _height * 0.03, color: Color(wishClr)),
+              Align(
+                alignment: AlignmentDirectional.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Container(
+                    width: _width,
+                    height: _height * 0.08,
+                    decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: <Color>[
+                          Color(gradientTopButton),
+                          Color(gradientBottomButton),
+                        ])),
+                    child: FlatButton(
+                      shape: RoundedRectangleBorder(
+                          //borderRadius: BorderRadius.circular(15.0),
+                          ),
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppBody.id);
+                      },
+                      // color: Color(backClr),
+                      child: Text(
+                        'VERIFY',
+                        style: TextStyle(
+                            fontSize: _height * 0.03, color: Color(wishClr)),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
