@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     inititalizeFlutterFire();
-    logoImage = AssetImage('assets/Images/logoWithoutBackground1.png');
+    logoImage = AssetImage('assets/Images/logo3.png');
     _animateController = AnimationController(
       vsync: this,
       duration: Duration(seconds: 2),
@@ -84,80 +84,102 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
     //double _width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: Colors.brown,
-      body: Stack(
-        alignment: AlignmentDirectional.center,
-        children: [
-          Center(
-            child: Container(
-              height: 1000 * (_animateController.value),
-              width: 1000 * (_animateController.value),
-              // color: Colors.orange,
-              //TODO: CLosing Container
-              decoration: BoxDecoration(
-                //color: Colors.orange,
-                gradient: RadialGradient(
-                    colors: [Color(0xffe8b781), Color(0xfff7c784)]),
-                borderRadius:
-                    BorderRadius.circular((1 - _animateController.value) * 600),
-              ),
+    // print('${(1 - _animateController.value) * 600}');
+    return Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('assets/Images/background_container.png'),
+              fit: BoxFit.cover)),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Stack(
+          alignment: AlignmentDirectional.center,
+          children: [
+            Center(
+              child: Container(
+                height: 1000 * (_animateController.value),
+                width: 1000 * (_animateController.value),
+                // color: Colors.orange,
+                //TODO: CLosing Container
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  // gradient: RadialGradient(
+                  //     colors: [Color(0xffe8b781), Color(0xfff7c784)]),
+                  borderRadius: BorderRadius.circular(
+                      (1 - _animateController.value) * 600),
+                ),
 
-              child: Column(
-                children: [
-                  if (iamhere)
-                    SizedBox(
-                      height: _height * 0.65,
-                    ),
-                  if (iamhere)
-                    Text(
-                      'Check Kiya Kya',
-                      style: GoogleFonts.pacifico(
-                        color: Colors.brown,
-                        fontSize: 30,
+                child: Column(
+                  children: [
+                    if (iamhere)
+                      SizedBox(
+                        height: _height * 0.65,
                       ),
-                    ),
-                ],
-              ),
-            ),
-          ),
-          Center(
-            child: Container(
-              height: 1000 * _animationController.value,
-              width: 1000 * _animationController.value,
-              decoration: BoxDecoration(
-                //TODO: Opening Container
-                //color: Colors.orange[200],
-                // gradient: RadialGradient(colors: [
-                //   Colors.pink,
-                //   Colors.blue,
-                //   Colors.orange,
-                //   Colors.brown
-                // ]),
-                borderRadius: BorderRadius.circular(
-                  600 * (1 - _animationController.value),
+                    if (iamhere)
+                      // Text(
+                      //   'Check Kiya Kya',
+                      //   style: GoogleFonts.pacifico(
+                      //     color: Colors.brown,
+                      //     fontSize: 30,
+                      //   ),
+                      // ),
+                      Image.asset(
+                        'assets/Images/text.png',
+                        height: _height * 0.06,
+                      ),
+                  ],
                 ),
               ),
-              child: Center(
-                child: Opacity(
-                  opacity: 1,
-                  child: Container(
-                    height: 160,
-                    width: 160,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                    ),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.black,
-                      backgroundImage: logoImage,
-                      //color: Colors.blue,
+            ),
+            Center(
+              child: Container(
+                height: 1000 * _animationController.value,
+                width: 1000 * _animationController.value,
+                decoration: BoxDecoration(
+                  //TODO: Opening Container
+                  //color: Colors.orange[200],
+                  // gradient: RadialGradient(colors: [
+                  //   Colors.pink,
+                  //   Colors.blue,
+                  //   Colors.orange,
+                  //   Colors.brown
+                  // ]),
+                  // gradient: RadialGradient(colors: [
+                  //   Color(0xfff3bb72),
+                  //   Color(0xfff4b97a),
+                  //   Color(0xfff9b59a),
+                  //   Color(0xffa9bcc4),
+                  //   Color(0xff7e8ecf),
+                  // ]),
+                  image: DecorationImage(
+                    image: AssetImage('assets/Images/background.png'),
+                    fit: BoxFit.fill,
+                  ),
+                  borderRadius: BorderRadius.circular(
+                    600 * (1 - _animationController.value),
+                  ),
+                ),
+                child: Center(
+                  child: Opacity(
+                    opacity: 1,
+                    child: Container(
+                      height: 160,
+                      width: 160,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        backgroundImage: logoImage,
+                        //color: Colors.blue,
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
